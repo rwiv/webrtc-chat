@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  clover-chat-server:
+    image: openjdk:17-ea-11-jdk-slim
+    container_name: clover-chat-server
+    working_dir: /usr/src/app
+    entrypoint: java -jar ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar
+    ports:
+      - "11730:11730"
+    volumes:
+      - ./build/libs:/usr/src/app/build/libs
