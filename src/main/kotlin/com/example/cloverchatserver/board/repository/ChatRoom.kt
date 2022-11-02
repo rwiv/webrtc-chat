@@ -1,6 +1,7 @@
 package com.example.cloverchatserver.board.repository
 
 import com.example.cloverchatserver.board.controller.ResponseChatRoom
+import com.example.cloverchatserver.user.repository.User
 import java.lang.RuntimeException
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -13,8 +14,9 @@ class ChatRoom(
     @Column(name = "chat_room_id")
     val id: Long?,
 
-    @Column(nullable = false)
-    val createBy: String,
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val createBy: User,
 
     @Column(length = 20, nullable = false, updatable = false)
     val password: String,
@@ -23,13 +25,17 @@ class ChatRoom(
     val title: String,
 
     @Column(nullable = false, updatable = false)
-    val createDate: LocalDateTime
+    val createDate: LocalDateTime,
 
-) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    val type: ChatRoomType,
+
+    ) {
 
     fun toResponseChatRoom(): ResponseChatRoom {
         if (id == null) throw RuntimeException()
 
-        return ResponseChatRoom(id, createBy, title, createDate)
+        return ResponseChatRoom(id, createBy.toResponseUser(), title, createDate)
     }
 }
