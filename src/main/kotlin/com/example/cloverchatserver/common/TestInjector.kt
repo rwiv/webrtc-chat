@@ -1,4 +1,4 @@
-package com.example.cloverchatserver.config
+package com.example.cloverchatserver.common
 
 import com.example.cloverchatserver.board.controller.ChatRoomCreateForm
 import com.example.cloverchatserver.board.repository.ChatRoom

@@ -30,9 +30,9 @@ class DefaultSecurityConfig(
         http
             .antMatcher("/**")
             .authorizeRequests()
-            .antMatchers("/test/**").hasRole(Role.MEMBER.toString())
+            .antMatchers("/test/hello").hasRole(Role.MEMBER.toString())
             .and()
-            .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter::class.java)
+        .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter::class.java)
             .exceptionHandling()
             .accessDeniedHandler(deniedHandler)
             .authenticationEntryPoint(entryPoint)

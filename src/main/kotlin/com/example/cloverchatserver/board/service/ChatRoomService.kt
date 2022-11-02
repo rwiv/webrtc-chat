@@ -6,6 +6,7 @@ import com.example.cloverchatserver.board.repository.ChatRoom
 
 interface ChatRoomService {
 
+    fun getChatRoomBy(chatRoomId: Long): ChatRoom
     fun getChatRoomList(): List<ResponseChatRoom>
 
     fun createChatRoom(chatRoomCreateForm: ChatRoomCreateForm): ChatRoom

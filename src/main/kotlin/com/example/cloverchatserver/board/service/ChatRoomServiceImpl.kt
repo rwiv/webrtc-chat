@@ -15,6 +15,11 @@ class ChatRoomServiceImpl(
     val userService: UserService
 
 ) : ChatRoomService {
+    override fun getChatRoomBy(chatRoomId: Long): ChatRoom {
+        return chatRoomRepository.findById(chatRoomId)
+            .orElseThrow { throw RuntimeException("Not Found ChatRoom") }
+    }
+
     override fun getChatRoomList(): List<ResponseChatRoom> {
         return chatRoomRepository
             .findAll()
