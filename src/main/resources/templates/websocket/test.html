@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button id="btn">전송</button>
+</body>
+<script>
+    const websocket = new WebSocket("ws://localhost:11730/ws/chat");
+
+    const username = "john";
+
+    websocket.onmessage = onMessage;
+    websocket.onopen = onOpen;
+    websocket.onclose = onClose;
+
+    let btn = document.getElementById("btn");
+    btn.addEventListener("click", (e) => {
+        websocket.send("hello");
+    });
+
+    function onMessage(msg) {
+        console.log(msg)
+    }
+
+    function onClose(evt) {
+        var str = username + ": 님이 방을 나가셨습니다.";
+        websocket.send(str);
+    }
+
+    function onOpen(evt) {
+        var str = username + ": 님이 입장하셨습니다.";
+        websocket.send(str);
+    }
+</script>
+</html>
