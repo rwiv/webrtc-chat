@@ -5,12 +5,12 @@ import java.io.Serializable
 import java.time.LocalDateTime
 
 data class RequestChatRoom(
-    val username: String,
+    val createBy: String,
     val password: String,
     val title: String,
 ): Serializable {
 
     val createDate: LocalDateTime = LocalDateTime.now()
 
-    fun toChatRoom() = ChatRoom(null, username, password, title, createDate)
+    fun toChatRoom() = ChatRoom(null, createBy, password, title, createDate)
 }
