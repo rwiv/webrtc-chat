@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 data class ResponseChatRoom(
     val id: Long,
-    val createBy: ResponseUser,
+    val createUser: ResponseUser,
     val title: String,
     val createDate: LocalDateTime
 ): Serializable

@@ -16,7 +16,7 @@ class ChatRoom(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val createBy: User,
+    val createUser: User,
 
     @Column(length = 20, nullable = false, updatable = false)
     val password: String,
@@ -36,6 +36,6 @@ class ChatRoom(
     fun toResponseChatRoom(): ResponseChatRoom {
         if (id == null) throw RuntimeException()
 
-        return ResponseChatRoom(id, createBy.toResponseUser(), title, createDate)
+        return ResponseChatRoom(id, createUser.toResponseUser(), title, createDate)
     }
 }
