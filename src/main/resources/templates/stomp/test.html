@@ -7,31 +7,62 @@
     <script language="JavaScript" th:src="@{/js/stomp.min.js}" src="../../static/js/stomp.min.js"></script>
 </head>
 <body>
-<p>stomp</p>
+<p>stomp test</p>
+<br>
+<div>
+    <span>chat room id: </span>
+    <input id="chatRoomId">
+</div>
+<div>
+    <span>user id: </span>
+    <input id="userId">
+</div>
+<br>
+<div>
+    <span>content: </span>
+    <input id="content">
+</div>
+<br><br>
+<button id="connect">연결</button>
 <button id="btn">전송</button>
 </body>
 <script>
     const socket = new SockJS('http://localhost:11730/sub');
     const stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, frame => {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/1', (msg) => {
-            console.log(msg);
-        });
+    const chatRoomId = document.getElementById("chatRoomId");
+    const userId = document.getElementById("userId");
+    const content = document.getElementById("content");
+
+    let connectBtn = document.getElementById("connect");
+    connectBtn.addEventListener("click", e => {
+        connectStomp();
     });
 
     let btn = document.getElementById("btn");
     btn.addEventListener("click", e => {
+        send();
+    });
+
+    function connectStomp() {
+        stompClient.connect({}, frame => {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe(`/topic/${chatRoomId.value}`, msg => {
+                console.log(msg);
+            });
+        });
+    }
+
+    function send() {
         stompClient.send(
-            "/pub/1",
+            `/pub/${chatRoomId.value}`,
             {},
             JSON.stringify({
-                chatRoomId: 1,
-                createUserId: 1,
-                content: "hello"
+                chatRoomId: chatRoomId.value,
+                createUserId: userId.value,
+                content: content.value
             })
         );
-    });
+    }
 </script>
 </html>

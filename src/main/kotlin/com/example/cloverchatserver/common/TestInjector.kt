@@ -19,8 +19,7 @@ import java.time.LocalDateTime
 class TestInjector(
 
     val chatRoomService: ChatRoomService,
-    val userService: UserService,
-    val passwordEncoder: PasswordEncoder
+    val userService: UserService
 
 ) : ApplicationRunner {
 
@@ -37,7 +36,7 @@ class TestInjector(
 
         val maxNum = initNum + size - 1
         for (i in initNum .. maxNum) {
-            val form = UserCreateForm("user${i}@gmail.com", passwordEncoder.encode("1234"), "user$i")
+            val form = UserCreateForm("user${i}@gmail.com", "1234", "user$i")
             val user: User = userService.createUser(form)
 
             result.add(user)

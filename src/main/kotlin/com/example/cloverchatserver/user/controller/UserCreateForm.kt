@@ -2,6 +2,7 @@ package com.example.cloverchatserver.user.controller
 
 import com.example.cloverchatserver.user.repository.Role
 import com.example.cloverchatserver.user.repository.User
+import org.springframework.security.crypto.password.PasswordEncoder
 
 data class UserCreateForm(
 
@@ -10,5 +11,7 @@ data class UserCreateForm(
     val nickname: String
 
 ) {
-    fun toUser(): User = User(null, Role.MEMBER, email, password, nickname)
+    fun toUser(passwordEncoder: PasswordEncoder): User = User(
+        null, Role.MEMBER, email, passwordEncoder.encode(password), nickname
+    )
 }
