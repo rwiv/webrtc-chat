@@ -15,8 +15,8 @@ class TestController {
         return "hello"
     }
 
-    @GetMapping("/websocket")
-    fun websocketTest(): String {
-        return "websocket/test"
+    @GetMapping("/stomp")
+    fun stompTest(): String {
+        return "stomp/test"
     }
 }
