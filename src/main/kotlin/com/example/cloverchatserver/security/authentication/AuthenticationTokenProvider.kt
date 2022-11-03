@@ -1,6 +1,5 @@
 package com.example.cloverchatserver.security.authentication
 
-import com.example.cloverchatserver.security.exception.AuthenticationNotFoundException
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.Authentication
@@ -17,9 +16,8 @@ class AuthenticationTokenProvider(
 ) : AuthenticationProvider {
 
     @Transactional
-    override fun authenticate(authentication: Authentication?): Authentication {
-        val token = authentication as AuthenticationToken?
-            ?: throw AuthenticationNotFoundException("Authentication not found")
+    override fun authenticate(authentication: Authentication): Authentication {
+        val token = authentication as AuthenticationToken
 
         val requestEmail = token.principal
         val requestPassword = token.credentials
@@ -39,11 +37,7 @@ class AuthenticationTokenProvider(
         return successToken
     }
 
-    override fun supports(authentication: Class<*>?): Boolean {
-        if (authentication == null) {
-            throw AuthenticationNotFoundException()
-        }
-
+    override fun supports(authentication: Class<*>): Boolean {
         return authentication == AuthenticationToken::class.java
     }
 }

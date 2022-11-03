@@ -8,12 +8,12 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.MediaType
 import org.springframework.http.RequestEntity
 
-class LoginTest {
+class DeniedTest {
 
     private val restTemplate = TestRestTemplate()
 
     @Test
-    fun testLogin() {
+    fun ADMIN_권한_요청() {
         val loginForm = RequestLoginForm("user1@gmail.com", "1234")
 
         val postRequest = RequestEntity
@@ -27,7 +27,7 @@ class LoginTest {
         val jSessionId = TestHelper().getJSessionId(postResponseEntity.headers)
 
         val getRequest = RequestEntity
-            .get("http://localhost:11730/test/hello")
+            .get("http://localhost:11730/test/admin")
             .header("Cookie", "JSESSIONID=$jSessionId")
             .build()
 

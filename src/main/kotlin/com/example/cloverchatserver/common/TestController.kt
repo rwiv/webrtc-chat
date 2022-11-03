@@ -15,6 +15,13 @@ class TestController {
         return "hello"
     }
 
+    @GetMapping("/admin")
+    @ResponseBody
+    fun adminTest(): String {
+        return "admin"
+    }
+
+
     @GetMapping("/stomp")
     fun stompTest(): String {
         return "stomp/test"

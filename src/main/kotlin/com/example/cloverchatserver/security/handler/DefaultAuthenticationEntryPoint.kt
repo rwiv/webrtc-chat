@@ -1,32 +1,24 @@
 package com.example.cloverchatserver.security.handler
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
-import java.lang.RuntimeException
+import org.springframework.web.servlet.HandlerExceptionResolver
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class DefaultAuthenticationEntryPoint : AuthenticationEntryPoint {
-
-    private val mapper = jacksonObjectMapper()
+class DefaultAuthenticationEntryPoint(
+    @Qualifier("handlerExceptionResolver")
+    val resolver: HandlerExceptionResolver
+): AuthenticationEntryPoint {
 
     override fun commence(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        authException: AuthenticationException?
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        authException: AuthenticationException
     ) {
-        if (response == null) {
-            throw RuntimeException("response object is null!")
-        }
-
-        response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.status = HttpStatus.UNAUTHORIZED.value()
-
-        response.writer.write(mapper.writeValueAsString(HttpServletResponse.SC_UNAUTHORIZED))
+        resolver.resolveException(request, response, null, authException)
     }
 }

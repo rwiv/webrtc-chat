@@ -1,6 +1,6 @@
 package com.example.cloverchatserver.security
 
-import com.example.cloverchatserver.security.filter.LoginFilter
+import com.example.cloverchatserver.security.filter.RestApiLoginFilter
 import com.example.cloverchatserver.security.filter.LoginFilterFailureHandler
 import com.example.cloverchatserver.security.filter.LoginFilterSuccessHandler
 import com.example.cloverchatserver.security.handler.DefaultAccessDeniedHandler
@@ -33,6 +33,7 @@ class DefaultSecurityConfig(
             .antMatcher("/**")
             .authorizeRequests()
             .antMatchers("/test/hello").hasRole(Role.MEMBER.toString())
+            .antMatchers("/test/admin").hasRole(Role.ADMIN.toString())
             .antMatchers(*permitList).permitAll()
             .anyRequest().authenticated()
             .and()
@@ -47,8 +48,8 @@ class DefaultSecurityConfig(
         return http.build()
     }
 
-    private fun loginFilter(): LoginFilter {
-        val filter = LoginFilter()
+    private fun loginFilter(): RestApiLoginFilter {
+        val filter = RestApiLoginFilter()
         filter.setAuthenticationManager(authenticationManager)
         filter.setAuthenticationSuccessHandler(successHandler)
         filter.setAuthenticationFailureHandler(failureHandler)

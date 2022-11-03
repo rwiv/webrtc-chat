@@ -11,7 +11,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class LoginFilter: AbstractAuthenticationProcessingFilter(
+class RestApiLoginFilter: AbstractAuthenticationProcessingFilter(
     AntPathRequestMatcher("/user/login", "POST")
 ) {
 

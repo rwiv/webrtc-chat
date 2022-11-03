@@ -1,19 +1,24 @@
 package com.example.cloverchatserver.security.handler
 
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
+import org.springframework.web.servlet.HandlerExceptionResolver
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class DefaultAccessDeniedHandler : AccessDeniedHandler {
+class DefaultAccessDeniedHandler(
+    @Qualifier("handlerExceptionResolver")
+    val resolver: HandlerExceptionResolver
+) : AccessDeniedHandler {
 
     override fun handle(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        accessDeniedException: AccessDeniedException?
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        accessDeniedException: AccessDeniedException
     ) {
-        response?.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+        resolver.resolveException(request, response, null, accessDeniedException)
     }
 }
