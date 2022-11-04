@@ -19,10 +19,10 @@ class DefaultAuthenticationEntryPoint: AuthenticationEntryPoint {
     ) {
         when (authException) {
             is InsufficientAuthenticationException -> ErrorHelper.sendError(response,
-                HttpStatus.UNAUTHORIZED, "InsufficientAuthenticationException"
+                HttpStatus.UNAUTHORIZED, "Entrypoint: InsufficientAuthenticationException"
             )
             else -> ErrorHelper.sendError(response,
-                HttpStatus.UNAUTHORIZED, "AuthenticationException"
+                HttpStatus.UNAUTHORIZED, "Entrypoint: AuthenticationException"
             )
         }
     }

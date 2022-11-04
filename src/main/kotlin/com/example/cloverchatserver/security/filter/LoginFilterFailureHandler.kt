@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.authentication.DisabledException
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.stereotype.Component
 import javax.servlet.http.HttpServletRequest
@@ -20,17 +21,20 @@ class LoginFilterFailureHandler: AuthenticationFailureHandler {
         exception: AuthenticationException
     ) {
         when (exception) {
+            is UsernameNotFoundException -> ErrorHelper.sendError(response,
+                HttpStatus.UNAUTHORIZED, "Failure: UsernameNotFoundException"
+            )
             is BadCredentialsException -> ErrorHelper.sendError(response,
-                HttpStatus.UNAUTHORIZED, "BadCredentialsException"
+                HttpStatus.UNAUTHORIZED, "Failure: BadCredentialsException"
             )
             is DisabledException -> ErrorHelper.sendError(response,
-                HttpStatus.UNAUTHORIZED, "DisabledException"
+                HttpStatus.UNAUTHORIZED, "Failure: DisabledException"
             )
             is CredentialsExpiredException -> ErrorHelper.sendError(response,
-                HttpStatus.UNAUTHORIZED, "CredentialsExpiredException"
+                HttpStatus.UNAUTHORIZED, "Failure: CredentialsExpiredException"
             )
             else -> ErrorHelper.sendError(response,
-                HttpStatus.UNAUTHORIZED, "AuthenticationException"
+                HttpStatus.UNAUTHORIZED, "Failure: ${exception.message}"
             )
         }
     }

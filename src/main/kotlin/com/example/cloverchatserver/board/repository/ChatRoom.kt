@@ -36,6 +36,6 @@ class ChatRoom(
     fun toResponseChatRoom(): ResponseChatRoom {
         if (id == null) throw RuntimeException()
 
-        return ResponseChatRoom(id, createUser.toResponseUser(), title, createDate)
+        return ResponseChatRoom(id, createUser.toResponseUser(), title, createDate, type)
     }
 }

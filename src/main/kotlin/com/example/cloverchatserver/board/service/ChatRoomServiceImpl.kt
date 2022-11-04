@@ -4,11 +4,11 @@ import com.example.cloverchatserver.board.controller.domain.ChatRoomCreateForm
 import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoomRepository
+import com.example.cloverchatserver.user.controller.domain.ResponseUser
 import com.example.cloverchatserver.user.service.UserService
-import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.RuntimeException
 
 @Service
 class ChatRoomServiceImpl(
@@ -40,13 +40,13 @@ class ChatRoomServiceImpl(
     }
 
     @Transactional
-    override fun deleteChatRoom(chatRoomId: Long, password: String) {
+    override fun deleteChatRoom(chatRoomId: Long, responseUser: ResponseUser) {
         val chatRoom = chatRoomRepository
             .findById(chatRoomId)
             .orElseThrow { throw ChatRoomNotFoundException() }
 
-        if (chatRoom.password != password) {
-            throw BadCredentialsException("비밀번호가 다릅니다")
+        if (responseUser.id != chatRoom.createUser.id) {
+            throw AccessDeniedException("This user is not ChatRoom CreateUser")
         }
 
         chatRoomRepository.delete(chatRoom)

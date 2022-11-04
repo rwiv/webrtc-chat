@@ -3,6 +3,7 @@ package com.example.cloverchatserver.board.service
 import com.example.cloverchatserver.board.controller.domain.ChatRoomCreateForm
 import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoom
+import com.example.cloverchatserver.user.controller.domain.ResponseUser
 
 interface ChatRoomService {
 
@@ -11,5 +12,5 @@ interface ChatRoomService {
 
     fun createChatRoom(chatRoomCreateForm: ChatRoomCreateForm): ChatRoom
 
-    fun deleteChatRoom(chatRoomId: Long, password: String)
+    fun deleteChatRoom(chatRoomId: Long, responseUser: ResponseUser)
 }

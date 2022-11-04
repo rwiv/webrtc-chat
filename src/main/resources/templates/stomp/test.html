@@ -5,6 +5,7 @@
     <title>Title</title>
     <script language="JavaScript" th:src="@{/js/sockjs.min.js}" src="../../static/js/sockjs.min.js"></script>
     <script language="JavaScript" th:src="@{/js/stomp.min.js}" src="../../static/js/stomp.min.js"></script>
+    <script language="JavaScript" th:src="@{/js/axios.min.js}" src="../../static/js/axios.min.js"></script>
 </head>
 <body>
 <p>stomp test</p>
@@ -27,12 +28,16 @@
 <button id="btn">전송</button>
 </body>
 <script>
-    const socket = new SockJS('http://localhost:11730/sub');
-    const stompClient = Stomp.over(socket);
-
     const chatRoomId = document.getElementById("chatRoomId");
     const userId = document.getElementById("userId");
     const content = document.getElementById("content");
+
+    let stompClient;
+
+    login().then(res => {
+        const socket = new SockJS('http://localhost:11730/stomp');
+        stompClient = Stomp.over(socket);
+    });
 
     let connectBtn = document.getElementById("connect");
     connectBtn.addEventListener("click", e => {
@@ -44,10 +49,17 @@
         send();
     });
 
+    function login() {
+        return axios.post("http://localhost:11730/user/login", {
+            email: "user1@gmail.com",
+            password: "1234"
+        });
+    }
+
     function connectStomp() {
         stompClient.connect({}, frame => {
             console.log('Connected: ' + frame);
-            stompClient.subscribe(`/topic/${chatRoomId.value}`, msg => {
+            stompClient.subscribe(`/sub/${chatRoomId.value}`, msg => {
                 console.log(msg);
             });
         });

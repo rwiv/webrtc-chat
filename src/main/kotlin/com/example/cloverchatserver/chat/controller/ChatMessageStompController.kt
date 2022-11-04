@@ -15,7 +15,7 @@ class ChatMessageStompController(
 ) {
 
     @MessageMapping("/{chatRoomId}")
-    @SendTo("/topic/{chatRoomId}")
+    @SendTo("/sub/{chatRoomId}")
     fun greeting(
         requestChatMessage: RequestChatMessage,
         @DestinationVariable chatRoomId: Long
