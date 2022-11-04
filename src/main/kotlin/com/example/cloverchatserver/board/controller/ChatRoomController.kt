@@ -12,9 +12,6 @@ class ChatRoomController(
     val chatRoomService: ChatRoomService
 ) {
 
-    @GetMapping
-    fun hello(): String = "hello"
-
     @GetMapping("/list")
     fun getChatRoomList(): List<ResponseChatRoom> = chatRoomService.getChatRoomList()
 

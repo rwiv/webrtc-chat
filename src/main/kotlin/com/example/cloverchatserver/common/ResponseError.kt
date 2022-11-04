@@ -8,5 +8,5 @@ data class ResponseError(
     val code: String
 ): Serializable {
 
-    val timestamp: LocalDateTime = LocalDateTime.now()
+    val timestamp: String = LocalDateTime.now().toString()
 }
