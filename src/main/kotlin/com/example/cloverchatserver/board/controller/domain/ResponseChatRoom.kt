@@ -1,6 +1,6 @@
-package com.example.cloverchatserver.board.controller
+package com.example.cloverchatserver.board.controller.domain
 
-import com.example.cloverchatserver.user.controller.ResponseUser
+import com.example.cloverchatserver.user.controller.domain.ResponseUser
 import java.io.Serializable
 import java.time.LocalDateTime
 

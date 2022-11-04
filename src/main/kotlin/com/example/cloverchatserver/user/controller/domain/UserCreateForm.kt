@@ -1,4 +1,4 @@
-package com.example.cloverchatserver.user.controller
+package com.example.cloverchatserver.user.controller.domain
 
 import com.example.cloverchatserver.user.repository.Role
 import com.example.cloverchatserver.user.repository.User

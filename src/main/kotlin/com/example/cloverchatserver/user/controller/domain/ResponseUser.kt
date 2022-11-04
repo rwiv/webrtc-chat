@@ -1,4 +1,4 @@
-package com.example.cloverchatserver.user.controller
+package com.example.cloverchatserver.user.controller.domain
 
 data class ResponseUser(
     val id: Long,

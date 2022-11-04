@@ -1,7 +1,7 @@
 package com.example.cloverchatserver.chat.repository
 
 import com.example.cloverchatserver.board.repository.ChatRoom
-import com.example.cloverchatserver.chat.controller.ResponseChatMessage
+import com.example.cloverchatserver.chat.controller.domain.ResponseChatMessage
 import com.example.cloverchatserver.user.repository.User
 import java.lang.RuntimeException
 import java.time.LocalDateTime

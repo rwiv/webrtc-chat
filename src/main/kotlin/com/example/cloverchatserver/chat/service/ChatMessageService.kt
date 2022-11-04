@@ -1,6 +1,6 @@
 package com.example.cloverchatserver.chat.service
 
-import com.example.cloverchatserver.chat.controller.RequestChatMessage
+import com.example.cloverchatserver.chat.controller.domain.RequestChatMessage
 import com.example.cloverchatserver.chat.repository.ChatMessage
 
 interface ChatMessageService {

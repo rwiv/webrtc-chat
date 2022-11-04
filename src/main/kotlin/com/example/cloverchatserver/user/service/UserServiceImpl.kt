@@ -1,8 +1,7 @@
 package com.example.cloverchatserver.user.service
 
-import com.example.cloverchatserver.user.controller.UserCreateForm
+import com.example.cloverchatserver.user.controller.domain.UserCreateForm
 import com.example.cloverchatserver.user.repository.User
-import com.example.cloverchatserver.user.repository.UserNotFoundException
 import com.example.cloverchatserver.user.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

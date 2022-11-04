@@ -1,4 +1,4 @@
-package com.example.cloverchatserver.board.controller
+package com.example.cloverchatserver.board.controller.domain
 
 import com.example.cloverchatserver.board.repository.ChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoomType

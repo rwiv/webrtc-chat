@@ -1,5 +1,7 @@
 package com.example.cloverchatserver.chat.controller
 
+import com.example.cloverchatserver.chat.controller.domain.RequestChatMessage
+import com.example.cloverchatserver.chat.controller.domain.ResponseChatMessage
 import com.example.cloverchatserver.chat.service.ChatMessageService
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping

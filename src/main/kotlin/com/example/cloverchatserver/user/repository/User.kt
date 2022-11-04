@@ -1,6 +1,7 @@
 package com.example.cloverchatserver.user.repository
 
-import com.example.cloverchatserver.user.controller.ResponseUser
+import com.example.cloverchatserver.user.controller.domain.ResponseUser
+import com.example.cloverchatserver.user.service.UserNotFoundException
 import javax.persistence.*
 
 @Entity

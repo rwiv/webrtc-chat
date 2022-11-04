@@ -1,5 +1,7 @@
 package com.example.cloverchatserver.board.controller
 
+import com.example.cloverchatserver.board.controller.domain.ChatRoomCreateForm
+import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
 import com.example.cloverchatserver.board.service.ChatRoomService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

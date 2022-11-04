@@ -1,7 +1,7 @@
 package com.example.cloverchatserver.board.service
 
-import com.example.cloverchatserver.board.controller.ChatRoomCreateForm
-import com.example.cloverchatserver.board.controller.ResponseChatRoom
+import com.example.cloverchatserver.board.controller.domain.ChatRoomCreateForm
+import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoom
 
 interface ChatRoomService {

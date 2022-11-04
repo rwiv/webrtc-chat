@@ -1,19 +1,14 @@
 package com.example.cloverchatserver.common
 
-import com.example.cloverchatserver.board.controller.ChatRoomCreateForm
-import com.example.cloverchatserver.board.repository.ChatRoom
-import com.example.cloverchatserver.board.repository.ChatRoomRepository
+import com.example.cloverchatserver.board.controller.domain.ChatRoomCreateForm
 import com.example.cloverchatserver.board.repository.ChatRoomType
 import com.example.cloverchatserver.board.service.ChatRoomService
-import com.example.cloverchatserver.user.controller.UserCreateForm
+import com.example.cloverchatserver.user.controller.domain.UserCreateForm
 import com.example.cloverchatserver.user.repository.User
-import com.example.cloverchatserver.user.repository.UserRepository
 import com.example.cloverchatserver.user.service.UserService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
-import java.time.LocalDateTime
 
 @Component
 class TestInjector(

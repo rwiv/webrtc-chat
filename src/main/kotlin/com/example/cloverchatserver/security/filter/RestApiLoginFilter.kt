@@ -1,7 +1,7 @@
 package com.example.cloverchatserver.security.filter
 
 import com.example.cloverchatserver.security.authentication.AuthenticationToken
-import com.example.cloverchatserver.user.controller.RequestLoginForm
+import com.example.cloverchatserver.user.controller.domain.RequestLoginForm
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.security.authentication.AuthenticationServiceException
