@@ -1,11 +1,11 @@
-package com.example.cloverchatserver.chat.controller.domain
+package com.example.cloverchatserver.chat.message.controller.domain
 
 import com.example.cloverchatserver.board.repository.ChatRoom
-import com.example.cloverchatserver.chat.repository.ChatMessage
+import com.example.cloverchatserver.chat.message.repository.ChatMessage
 import com.example.cloverchatserver.user.repository.User
 import java.time.LocalDateTime
 
-data class RequestChatMessage(
+data class RequestStompChatMessage(
     val chatRoomId: Long,
     val createUserId: Long,
     val content: String

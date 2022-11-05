@@ -1,7 +1,7 @@
 package com.example.cloverchatserver.user.controller
 
 import com.example.cloverchatserver.user.controller.domain.ResponseUser
-import com.example.cloverchatserver.user.controller.domain.UserCreateForm
+import com.example.cloverchatserver.user.controller.domain.RequestUserCreateForm
 import com.example.cloverchatserver.user.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,8 +16,8 @@ class UserController(
 ) {
 
     @PostMapping("/register")
-    fun register(@RequestBody userCreateForm: UserCreateForm): ResponseEntity<ResponseUser> {
-        val user = userService.createUser(userCreateForm)
+    fun register(@RequestBody requestUserCreateForm: RequestUserCreateForm): ResponseEntity<ResponseUser> {
+        val user = userService.createUser(requestUserCreateForm)
 
         return ResponseEntity.ok().body(user.toResponseUser())
     }

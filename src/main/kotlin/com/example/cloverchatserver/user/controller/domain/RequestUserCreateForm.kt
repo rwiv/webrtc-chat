@@ -4,7 +4,7 @@ import com.example.cloverchatserver.user.repository.Role
 import com.example.cloverchatserver.user.repository.User
 import org.springframework.security.crypto.password.PasswordEncoder
 
-data class UserCreateForm(
+data class RequestUserCreateForm(
 
     val email: String,
     val password: String,

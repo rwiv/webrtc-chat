@@ -1,4 +1,4 @@
-package com.example.cloverchatserver.chat.repository
+package com.example.cloverchatserver.chat.message.repository
 
 import com.example.cloverchatserver.board.repository.ChatRoom
 import org.springframework.data.jpa.repository.JpaRepository

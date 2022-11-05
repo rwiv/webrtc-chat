@@ -1,8 +1,8 @@
-package com.example.cloverchatserver.chat.controller
+package com.example.cloverchatserver.chat.message.controller
 
-import com.example.cloverchatserver.chat.controller.domain.RequestChatMessage
-import com.example.cloverchatserver.chat.controller.domain.ResponseChatMessage
-import com.example.cloverchatserver.chat.service.ChatMessageService
+import com.example.cloverchatserver.chat.message.controller.domain.RequestStompChatMessage
+import com.example.cloverchatserver.chat.message.controller.domain.ResponseStompChatMessage
+import com.example.cloverchatserver.chat.message.service.ChatMessageService
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
@@ -17,15 +17,13 @@ class ChatMessageStompController(
     @MessageMapping("/{chatRoomId}")
     @SendTo("/sub/{chatRoomId}")
     fun greeting(
-        requestChatMessage: RequestChatMessage,
+        requestStompChatMessage: RequestStompChatMessage,
         @DestinationVariable chatRoomId: Long
-    ): ResponseChatMessage {
-        if (requestChatMessage.chatRoomId != chatRoomId) {
+    ): ResponseStompChatMessage {
+        if (requestStompChatMessage.chatRoomId != chatRoomId) {
             throw RuntimeException("chatRoomId is different")
         }
 
-        return chatMessageService
-            .createChatMessage(requestChatMessage)
-            .toResponseChatMessage()
+        return chatMessageService.createChatMessage(requestStompChatMessage)
     }
 }

@@ -1,6 +1,6 @@
-package com.example.cloverchatserver.chat.repository
+package com.example.cloverchatserver.chat.user.repository
 
-import com.example.cloverchatserver.board.controller.domain.ResponseChatUser
+import com.example.cloverchatserver.chat.user.controller.domain.ResponseChatUser
 import com.example.cloverchatserver.board.repository.ChatRoom
 import com.example.cloverchatserver.user.repository.User
 import javax.persistence.*

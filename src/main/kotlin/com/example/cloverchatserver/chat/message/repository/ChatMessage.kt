@@ -1,7 +1,7 @@
-package com.example.cloverchatserver.chat.repository
+package com.example.cloverchatserver.chat.message.repository
 
 import com.example.cloverchatserver.board.repository.ChatRoom
-import com.example.cloverchatserver.chat.controller.domain.ResponseChatMessage
+import com.example.cloverchatserver.chat.message.controller.domain.ResponseStompChatMessage
 import com.example.cloverchatserver.user.repository.User
 import java.lang.RuntimeException
 import java.time.LocalDateTime
@@ -30,12 +30,12 @@ class ChatMessage(
     val createAt: LocalDateTime
 ) {
 
-    fun toResponseChatMessage(): ResponseChatMessage {
+    fun toResponseStompChatMessage(): ResponseStompChatMessage {
         if (id == null) {
             throw RuntimeException("id is null")
         }
 
-        return ResponseChatMessage(
+        return ResponseStompChatMessage(
             id,
             chatRoom.toResponseChatRoom(),
             createUser.toResponseUser(),

@@ -6,7 +6,7 @@ import com.example.cloverchatserver.user.repository.User
 import java.io.Serializable
 import java.time.LocalDateTime
 
-data class ChatRoomCreateForm(
+data class RequestChatRoomCreateForm(
     val createUserId: Long,
     val password: String,
     val title: String,

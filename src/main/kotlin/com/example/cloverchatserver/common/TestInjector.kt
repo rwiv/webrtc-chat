@@ -1,9 +1,9 @@
 package com.example.cloverchatserver.common
 
-import com.example.cloverchatserver.board.controller.domain.ChatRoomCreateForm
+import com.example.cloverchatserver.board.controller.domain.RequestChatRoomCreateForm
 import com.example.cloverchatserver.board.repository.ChatRoomType
 import com.example.cloverchatserver.board.service.ChatRoomService
-import com.example.cloverchatserver.user.controller.domain.UserCreateForm
+import com.example.cloverchatserver.user.controller.domain.RequestUserCreateForm
 import com.example.cloverchatserver.user.repository.User
 import com.example.cloverchatserver.user.service.UserService
 import org.springframework.boot.ApplicationArguments
@@ -21,8 +21,8 @@ class TestInjector(
     override fun run(args: ApplicationArguments?) {
         val users = createUsers(1, 5)
         for (i in 0..5) {
-            val chatRoomCreateForm = ChatRoomCreateForm(users[0].id!!, "1234", "title${i+1}", ChatRoomType.PUBLIC)
-            chatRoomService.createChatRoom(chatRoomCreateForm)
+            val requestChatRoomCreateForm = RequestChatRoomCreateForm(users[0].id!!, "1234", "title${i+1}", ChatRoomType.PUBLIC)
+            chatRoomService.createChatRoom(requestChatRoomCreateForm)
         }
     }
 
@@ -31,7 +31,7 @@ class TestInjector(
 
         val maxNum = initNum + size - 1
         for (i in initNum .. maxNum) {
-            val form = UserCreateForm("user${i}@gmail.com", "1234", "user$i")
+            val form = RequestUserCreateForm("user${i}@gmail.com", "1234", "user$i")
             val user: User = userService.createUser(form)
 
             result.add(user)

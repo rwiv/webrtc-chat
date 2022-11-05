@@ -1,6 +1,6 @@
 package com.example.cloverchatserver.board.service
 
-import com.example.cloverchatserver.board.controller.domain.ChatRoomCreateForm
+import com.example.cloverchatserver.board.controller.domain.RequestChatRoomCreateForm
 import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoomRepository
@@ -32,9 +32,9 @@ class ChatRoomServiceImpl(
     }
 
     @Transactional
-    override fun createChatRoom(chatRoomCreateForm: ChatRoomCreateForm): ChatRoom {
-        val createBy = userService.getUserBy(chatRoomCreateForm.createUserId)
-        val requestChatRoom = chatRoomCreateForm.toChatRoom(createBy)
+    override fun createChatRoom(requestChatRoomCreateForm: RequestChatRoomCreateForm): ChatRoom {
+        val createBy = userService.getUserBy(requestChatRoomCreateForm.createUserId)
+        val requestChatRoom = requestChatRoomCreateForm.toChatRoom(createBy)
 
         return chatRoomRepository.save(requestChatRoom)
     }

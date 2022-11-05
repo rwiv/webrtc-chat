@@ -1,6 +1,6 @@
 package com.example.cloverchatserver.user.service
 
-import com.example.cloverchatserver.user.controller.domain.UserCreateForm
+import com.example.cloverchatserver.user.controller.domain.RequestUserCreateForm
 import com.example.cloverchatserver.user.repository.User
 import com.example.cloverchatserver.user.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -16,8 +16,8 @@ class UserServiceImpl(
 ) : UserService {
 
     @Transactional
-    override fun createUser(userCreateForm: UserCreateForm): User {
-        val user = userCreateForm.toUser(passwordEncoder)
+    override fun createUser(requestUserCreateForm: RequestUserCreateForm): User {
+        val user = requestUserCreateForm.toUser(passwordEncoder)
 
         return userRepository.save(user)
     }
