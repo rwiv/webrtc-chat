@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 data class RequestChatRoomCreateForm(
     val createUserId: Long,
-    val password: String,
+    val password: String?,
     val title: String,
     val type: ChatRoomType
 ): Serializable {

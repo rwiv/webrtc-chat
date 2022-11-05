@@ -18,8 +18,8 @@ class ChatRoom(
     @JoinColumn(name = "user_id")
     val createUser: User,
 
-    @Column(length = 20, nullable = false, updatable = false)
-    val password: String,
+    @Column(length = 20, nullable = true, updatable = false)
+    val password: String?,
 
     @Column(nullable = false)
     val title: String,

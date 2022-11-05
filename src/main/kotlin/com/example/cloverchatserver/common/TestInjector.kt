@@ -20,8 +20,8 @@ class TestInjector(
 
     override fun run(args: ApplicationArguments?) {
         val users = createUsers(1, 5)
-        for (i in 0..5) {
-            val requestChatRoomCreateForm = RequestChatRoomCreateForm(users[0].id!!, "1234", "title${i+1}", ChatRoomType.PUBLIC)
+        for (i in 1..5) {
+            val requestChatRoomCreateForm = RequestChatRoomCreateForm(users[0].id!!, null, "title$i", ChatRoomType.PUBLIC)
             chatRoomService.createChatRoom(requestChatRoomCreateForm)
         }
     }

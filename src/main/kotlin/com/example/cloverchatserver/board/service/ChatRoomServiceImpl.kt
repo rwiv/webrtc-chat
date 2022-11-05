@@ -1,7 +1,6 @@
 package com.example.cloverchatserver.board.service
 
 import com.example.cloverchatserver.board.controller.domain.RequestChatRoomCreateForm
-import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoomRepository
 import com.example.cloverchatserver.user.controller.domain.ResponseUser
@@ -37,8 +36,7 @@ class ChatRoomServiceImpl(
 
     @Transactional
     override fun deleteChatRoom(chatRoomId: Long, responseUser: ResponseUser): ChatRoom {
-        val chatRoom = chatRoomRepository
-            .findById(chatRoomId)
+        val chatRoom = chatRoomRepository.findById(chatRoomId)
             .orElseThrow { throw ChatRoomNotFoundException() }
 
         if (responseUser.id != chatRoom.createUser.id) {

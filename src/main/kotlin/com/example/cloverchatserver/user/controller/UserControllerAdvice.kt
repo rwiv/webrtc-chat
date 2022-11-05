@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@RestControllerAdvice(assignableTypes = [ UserController::class ])
+@RestControllerAdvice("com.example.cloverchatserver.user.controller")
 class UserControllerAdvice {
 
     @ExceptionHandler(value = [ UserNotFoundException::class ])
