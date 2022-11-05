@@ -15,20 +15,22 @@ class ChatRoomController(
 ) {
 
     @GetMapping("/list")
-    fun getChatRoomList(): List<ResponseChatRoom> = chatRoomService.getChatRoomList()
+    fun getChatRoomList(): List<ResponseChatRoom> =
+        chatRoomService.getChatRoomList()
+            .map { chatRoom -> chatRoom.toResponseChatRoom() }
 
     @PostMapping("/create")
-    fun createChatRoom(@RequestBody requestChatRoomCreateForm: RequestChatRoomCreateForm): ResponseEntity<String> {
-        chatRoomService.createChatRoom(requestChatRoomCreateForm)
+    fun createChatRoom(@RequestBody requestChatRoomCreateForm: RequestChatRoomCreateForm): ResponseEntity<ResponseChatRoom> {
+        val chatRoom = chatRoomService.createChatRoom(requestChatRoomCreateForm)
 
-        return ResponseEntity.ok().body("ok")
+        return ResponseEntity.ok().body(chatRoom.toResponseChatRoom())
     }
 
     @DeleteMapping("/delete")
-    fun removeChatRoom(@RequestParam chatRoomId: Long, authentication: Authentication): ResponseEntity<String> {
+    fun removeChatRoom(@RequestParam chatRoomId: Long, authentication: Authentication): ResponseEntity<ResponseChatRoom> {
         val responseUser = authentication.details as ResponseUser
-        chatRoomService.deleteChatRoom(chatRoomId, responseUser)
+        val chatRoom = chatRoomService.deleteChatRoom(chatRoomId, responseUser)
 
-        return ResponseEntity.ok().body("ok")
+        return ResponseEntity.ok().body(chatRoom.toResponseChatRoom())
     }
 }

@@ -18,43 +18,51 @@ class ChatUserServiceImpl(
 ) : ChatUserService {
 
     @Transactional
-    override fun getChatUsersByChatRoomId(chatRoomId: Long, responseUser: ResponseUser): List<ResponseChatUser> {
+    override fun getChatUsersByChatRoomId(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser> {
         val chatRoom = chatRoomService.getChatRoomBy(chatRoomId)
 
         val chatUsers = chatUserRepository.findByChatRoom(chatRoom)
-            .map { c -> c.toResponseChatUser() }
 
-        chatUsers.find { chatUser -> chatUser.user.id == responseUser.id } ?: throw AccessDeniedException("You are not a chat room member")
+        chatUsers.find { chatUser -> chatUser.user.id == responseUser.id }
+            ?: throw AccessDeniedException("You are not a chat room member")
 
         return chatUsers
     }
 
     @Transactional
-    override fun createChatUser(chatRoomId: Long, responseUser: ResponseUser): ResponseChatUser {
+    override fun createChatUser(chatRoomId: Long, responseUser: ResponseUser): ChatUser {
         val chatRoom = chatRoomService.getChatRoomBy(chatRoomId)
         val user = userService.getUserBy(responseUser.id)
 
-        val chatUser = chatUserRepository.findByChatRoomAndUser(chatRoom, user)
-        if (chatUser != null) {
+        val chatUsers = chatUserRepository.findByChatRoomAndUser(chatRoom, user)
+        if (chatUsers.isNotEmpty()) {
             throw DuplicatedChatUserException("ChatUser is already exist")
         }
 
         val newChatUser = ChatUser(null, chatRoom, user)
 
         return chatUserRepository.save(newChatUser)
-            .toResponseChatUser()
     }
 
     @Transactional
-    override fun deleteChatUser(chatRoomId: Long, responseUser: ResponseUser): ResponseChatUser {
+    override fun deleteChatUserByUserId(responseUser: ResponseUser): List<ChatUser> {
+        val user = userService.getUserBy(responseUser.id)
+        val chatUsers = chatUserRepository.findByUser(user)
+
+        chatUserRepository.deleteAll(chatUsers)
+
+        return chatUsers
+    }
+
+    @Transactional
+    override fun deleteChatUserByUserIdAndChatRoomId(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser> {
         val chatRoom = chatRoomService.getChatRoomBy(chatRoomId)
         val user = userService.getUserBy(responseUser.id)
 
-        val chatUser: ChatUser = chatUserRepository.findByChatRoomAndUser(chatRoom, user)
-            ?: throw NotFoundChatUserException("ChatUser is Not Found")
+        val chatUsers = chatUserRepository.findByChatRoomAndUser(chatRoom, user)
 
-        chatUserRepository.delete(chatUser)
+        chatUserRepository.deleteAll(chatUsers)
 
-        return chatUser.toResponseChatUser()
+        return chatUsers
     }
 }

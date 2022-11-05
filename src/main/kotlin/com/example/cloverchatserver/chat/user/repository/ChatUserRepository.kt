@@ -8,5 +8,7 @@ interface ChatUserRepository : JpaRepository<ChatUser, Long> {
 
     fun findByChatRoom(chatRoom: ChatRoom): List<ChatUser>
 
-    fun findByChatRoomAndUser(chatRoom: ChatRoom, user: User): ChatUser?
+    fun findByUser(user: User): List<ChatUser>
+
+    fun findByChatRoomAndUser(chatRoom: ChatRoom, user: User): List<ChatUser>
 }

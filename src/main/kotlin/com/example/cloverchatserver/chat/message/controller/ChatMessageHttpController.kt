@@ -14,5 +14,7 @@ class ChatMessageHttpController(
 ) {
 
     @PostMapping("/list")
-    fun getChatMessages(@RequestBody form: RequestChatMessagesReadForm) = chatMessageService.getChatMessagesBy(form)
+    fun getChatMessages(@RequestBody form: RequestChatMessagesReadForm) =
+        chatMessageService.getChatMessagesBy(form)
+            .map { chatMessage -> chatMessage.toResponseStompChatMessage() }
 }

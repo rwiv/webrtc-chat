@@ -4,6 +4,7 @@ import com.example.cloverchatserver.board.service.ChatRoomService
 import com.example.cloverchatserver.chat.message.controller.domain.RequestChatMessagesReadForm
 import com.example.cloverchatserver.chat.message.controller.domain.RequestStompChatMessage
 import com.example.cloverchatserver.chat.message.controller.domain.ResponseStompChatMessage
+import com.example.cloverchatserver.chat.message.repository.ChatMessage
 import com.example.cloverchatserver.chat.message.repository.ChatMessageRepository
 import com.example.cloverchatserver.user.service.UserService
 import org.springframework.security.authentication.BadCredentialsException
@@ -20,7 +21,7 @@ class ChatMessageServiceImpl(
 ) : ChatMessageService {
 
     @Transactional
-    override fun getChatMessagesBy(form: RequestChatMessagesReadForm): List<ResponseStompChatMessage> {
+    override fun getChatMessagesBy(form: RequestChatMessagesReadForm): List<ChatMessage> {
         val chatRoom = chatRoomService.getChatRoomBy(form.chatRoomId)
 
         if (form.password != chatRoom.password) {
@@ -28,15 +29,13 @@ class ChatMessageServiceImpl(
         }
 
         return chatMessageRepository.findByChatRoom(chatRoom)
-            .map { msg -> msg.toResponseStompChatMessage() }
     }
 
     @Transactional
-    override fun createChatMessage(requestStompChatMessage: RequestStompChatMessage): ResponseStompChatMessage {
+    override fun createChatMessage(requestStompChatMessage: RequestStompChatMessage): ChatMessage {
         val chatRoom = chatRoomService.getChatRoomBy(requestStompChatMessage.chatRoomId)
         val createUser = userService.getUserBy(requestStompChatMessage.createUserId)
 
         return chatMessageRepository.save(requestStompChatMessage.toChatMessage(chatRoom, createUser))
-            .toResponseStompChatMessage()
     }
 }

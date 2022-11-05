@@ -17,6 +17,7 @@ class ChatUserController(
         val responseUser = authentication.details as ResponseUser
 
         return chatUserService.getChatUsersByChatRoomId(chatRoomId, responseUser)
+            .map { chatUser -> chatUser.toResponseChatUser() }
     }
 
     @PostMapping("/create/{chatRoomId}")
@@ -24,12 +25,22 @@ class ChatUserController(
         val responseUser = authentication.details as ResponseUser
 
         return chatUserService.createChatUser(chatRoomId, responseUser)
+            .toResponseChatUser()
+    }
+
+    @DeleteMapping("/delete")
+    fun deleteChatUserByUserId(authentication: Authentication): List<ResponseChatUser> {
+        val responseUser = authentication.details as ResponseUser
+
+        return chatUserService.deleteChatUserByUserId(responseUser)
+            .map { chatUser -> chatUser.toResponseChatUser() }
     }
 
     @DeleteMapping("/delete/{chatRoomId}")
-    fun deleteChatUser(@PathVariable chatRoomId: Long, authentication: Authentication): ResponseChatUser {
+    fun deleteChatUserByUserIdAndChatRoomId(@PathVariable chatRoomId: Long, authentication: Authentication): List<ResponseChatUser> {
         val responseUser = authentication.details as ResponseUser
 
-        return chatUserService.deleteChatUser(chatRoomId, responseUser)
+        return chatUserService.deleteChatUserByUserIdAndChatRoomId(chatRoomId, responseUser)
+            .map { chatUser -> chatUser.toResponseChatUser() }
     }
 }

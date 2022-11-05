@@ -25,5 +25,6 @@ class ChatMessageStompController(
         }
 
         return chatMessageService.createChatMessage(requestStompChatMessage)
+            .toResponseStompChatMessage()
     }
 }

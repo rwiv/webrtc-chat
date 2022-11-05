@@ -25,11 +25,7 @@ class ChatRoomServiceImpl(
     }
 
     @Transactional
-    override fun getChatRoomList(): List<ResponseChatRoom> {
-        return chatRoomRepository
-            .findAll()
-            .map { p -> p.toResponseChatRoom() }
-    }
+    override fun getChatRoomList(): List<ChatRoom> = chatRoomRepository.findAll()
 
     @Transactional
     override fun createChatRoom(requestChatRoomCreateForm: RequestChatRoomCreateForm): ChatRoom {
@@ -40,7 +36,7 @@ class ChatRoomServiceImpl(
     }
 
     @Transactional
-    override fun deleteChatRoom(chatRoomId: Long, responseUser: ResponseUser) {
+    override fun deleteChatRoom(chatRoomId: Long, responseUser: ResponseUser): ChatRoom {
         val chatRoom = chatRoomRepository
             .findById(chatRoomId)
             .orElseThrow { throw ChatRoomNotFoundException() }
@@ -50,5 +46,7 @@ class ChatRoomServiceImpl(
         }
 
         chatRoomRepository.delete(chatRoom)
+
+        return chatRoom
     }
 }
