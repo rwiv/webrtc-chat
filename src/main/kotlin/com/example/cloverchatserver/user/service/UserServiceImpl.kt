@@ -23,9 +23,8 @@ class UserServiceImpl(
     }
 
     @Transactional
-    override fun getUserBy(userId: Long): User {
-        return userRepository
-            .findById(userId)
-            .orElseThrow { UserNotFoundException("User Not Found!!") }
+    override fun getUserBy(userId: Long): User? {
+        return userRepository.findById(userId)
+            .orElseGet { null }
     }
 }

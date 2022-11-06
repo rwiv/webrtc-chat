@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  chat-db:
+    image: mysql
+    container_name: chat-db
+    ports:
+      - "11731:11731"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: "chat_db"
+      MYSQL_TCP_PORT: 11731
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci

@@ -19,11 +19,21 @@ class TestInjector(
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments?) {
+        if (isProd()) {
+            return
+        }
+
         val users = createUsers(1, 5)
         for (i in 1..5) {
             val requestChatRoomCreateForm = RequestChatRoomCreateForm(users[0].id!!, null, "title$i", ChatRoomType.PUBLIC)
             chatRoomService.createChatRoom(requestChatRoomCreateForm)
         }
+    }
+
+    private fun isProd(): Boolean {
+        val user = userService.getUserBy(1L)
+
+        return user != null
     }
 
     private fun createUsers(initNum: Int, size: Int): List<User> {
@@ -39,5 +49,4 @@ class TestInjector(
 
         return result
     }
-
 }

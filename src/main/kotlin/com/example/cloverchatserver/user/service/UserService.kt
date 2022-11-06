@@ -7,5 +7,5 @@ interface UserService {
 
     fun createUser(requestUserCreateForm: RequestUserCreateForm): User
 
-    fun getUserBy(userId: Long): User
+    fun getUserBy(userId: Long): User?
 }

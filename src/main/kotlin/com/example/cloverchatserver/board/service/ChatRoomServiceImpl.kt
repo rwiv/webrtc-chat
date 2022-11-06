@@ -4,6 +4,7 @@ import com.example.cloverchatserver.board.controller.domain.RequestChatRoomCreat
 import com.example.cloverchatserver.board.repository.ChatRoom
 import com.example.cloverchatserver.board.repository.ChatRoomRepository
 import com.example.cloverchatserver.user.controller.domain.ResponseUser
+import com.example.cloverchatserver.user.service.UserNotFoundException
 import com.example.cloverchatserver.user.service.UserService
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
@@ -18,9 +19,9 @@ class ChatRoomServiceImpl(
 ) : ChatRoomService {
 
     @Transactional
-    override fun getChatRoomBy(chatRoomId: Long): ChatRoom {
+    override fun getChatRoomById(chatRoomId: Long): ChatRoom? {
         return chatRoomRepository.findById(chatRoomId)
-            .orElseThrow { throw ChatRoomNotFoundException() }
+            .orElseGet { null }
     }
 
     @Transactional
@@ -29,6 +30,8 @@ class ChatRoomServiceImpl(
     @Transactional
     override fun createChatRoom(requestChatRoomCreateForm: RequestChatRoomCreateForm): ChatRoom {
         val createBy = userService.getUserBy(requestChatRoomCreateForm.createUserId)
+            ?: throw UserNotFoundException()
+
         val requestChatRoom = requestChatRoomCreateForm.toChatRoom(createBy)
 
         return chatRoomRepository.save(requestChatRoom)
