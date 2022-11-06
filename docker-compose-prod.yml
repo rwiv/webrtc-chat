@@ -6,7 +6,7 @@ services:
     working_dir: /usr/src/app
     entrypoint: java -jar ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar
     environment:
-      spring.profiles.active: prod
-      spring.datasource.url: jdbc:mysql://141.164.51.220:11731/chat_db
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://141.164.51.220:11731/chat_db
     ports:
       - "11730:11730"
