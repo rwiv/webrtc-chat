@@ -35,6 +35,9 @@ class ChatMessageServiceImpl(
         val chatRoom = chatRoomService.getChatRoomBy(requestStompChatMessage.chatRoomId)
         val createUser = userService.getUserBy(requestStompChatMessage.createUserId)
 
-        return chatMessageRepository.save(requestStompChatMessage.toChatMessage(chatRoom, createUser))
+        val chatMessage = requestStompChatMessage.toChatMessage(chatRoom, createUser)
+        chatRoom.chatMessages.add(chatMessage)
+
+        return chatMessageRepository.save(chatMessage)
     }
 }

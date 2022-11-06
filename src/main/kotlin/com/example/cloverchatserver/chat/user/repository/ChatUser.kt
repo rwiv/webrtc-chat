@@ -14,11 +14,11 @@ class ChatUser(
     @Column(name = "chat_user_id")
     val id: Long?,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id")
     val chatRoom: ChatRoom,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: User
 

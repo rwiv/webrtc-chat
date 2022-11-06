@@ -1,6 +1,7 @@
 package com.example.cloverchatserver.board.repository
 
 import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
+import com.example.cloverchatserver.chat.message.repository.ChatMessage
 import com.example.cloverchatserver.user.repository.User
 import java.lang.RuntimeException
 import java.time.LocalDateTime
@@ -14,7 +15,7 @@ class ChatRoom(
     @Column(name = "chat_room_id")
     val id: Long?,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val createUser: User,
 
@@ -31,7 +32,10 @@ class ChatRoom(
     @Column(nullable = false)
     val type: ChatRoomType,
 
-    ) {
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
+    val chatMessages: MutableList<ChatMessage> = ArrayList()
+
+) {
 
     fun toResponseChatRoom(): ResponseChatRoom {
         if (id == null) throw RuntimeException()
