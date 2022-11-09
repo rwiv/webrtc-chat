@@ -2,6 +2,7 @@ package com.example.cloverchatserver.board.repository
 
 import com.example.cloverchatserver.board.controller.domain.ResponseChatRoom
 import com.example.cloverchatserver.chat.message.repository.ChatMessage
+import com.example.cloverchatserver.chat.user.repository.ChatUser
 import com.example.cloverchatserver.user.repository.User
 import java.lang.RuntimeException
 import java.time.LocalDateTime
@@ -33,7 +34,10 @@ class ChatRoom(
     val type: ChatRoomType,
 
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
-    val chatMessages: MutableList<ChatMessage> = ArrayList()
+    val chatMessages: MutableList<ChatMessage> = ArrayList(),
+
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
+    val chatUsers: MutableList<ChatUser> = ArrayList()
 
 ) {
 

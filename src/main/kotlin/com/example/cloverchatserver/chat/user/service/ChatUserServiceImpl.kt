@@ -45,6 +45,7 @@ class ChatUserServiceImpl(
         }
 
         val newChatUser = ChatUser(null, chatRoom, user)
+        chatRoom.chatUsers.add(newChatUser)
 
         return chatUserRepository.save(newChatUser)
     }
