@@ -24,16 +24,14 @@ class ChatUserStompController(
 
         val responseUser: ResponseUser = (authentication as AuthenticationToken).details as ResponseUser
 
-        try {
-            val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, responseUser)
+        val chatUsers = chatUserService.getChatUsersByChatRoomIdNotException(chatRoomId, responseUser)
 
-            chatUsers.forEach { chatUser ->
-                template.convertAndSendToUser(
-                    chatUser.user.email,
-                    "/sub/user/$chatRoomId",
-                    stompUpdateChatUser
-                )
-            }
-        } catch (e: AccessDeniedException) { }
+        chatUsers.forEach { chatUser ->
+            template.convertAndSendToUser(
+                chatUser.user.email,
+                "/sub/user/$chatRoomId",
+                stompUpdateChatUser
+            )
+        }
     }
 }

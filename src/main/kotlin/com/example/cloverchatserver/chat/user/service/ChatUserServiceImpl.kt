@@ -20,15 +20,19 @@ class ChatUserServiceImpl(
 
     @Transactional
     override fun getChatUsersByChatRoomId(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser> {
-        val chatRoom = chatRoomService.getChatRoomById(chatRoomId)
-            ?: throw ChatRoomNotFoundException()
-
-        val chatUsers = chatUserRepository.findByChatRoom(chatRoom)
+        val chatUsers = getChatUsersByChatRoomIdNotException(chatRoomId, responseUser)
 
         chatUsers.find { chatUser -> chatUser.user.id == responseUser.id }
             ?: throw AccessDeniedException("You are not a chat room member")
 
         return chatUsers
+    }
+
+    override fun getChatUsersByChatRoomIdNotException(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser> {
+        val chatRoom = chatRoomService.getChatRoomById(chatRoomId)
+            ?: throw ChatRoomNotFoundException()
+
+        return chatUserRepository.findByChatRoom(chatRoom)
     }
 
     @Transactional

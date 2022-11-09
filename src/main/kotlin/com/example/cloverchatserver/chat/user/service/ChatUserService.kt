@@ -6,6 +6,7 @@ import com.example.cloverchatserver.user.controller.domain.ResponseUser
 interface ChatUserService {
 
     fun getChatUsersByChatRoomId(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser>
+    fun getChatUsersByChatRoomIdNotException(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser>
 
     fun createChatUser(chatRoomId: Long, responseUser: ResponseUser): ChatUser
 
