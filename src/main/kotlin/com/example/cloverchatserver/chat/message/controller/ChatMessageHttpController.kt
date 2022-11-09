@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/chat/message")
-class ChatMessageHttpController(
-    val chatMessageService: ChatMessageService
-) {
+class ChatMessageHttpController(val chatMessageService: ChatMessageService) {
 
     @PostMapping("/list")
     fun getChatMessages(@RequestBody form: RequestChatMessagesReadForm) =

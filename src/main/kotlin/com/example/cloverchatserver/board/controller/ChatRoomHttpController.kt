@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/board/chatroom")
-class ChatRoomController(
-    val chatRoomService: ChatRoomService
-) {
+class ChatRoomHttpController(val chatRoomService: ChatRoomService) {
 
     @GetMapping("/list")
     fun getChatRoomList(): List<ResponseChatRoom> =

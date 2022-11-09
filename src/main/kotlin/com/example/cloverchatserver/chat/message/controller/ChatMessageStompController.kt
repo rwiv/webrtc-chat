@@ -10,16 +10,13 @@ import org.springframework.stereotype.Controller
 import java.lang.RuntimeException
 
 @Controller
-class ChatMessageStompController(
-    val chatMessageService: ChatMessageService
-) {
+class ChatMessageStompController(val chatMessageService: ChatMessageService) {
 
-    @MessageMapping("/{chatRoomId}")
-    @SendTo("/sub/{chatRoomId}")
-    fun greeting(
-        requestStompChatMessage: RequestStompChatMessage,
-        @DestinationVariable chatRoomId: Long
-    ): ResponseStompChatMessage {
+    @MessageMapping("/message/{chatRoomId}")
+    @SendTo("/sub/message/{chatRoomId}")
+    fun chatMessageHandle(requestStompChatMessage: RequestStompChatMessage,
+                          @DestinationVariable chatRoomId: Long): ResponseStompChatMessage {
+
         if (requestStompChatMessage.chatRoomId != chatRoomId) {
             throw RuntimeException("chatRoomId is different")
         }

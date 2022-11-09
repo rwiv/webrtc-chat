@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/chat/user")
-class ChatUserController(
-    val chatUserService: ChatUserService
-) {
+class ChatUserHttpController(val chatUserService: ChatUserService) {
 
     @GetMapping("/list/{chatRoomId}")
     fun getChatUsersByChatRoomId(@PathVariable chatRoomId: Long, authentication: Authentication): List<ResponseChatUser> {
