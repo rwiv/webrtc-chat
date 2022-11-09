@@ -2,21 +2,34 @@ package com.example.cloverchatserver.chat.user.controller
 
 import com.example.cloverchatserver.chat.user.controller.domain.ResponseChatUser
 import com.example.cloverchatserver.chat.user.service.ChatUserService
+import com.example.cloverchatserver.security.authentication.AuthenticationToken
 import com.example.cloverchatserver.user.controller.domain.ResponseUser
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.SendTo
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Controller
+import java.security.Principal
 
 @Controller
-class ChatUserStompController(val chatUserService: ChatUserService) {
+class ChatUserStompController(
+    val chatUserService: ChatUserService,
+    val template: SimpMessagingTemplate
+) {
 
     @MessageMapping("/user/{chatRoomId}")
-    @SendTo("/sub/user/{chatRoomId}")
-    fun chatUserHandle(responseUser: ResponseUser,
-                          @DestinationVariable chatRoomId: Long): ResponseChatUser {
+    fun chatUserHandle(responseChatUser: ResponseChatUser,
+                       authentication: Principal,
+                       @DestinationVariable chatRoomId: Long) {
 
-        return chatUserService.createChatUser(chatRoomId, responseUser)
-            .toResponseChatUser()
+        val responseUser: ResponseUser = (authentication as AuthenticationToken).details as ResponseUser
+        val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, responseUser)
+
+        chatUsers.forEach { chatUser ->
+            template.convertAndSendToUser(
+                chatUser.user.email,
+                "/sub/user/$chatRoomId",
+                responseChatUser
+            )
+        }
     }
 }
