@@ -20,8 +20,10 @@ class ChatUser(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val user: User
+    val user: User,
 
+    @Column(unique = true, nullable = false, updatable = false, length = 100)
+    val sessionId: String
 ) {
 
     fun toResponseChatUser(): ResponseChatUser {

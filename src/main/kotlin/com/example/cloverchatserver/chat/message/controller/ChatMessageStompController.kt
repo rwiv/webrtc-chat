@@ -22,7 +22,7 @@ class ChatMessageStompController(
                           @DestinationVariable chatRoomId: Long) {
 
         val responseUser: ResponseUser = (authentication as AuthenticationToken).details as ResponseUser
-        val chatUsers = chatUserService.getChatUsersByChatRoomIdNotException(chatRoomId, responseUser)
+        val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, responseUser)
 
         chatUsers.forEach { chatUser ->
             template.convertAndSendToUser(
