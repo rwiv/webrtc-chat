@@ -1,7 +1,7 @@
 package com.github.cloverchatserver.security.authentication
 
-import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
-import com.github.cloverchatserver.domain.user.service.AccountService
+import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
+import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.error.exception.HttpException
 import com.github.cloverchatserver.security.account.AccountDetails
 import com.github.cloverchatserver.security.account.AccountDetailsService

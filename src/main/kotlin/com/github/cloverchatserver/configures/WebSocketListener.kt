@@ -1,11 +1,11 @@
 package com.github.cloverchatserver.configures
 
-import com.github.cloverchatserver.domain.chatuser.controller.domain.ResponseChatUser
-import com.github.cloverchatserver.domain.chatuser.controller.domain.StompUpdateChatUser
-import com.github.cloverchatserver.domain.chatuser.service.ChatUserService
+import com.github.cloverchatserver.domain.chatuser.api.domain.ResponseChatUser
+import com.github.cloverchatserver.domain.chatuser.api.domain.StompUpdateChatUser
+import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
 import com.github.cloverchatserver.common.MethodType
 import com.github.cloverchatserver.security.authentication.AuthenticationToken
-import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
+import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component

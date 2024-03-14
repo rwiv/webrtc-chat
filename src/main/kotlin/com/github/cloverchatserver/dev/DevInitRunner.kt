@@ -1,11 +1,11 @@
 package com.github.cloverchatserver.dev
 
-import com.github.cloverchatserver.domain.chatroom.controller.domain.RequestChatRoomCreateForm
-import com.github.cloverchatserver.domain.chatroom.repository.ChatRoomType
-import com.github.cloverchatserver.domain.chatroom.service.ChatRoomService
-import com.github.cloverchatserver.domain.user.controller.domain.RequestUserCreateForm
-import com.github.cloverchatserver.domain.user.repository.Account
-import com.github.cloverchatserver.domain.user.service.AccountService
+import com.github.cloverchatserver.domain.chatroom.api.domain.RequestChatRoomCreateForm
+import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomType
+import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
+import com.github.cloverchatserver.domain.account.api.domain.RequestUserCreateForm
+import com.github.cloverchatserver.domain.account.persistence.Account
+import com.github.cloverchatserver.domain.account.business.AccountService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Profile

@@ -1,6 +1,6 @@
 package com.github.cloverchatserver.security.account
 
-import com.github.cloverchatserver.domain.user.service.AccountDto
+import com.github.cloverchatserver.domain.account.business.AccountDto
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
 

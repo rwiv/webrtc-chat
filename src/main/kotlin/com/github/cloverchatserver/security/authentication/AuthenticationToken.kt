@@ -1,6 +1,6 @@
 package com.github.cloverchatserver.security.authentication
 
-import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
+import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
