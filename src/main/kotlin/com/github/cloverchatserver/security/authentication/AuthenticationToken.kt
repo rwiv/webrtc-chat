@@ -8,7 +8,6 @@ class AuthenticationToken(
     private val principal: String,
     private val credentials: String?,
     authorities: Collection<GrantedAuthority>?,
-    val responseUser: ResponseUser? = null,
 ) : AbstractAuthenticationToken(authorities) {
 
     companion object {
@@ -28,7 +27,7 @@ class AuthenticationToken(
             authorities: Collection<GrantedAuthority>?,
             responseUser: ResponseUser,
         ): AuthenticationToken {
-            val successToken = AuthenticationToken(principal, null, authorities, responseUser)
+            val successToken = AuthenticationToken(principal, null, authorities)
             successToken.setSuccess()
             successToken.details = responseUser
             return successToken
