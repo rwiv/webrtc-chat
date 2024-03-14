@@ -8,7 +8,7 @@ class AccountDetails(
     val account: AccountDto,
     roles: List<GrantedAuthority>
 ) : User(
-    account.email,
+    account.username,
     account.password,
     true, true, true, true,
     roles

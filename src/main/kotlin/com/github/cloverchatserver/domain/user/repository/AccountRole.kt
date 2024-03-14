@@ -1,5 +1,5 @@
 package com.github.cloverchatserver.domain.user.repository
 
-enum class Role {
+enum class AccountRole {
     MEMBER, ADMIN
 }

@@ -17,16 +17,17 @@ class ChatMessageStompController(
 ) {
 
     @MessageMapping("/message/{chatRoomId}")
-    fun chatMessageHandle(responseStompChatMessage: ResponseStompChatMessage,
-                          authentication: Principal,
-                          @DestinationVariable chatRoomId: Long) {
-
+    fun chatMessageHandle(
+        responseStompChatMessage: ResponseStompChatMessage,
+        authentication: Principal,
+        @DestinationVariable chatRoomId: Long
+    ) {
         val responseUser: ResponseUser = (authentication as AuthenticationToken).details as ResponseUser
         val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, responseUser)
 
         chatUsers.forEach { chatUser ->
             template.convertAndSendToUser(
-                chatUser.account.email,
+                chatUser.account.username,
                 "/sub/message/$chatRoomId",
                 responseStompChatMessage
             )

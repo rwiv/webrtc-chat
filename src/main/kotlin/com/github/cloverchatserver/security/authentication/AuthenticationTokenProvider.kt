@@ -1,5 +1,7 @@
 package com.github.cloverchatserver.security.authentication
 
+import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
+import com.github.cloverchatserver.domain.user.service.AccountService
 import com.github.cloverchatserver.error.exception.HttpException
 import com.github.cloverchatserver.security.account.AccountDetails
 import com.github.cloverchatserver.security.account.AccountDetailsService
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class AuthenticationTokenProvider(
+    val accountService: AccountService,
     val accountDetailsService: AccountDetailsService,
     val passwordEncoder: PasswordEncoder,
 ) : AuthenticationProvider {
@@ -24,10 +27,13 @@ class AuthenticationTokenProvider(
             throw HttpException(401, "Invalid password")
         }
 
+        val account = accountService.getUserBy(accountDetails.account.id)
+            ?: throw HttpException(404, "not found account")
+        val responseUser = ResponseUser(account.id!!, account.username, account.nickname)
         return AuthenticationToken.successToken(
             accountDetails.username,
             accountDetails.authorities,
-            accountDetails.account.id,
+            responseUser,
         )
     }
 

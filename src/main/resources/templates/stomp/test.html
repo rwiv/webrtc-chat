@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script language="JavaScript" th:src="@{/js/sockjs.min.js}" src="../../static/js/sockjs.min.js"></script>
-    <script language="JavaScript" th:src="@{/js/stomp.min.js}" src="../../static/js/stomp.min.js"></script>
     <script language="JavaScript" th:src="@{/js/axios.min.js}" src="../../static/js/axios.min.js"></script>
+    <script language="JavaScript" th:src="@{/js/stomp.umd.min.js}" src="../../static/js/stomp.umd.min.js"></script>
 </head>
 <body>
 <p>stomp test</p>
@@ -35,8 +34,17 @@
     let stompClient;
 
     login().then(res => {
-        const socket = new SockJS('http://localhost:11730/stomp');
-        stompClient = Stomp.over(socket);
+        stompClient = new StompJs.Client({
+            brokerURL: 'ws://localhost:8080/stomp'
+        });
+
+        stompClient.onConnect = (frame) => {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe(`/sub/message/${chatRoomId.value}`, msg => {
+                console.log(msg);
+            });
+        };
+
     });
 
     let connectBtn = document.getElementById("connect");
@@ -50,31 +58,29 @@
     });
 
     function login() {
-        return axios.post("http://localhost:11730/user/login", {
-            email: "user1@gmail.com",
+        return axios.post("http://localhost:8080/api/auth/login", {
+            username: "user1@gmail.com",
             password: "1234"
         });
     }
 
     function connectStomp() {
-        stompClient.connect({}, frame => {
-            console.log('Connected: ' + frame);
-            stompClient.subscribe(`/sub/${chatRoomId.value}`, msg => {
-                console.log(msg);
-            });
-        });
+        stompClient.activate();
+    }
+
+    function disconnect() {
+        stompClient.deactivate();
+        console.log("Disconnected");
     }
 
     function send() {
-        stompClient.send(
-            `/pub/${chatRoomId.value}`,
-            {},
-            JSON.stringify({
-                chatRoomId: chatRoomId.value,
-                createUserId: userId.value,
-                content: content.value
-            })
-        );
+        const destination = `/pub/message/${chatRoomId.value}`;
+        const body = JSON.stringify({
+            chatRoomId: chatRoomId.value,
+            createUserId: userId.value,
+            content: content.value
+        })
+        stompClient.publish({ destination, body });
     }
 </script>
 </html>

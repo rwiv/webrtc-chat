@@ -14,10 +14,10 @@ class Account(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val role: Role,
+    val role: AccountRole,
 
     @Column
-    val email: String,
+    val username: String,
 
     @Column
     val password: String,
@@ -32,6 +32,6 @@ class Account(
             throw AccountNotFoundException()
         }
 
-        return ResponseUser(id!!, email, nickname)
+        return ResponseUser(id!!, username, nickname)
     }
 }

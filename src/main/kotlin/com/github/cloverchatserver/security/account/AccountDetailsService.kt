@@ -14,7 +14,7 @@ class AccountDetailsService(
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String): AccountDetails {
-        val account = accountService.findByEmail(username).let {
+        val account = accountService.findByUsername(username).let {
             accountMapper.toDto(it!!)
         }
 

@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.security.config
+package com.github.cloverchatserver.security.configurations
 
 import com.github.cloverchatserver.security.account.AccountDetailsService
 import com.github.cloverchatserver.security.handler.DefaultAccessDeniedHandler
@@ -27,7 +27,9 @@ class DefaultSecurityConfig(
 ) {
 
     val permitList = listOf(
+        "/users/register",
         "/dev/**",
+        "/test/stomp",
     )
     val ignoreList = listOf(
         "/favicon.ico",

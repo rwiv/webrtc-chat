@@ -28,7 +28,7 @@ class AccountServiceImpl(
             .orElseGet { null }
     }
 
-    override fun findByEmail(email: String): Account? {
-        return accountRepository.findByEmail(email)
+    override fun findByUsername(username: String): Account? {
+        return accountRepository.findByUsername(username)
     }
 }

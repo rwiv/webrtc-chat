@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.common
+package com.github.cloverchatserver.dev
 
 import com.github.cloverchatserver.domain.chatroom.controller.domain.RequestChatRoomCreateForm
 import com.github.cloverchatserver.domain.chatroom.repository.ChatRoomType
@@ -8,10 +8,12 @@ import com.github.cloverchatserver.domain.user.repository.Account
 import com.github.cloverchatserver.domain.user.service.AccountService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
-class TestInjector(
+@Profile("dev")
+class DevInitRunner(
 
     val chatRoomService: ChatRoomService,
     val accountService: AccountService

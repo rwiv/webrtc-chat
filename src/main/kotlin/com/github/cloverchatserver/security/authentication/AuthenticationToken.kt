@@ -1,5 +1,6 @@
 package com.github.cloverchatserver.security.authentication
 
+import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
@@ -7,7 +8,7 @@ class AuthenticationToken(
     private val principal: String,
     private val credentials: String?,
     authorities: Collection<GrantedAuthority>?,
-    val accountId: Long? = null,
+    val responseUser: ResponseUser? = null,
 ) : AbstractAuthenticationToken(authorities) {
 
     companion object {
@@ -25,10 +26,11 @@ class AuthenticationToken(
         fun successToken(
             principal: String,
             authorities: Collection<GrantedAuthority>?,
-            accountId: Long,
+            responseUser: ResponseUser,
         ): AuthenticationToken {
-            val successToken = AuthenticationToken(principal, null, authorities, accountId)
+            val successToken = AuthenticationToken(principal, null, authorities, responseUser)
             successToken.setSuccess()
+            successToken.details = responseUser
             return successToken
         }
     }

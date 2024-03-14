@@ -8,5 +8,5 @@ interface AccountService {
     fun createUser(requestUserCreateForm: RequestUserCreateForm): Account
 
     fun getUserBy(userId: Long): Account?
-    fun findByEmail(email: String): Account?
+    fun findByUsername(username: String): Account?
 }

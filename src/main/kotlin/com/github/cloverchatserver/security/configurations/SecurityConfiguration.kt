@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.security.config
+package com.github.cloverchatserver.security.configurations
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

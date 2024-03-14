@@ -42,8 +42,10 @@ class WebSocketListener(
         val headers = event.message.headers
         val dest: String = headers[SESSION_DEST_KEY] as String
 
-        val chunks = PathHelper.getChunks(dest)
-        if (!PathHelper.isMessageSession(chunks)) return
+        val chunks = dest.split("/")
+        if (chunks[2] != "message") {
+            return
+        }
 
         val chatRoomId = chunks[3].toLong()
         val responseUser = (event.user as AuthenticationToken).details as ResponseUser
@@ -51,7 +53,6 @@ class WebSocketListener(
 
         try {
             val chatUser = chatUserService.createChatUser(chatRoomId, responseUser, sessionId)
-
             broadcastMessage(MethodType.CREATE, chatUser.toResponseChatUser(), chatUser.chatRoom.id!!, responseUser)
         } catch (_: RuntimeException) {}
     }
@@ -62,7 +63,7 @@ class WebSocketListener(
 
         chatUsers.forEach { chatUser ->
             template.convertAndSendToUser(
-                chatUser.account.email,
+                chatUser.account.username,
                 "/sub/user/$chatRoomId",
                 stompUpdateChatUser
             )
