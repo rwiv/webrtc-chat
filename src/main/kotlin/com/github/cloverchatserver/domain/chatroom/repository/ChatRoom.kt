@@ -6,7 +6,7 @@ import com.github.cloverchatserver.domain.chatuser.repository.ChatUser
 import com.github.cloverchatserver.domain.user.repository.User
 import java.lang.RuntimeException
 import java.time.LocalDateTime
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "chat_room")
@@ -44,6 +44,6 @@ class ChatRoom(
     fun toResponseChatRoom(): ResponseChatRoom {
         if (id == null) throw RuntimeException()
 
-        return ResponseChatRoom(id, createUser.toResponseUser(), title, createDate, type)
+        return ResponseChatRoom(id!!, createUser.toResponseUser(), title, createDate, type)
     }
 }

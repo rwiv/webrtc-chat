@@ -4,12 +4,12 @@ import com.github.cloverchatserver.security.authentication.AuthenticationToken
 import com.github.cloverchatserver.domain.user.controller.domain.RequestLoginForm
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationServiceException
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class RestApiLoginFilter: AbstractAuthenticationProcessingFilter(
     AntPathRequestMatcher("/user/login", "POST")

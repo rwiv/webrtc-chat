@@ -5,7 +5,7 @@ import com.github.cloverchatserver.domain.chatmsg.controller.domain.ResponseStom
 import com.github.cloverchatserver.domain.user.repository.User
 import java.lang.RuntimeException
 import java.time.LocalDateTime
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "chat_message")
@@ -36,7 +36,7 @@ class ChatMessage(
         }
 
         return ResponseStompChatMessage(
-            id,
+            id!!,
             chatRoom.toResponseChatRoom(),
             createUser.toResponseUser(),
             content,

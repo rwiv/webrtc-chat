@@ -2,7 +2,7 @@ package com.github.cloverchatserver.domain.user.repository
 
 import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
 import com.github.cloverchatserver.domain.user.service.UserNotFoundException
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "users")
@@ -32,6 +32,6 @@ class User(
             throw UserNotFoundException()
         }
 
-        return ResponseUser(id, email, nickname)
+        return ResponseUser(id!!, email, nickname)
     }
 }

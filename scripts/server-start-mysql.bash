@@ -1,1 +1,1 @@
-docker-compose -f docker-compose-mysql.yml up
+docker-compose -f ../docker/docker-compose-mysql.yml up

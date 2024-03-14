@@ -1,0 +1,17 @@
+type Query {
+    account(id: String!): Account
+    post(id: String!): Post
+}
+
+type Account {
+    id: Int
+    username: String
+    password: String
+    posts: [Post]
+}
+
+type Post {
+    id: String
+    title: String
+    author: Account
+}

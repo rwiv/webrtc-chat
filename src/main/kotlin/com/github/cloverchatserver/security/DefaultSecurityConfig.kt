@@ -35,21 +35,21 @@ class DefaultSecurityConfig(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
 
-        http
-            .antMatcher("/**")
-            .authorizeRequests()
-            .antMatchers("/test/hello").hasRole(Role.MEMBER.toString())
-            .antMatchers("/test/admin").hasRole(Role.ADMIN.toString())
-            .antMatchers(*permitList).permitAll()
-            .anyRequest().authenticated()
-            .and()
-        .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter::class.java)
-            .exceptionHandling()
-            .accessDeniedHandler(deniedHandler)
-            .authenticationEntryPoint(entryPoint)
-
-        http.headers().frameOptions().disable()
-        http.csrf().disable()
+//        http
+//            .antMatcher("/**")
+//            .authorizeRequests()
+//            .antMatchers("/test/hello").hasRole(Role.MEMBER.toString())
+//            .antMatchers("/test/admin").hasRole(Role.ADMIN.toString())
+//            .antMatchers(*permitList).permitAll()
+//            .anyRequest().authenticated()
+//            .and()
+//        .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter::class.java)
+//            .exceptionHandling()
+//            .accessDeniedHandler(deniedHandler)
+//            .authenticationEntryPoint(entryPoint)
+//
+//        http.headers().frameOptions().disable()
+//        http.csrf().disable()
 
         return http.build()
     }

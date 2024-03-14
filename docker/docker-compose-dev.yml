@@ -8,4 +8,4 @@ services:
     ports:
       - "11730:11730"
     volumes:
-      - ./build/libs:/usr/src/app/build/libs
+      - ../build/libs:/usr/src/app/build/libs
