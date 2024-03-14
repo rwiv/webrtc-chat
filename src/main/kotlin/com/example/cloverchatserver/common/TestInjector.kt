@@ -1,11 +1,11 @@
 package com.example.cloverchatserver.common
 
-import com.example.cloverchatserver.board.controller.domain.RequestChatRoomCreateForm
-import com.example.cloverchatserver.board.repository.ChatRoomType
-import com.example.cloverchatserver.board.service.ChatRoomService
-import com.example.cloverchatserver.user.controller.domain.RequestUserCreateForm
-import com.example.cloverchatserver.user.repository.User
-import com.example.cloverchatserver.user.service.UserService
+import com.example.cloverchatserver.domain.chatroom.controller.domain.RequestChatRoomCreateForm
+import com.example.cloverchatserver.domain.chatroom.repository.ChatRoomType
+import com.example.cloverchatserver.domain.chatroom.service.ChatRoomService
+import com.example.cloverchatserver.domain.user.controller.domain.RequestUserCreateForm
+import com.example.cloverchatserver.domain.user.repository.User
+import com.example.cloverchatserver.domain.user.service.UserService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component

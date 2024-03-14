@@ -5,7 +5,7 @@ import com.example.cloverchatserver.security.filter.LoginFilterFailureHandler
 import com.example.cloverchatserver.security.filter.LoginFilterSuccessHandler
 import com.example.cloverchatserver.security.handler.DefaultAccessDeniedHandler
 import com.example.cloverchatserver.security.handler.DefaultAuthenticationEntryPoint
-import com.example.cloverchatserver.user.repository.Role
+import com.example.cloverchatserver.domain.user.repository.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager

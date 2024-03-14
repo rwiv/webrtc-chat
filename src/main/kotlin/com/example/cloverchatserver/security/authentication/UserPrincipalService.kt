@@ -1,7 +1,7 @@
 package com.example.cloverchatserver.security.authentication
 
-import com.example.cloverchatserver.user.repository.User
-import com.example.cloverchatserver.user.repository.UserRepository
+import com.example.cloverchatserver.domain.user.repository.User
+import com.example.cloverchatserver.domain.user.repository.UserRepository
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetailsService

@@ -1,6 +1,6 @@
 package com.example.cloverchatserver.security.filter
 
-import com.example.cloverchatserver.user.controller.domain.ResponseUser
+import com.example.cloverchatserver.domain.user.controller.domain.ResponseUser
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

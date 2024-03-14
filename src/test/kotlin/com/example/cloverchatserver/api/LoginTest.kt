@@ -1,8 +1,8 @@
 package com.example.cloverchatserver.api
 
 import com.example.cloverchatserver.TestHelper
-import com.example.cloverchatserver.user.controller.domain.RequestLoginForm
-import com.example.cloverchatserver.user.controller.domain.ResponseUser
+import com.example.cloverchatserver.domain.user.controller.domain.RequestLoginForm
+import com.example.cloverchatserver.domain.user.controller.domain.ResponseUser
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.MediaType
