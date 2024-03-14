@@ -1,7 +1,8 @@
 package com.github.cloverchatserver.domain.account.persistence
 
-import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
-import com.github.cloverchatserver.domain.account.business.AccountNotFoundException
+import com.github.cloverchatserver.domain.account.business.data.AccountResponse
+import com.github.cloverchatserver.common.error.exception.HttpException
+import com.github.cloverchatserver.common.error.exception.NotFoundException
 import jakarta.persistence.*
 
 @Entity
@@ -27,11 +28,11 @@ class Account(
 
 ) {
 
-    fun toResponseUser(): ResponseUser {
+    fun toResponseUser(): AccountResponse {
         if (id == null) {
-            throw AccountNotFoundException()
+            throw NotFoundException("not found account")
         }
 
-        return ResponseUser(id!!, username, nickname)
+        return AccountResponse(id!!, username, nickname)
     }
 }

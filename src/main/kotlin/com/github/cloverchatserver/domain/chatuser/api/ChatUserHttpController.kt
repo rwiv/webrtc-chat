@@ -1,8 +1,8 @@
 package com.github.cloverchatserver.domain.chatuser.api
 
-import com.github.cloverchatserver.domain.chatuser.api.domain.ResponseChatUser
+import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserDto
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
-import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
+import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*
 class ChatUserHttpController(val chatUserService: ChatUserService) {
 
     @GetMapping("/list/{chatRoomId}")
-    fun getChatUsersByChatRoomId(@PathVariable chatRoomId: Long, authentication: Authentication): List<ResponseChatUser> {
-        val responseUser = authentication.details as ResponseUser
+    fun getChatUsersByChatRoomId(@PathVariable chatRoomId: Long, authentication: Authentication): List<ChatUserDto> {
+        val accountResponse = authentication.details as AccountResponse
 
-        return chatUserService.getChatUsersByChatRoomIdAssertUser(chatRoomId, responseUser)
-            .map { chatUser -> chatUser.toResponseChatUser() }
+        return chatUserService.getChatUsersByChatRoomIdAssertUser(chatRoomId, accountResponse)
+            .map { chatUser -> ChatUserDto.of(chatUser) }
     }
 
 //    @PostMapping("/create/{chatRoomId}")

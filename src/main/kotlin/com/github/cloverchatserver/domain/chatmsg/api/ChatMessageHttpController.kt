@@ -1,10 +1,10 @@
 package com.github.cloverchatserver.domain.chatmsg.api
 
-import com.github.cloverchatserver.domain.chatmsg.api.domain.RequestChatMessagesReadForm
-import com.github.cloverchatserver.domain.chatmsg.api.domain.RequestStompChatMessage
-import com.github.cloverchatserver.domain.chatmsg.api.domain.ResponseStompChatMessage
+import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessagesFindForm
+import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
+import com.github.cloverchatserver.domain.chatmsg.api.data.StompChatMessage
 import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
-import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
+import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.lang.RuntimeException
@@ -14,23 +14,26 @@ import java.lang.RuntimeException
 class ChatMessageHttpController(val chatMessageService: ChatMessageService) {
 
     @PostMapping("/list")
-    fun getChatMessages(@RequestBody form: RequestChatMessagesReadForm): List<ResponseStompChatMessage> {
-        return chatMessageService.getChatMessagesBy(form)
-            .map { chatMessage -> chatMessage.toResponseStompChatMessage() }
+    fun getChatMessages(@ModelAttribute form: ChatMessagesFindForm): List<StompChatMessage> {
+        return chatMessageService
+            .getChatMessagesBy(form)
+            .map { chatMessage -> StompChatMessage.of(chatMessage) }
     }
 
-    @PostMapping("/create/{chatRoomId}")
-    fun createChatMessage(@PathVariable chatRoomId: Long,
-                          @RequestBody requestStompChatMessage: RequestStompChatMessage,
-                          authentication: Authentication): ResponseStompChatMessage {
-
-        if (requestStompChatMessage.chatRoomId != chatRoomId) {
-            throw RuntimeException("chatRoomId is different")
-        }
-
-        val responseUser = authentication.details as ResponseUser
-
-        return chatMessageService.createChatMessage(requestStompChatMessage, responseUser)
-            .toResponseStompChatMessage()
-    }
+//    @PostMapping("/create/{chatRoomId}")
+//    fun createChatMessage(
+//        @PathVariable chatRoomId: Long,
+//        @RequestBody chatMessageCreation: ChatMessageCreation,
+//        authentication: Authentication
+//    ): StompChatMessage {
+//
+//        if (chatMessageCreation.chatRoomId != chatRoomId) {
+//            throw RuntimeException("chatRoomId is different")
+//        }
+//
+//        val accountResponse = authentication.details as AccountResponse
+//
+//        val chatMessage = chatMessageService.createChatMessage(chatMessageCreation, accountResponse)
+//        return StompChatMessage.of(chatMessage)
+//    }
 }

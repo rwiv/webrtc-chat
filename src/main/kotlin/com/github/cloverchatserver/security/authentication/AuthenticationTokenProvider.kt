@@ -1,10 +1,11 @@
 package com.github.cloverchatserver.security.authentication
 
-import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
+import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import com.github.cloverchatserver.domain.account.business.AccountService
-import com.github.cloverchatserver.error.exception.HttpException
-import com.github.cloverchatserver.security.account.AccountDetails
-import com.github.cloverchatserver.security.account.AccountDetailsService
+import com.github.cloverchatserver.common.error.exception.HttpException
+import com.github.cloverchatserver.common.error.exception.NotFoundException
+import com.github.cloverchatserver.security.userdetails.AccountDetails
+import com.github.cloverchatserver.security.userdetails.AccountDetailsService
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -27,13 +28,13 @@ class AuthenticationTokenProvider(
             throw HttpException(401, "Invalid password")
         }
 
-        val account = accountService.getUserBy(accountDetails.account.id)
-            ?: throw HttpException(404, "not found account")
-        val responseUser = ResponseUser(account.id!!, account.username, account.nickname)
+        val account = accountService.findById(accountDetails.id)
+            ?: throw NotFoundException("not found account")
+        val accountResponse = AccountResponse(account.id!!, account.username, account.nickname)
         return AuthenticationToken.successToken(
             accountDetails.username,
             accountDetails.authorities,
-            responseUser,
+            accountResponse,
         )
     }
 

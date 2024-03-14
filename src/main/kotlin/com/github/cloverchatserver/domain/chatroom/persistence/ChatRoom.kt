@@ -1,6 +1,6 @@
 package com.github.cloverchatserver.domain.chatroom.persistence
 
-import com.github.cloverchatserver.domain.chatroom.api.domain.ResponseChatRoom
+import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomDto
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 import com.github.cloverchatserver.domain.chatuser.persistence.ChatUser
 import com.github.cloverchatserver.domain.account.persistence.Account
@@ -39,11 +39,4 @@ class ChatRoom(
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
     val chatUsers: MutableList<ChatUser> = ArrayList()
 
-) {
-
-    fun toResponseChatRoom(): ResponseChatRoom {
-        if (id == null) throw RuntimeException()
-
-        return ResponseChatRoom(id!!, createAccount.toResponseUser(), title, createDate, type)
-    }
-}
+)

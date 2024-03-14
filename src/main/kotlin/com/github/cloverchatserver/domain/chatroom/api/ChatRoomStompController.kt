@@ -1,6 +1,6 @@
 package com.github.cloverchatserver.domain.chatroom.api
 
-import com.github.cloverchatserver.domain.chatroom.api.domain.StompUpdateChatRoom
+import com.github.cloverchatserver.domain.chatroom.api.stomp.StompChatRoomUpdate
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.stereotype.Controller
@@ -10,5 +10,5 @@ class ChatRoomStompController{
 
     @MessageMapping("/room")
     @SendTo("/sub/room")
-    fun chatRoomHandle(stompUpdateChatRoom: StompUpdateChatRoom) = stompUpdateChatRoom
+    fun chatRoomHandle(stompChatRoomUpdate: StompChatRoomUpdate) = stompChatRoomUpdate
 }

@@ -1,9 +1,9 @@
 package com.github.cloverchatserver.domain.chatroom.api
 
-import com.github.cloverchatserver.domain.chatroom.api.domain.RequestChatRoomCreateForm
-import com.github.cloverchatserver.domain.chatroom.api.domain.ResponseChatRoom
+import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreation
+import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomDto
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
-import com.github.cloverchatserver.domain.account.api.domain.ResponseUser
+import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
@@ -13,22 +13,20 @@ import org.springframework.web.bind.annotation.*
 class ChatRoomHttpController(val chatRoomService: ChatRoomService) {
 
     @GetMapping("/list")
-    fun getChatRoomList(): List<ResponseChatRoom> =
+    fun getChatRoomList(): List<ChatRoomDto> =
         chatRoomService.getChatRoomList()
-            .map { chatRoom -> chatRoom.toResponseChatRoom() }
+            .map { chatRoom -> ChatRoomDto.of(chatRoom) }
 
     @PostMapping("/create")
-    fun createChatRoom(@RequestBody requestChatRoomCreateForm: RequestChatRoomCreateForm): ResponseEntity<ResponseChatRoom> {
-        val chatRoom = chatRoomService.createChatRoom(requestChatRoomCreateForm)
-
-        return ResponseEntity.ok().body(chatRoom.toResponseChatRoom())
+    fun createChatRoom(@RequestBody creation: ChatRoomCreation): ResponseEntity<ChatRoomDto> {
+        val chatRoom = chatRoomService.createChatRoom(creation)
+        return ResponseEntity.ok().body(ChatRoomDto.of(chatRoom))
     }
 
     @DeleteMapping("/delete")
-    fun removeChatRoom(@RequestParam chatRoomId: Long, authentication: Authentication): ResponseEntity<ResponseChatRoom> {
-        val responseUser = authentication.details as ResponseUser
-        val chatRoom = chatRoomService.deleteChatRoom(chatRoomId, responseUser)
-
-        return ResponseEntity.ok().body(chatRoom.toResponseChatRoom())
+    fun removeChatRoom(@RequestParam chatRoomId: Long, authentication: Authentication): ResponseEntity<ChatRoomDto> {
+        val accountResponse = authentication.details as AccountResponse
+        val chatRoom = chatRoomService.deleteChatRoom(chatRoomId, accountResponse)
+        return ResponseEntity.ok().body(ChatRoomDto.of(chatRoom))
     }
 }

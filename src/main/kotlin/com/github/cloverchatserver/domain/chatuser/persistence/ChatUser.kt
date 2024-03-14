@@ -1,8 +1,7 @@
 package com.github.cloverchatserver.domain.chatuser.persistence
 
-import com.github.cloverchatserver.domain.chatuser.api.domain.ResponseChatUser
-import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
 import com.github.cloverchatserver.domain.account.persistence.Account
+import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
 import jakarta.persistence.*
 
 @Entity
@@ -24,13 +23,4 @@ class ChatUser(
 
     @Column(unique = true, nullable = false, updatable = false, length = 100)
     val sessionId: String
-) {
-
-    fun toResponseChatUser(): ResponseChatUser {
-        if (id == null) {
-            throw RuntimeException("id is null")
-        }
-
-        return ResponseChatUser(id!!, chatRoom.toResponseChatRoom(), account.toResponseUser())
-    }
-}
+)
