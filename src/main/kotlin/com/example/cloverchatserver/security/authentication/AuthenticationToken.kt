@@ -9,7 +9,7 @@ class AuthenticationToken(
     private val principal: String,
     private val credentials: String?,
 
-    authorities: Collection<out GrantedAuthority>? = null,
+    authorities: Collection<GrantedAuthority>? = null,
     responseUser: ResponseUser? = null
 
 ) : AbstractAuthenticationToken(authorities) {
@@ -20,7 +20,7 @@ class AuthenticationToken(
     }
 
     constructor(
-        principal: String, authorities: Collection<out GrantedAuthority>?, responseUser: ResponseUser?
+        principal: String, authorities: Collection<GrantedAuthority>?, responseUser: ResponseUser?
     ) : this(principal, null, authorities, responseUser) {
         super.setAuthenticated(true)
         super.setDetails(responseUser)

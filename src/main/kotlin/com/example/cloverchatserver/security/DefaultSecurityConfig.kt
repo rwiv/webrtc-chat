@@ -24,7 +24,13 @@ class DefaultSecurityConfig(
 
 ) {
 
-    val permitList = arrayOf("/user/register", "/h2-console/**", "/test/stomp", "/js/**")
+    val permitList = arrayOf(
+        "/user/register",
+        "/h2-console/**",
+        "/test/stomp",
+        "/js/**",
+        "/dev/**",
+    )
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {

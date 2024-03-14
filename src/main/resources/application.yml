@@ -1,5 +1,5 @@
 server:
-  port: 11730
+  port: 8080
 
 spring:
   profiles:
