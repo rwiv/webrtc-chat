@@ -5,8 +5,8 @@ import com.github.cloverchatserver.domain.chatroom.service.ChatRoomService
 import com.github.cloverchatserver.domain.chatuser.repository.ChatUser
 import com.github.cloverchatserver.domain.chatuser.repository.ChatUserRepository
 import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
-import com.github.cloverchatserver.domain.user.service.UserNotFoundException
-import com.github.cloverchatserver.domain.user.service.UserService
+import com.github.cloverchatserver.domain.user.service.AccountNotFoundException
+import com.github.cloverchatserver.domain.user.service.AccountService
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,14 +15,14 @@ import org.springframework.transaction.annotation.Transactional
 class ChatUserServiceImpl(
     val chatUserRepository: ChatUserRepository,
     val chatRoomService: ChatRoomService,
-    val userService: UserService
+    val accountService: AccountService
 ) : ChatUserService {
 
     @Transactional
     override fun getChatUsersByChatRoomIdAssertUser(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser> {
         val chatUsers = getChatUsersByChatRoomId(chatRoomId, responseUser)
 
-        chatUsers.find { chatUser -> chatUser.user.id == responseUser.id }
+        chatUsers.find { chatUser -> chatUser.account.id == responseUser.id }
             ?: throw AccessDeniedException("You are not a chat room member")
 
         return chatUsers
@@ -41,10 +41,10 @@ class ChatUserServiceImpl(
         val chatRoom = chatRoomService.getChatRoomById(chatRoomId)
             ?: throw ChatRoomNotFoundException()
 
-        val user = userService.getUserBy(responseUser.id)
-            ?: throw UserNotFoundException()
+        val user = accountService.getUserBy(responseUser.id)
+            ?: throw AccountNotFoundException()
 
-        val chatUsers = chatUserRepository.findByChatRoomAndUser(chatRoom, user)
+        val chatUsers = chatUserRepository.findByChatRoomAndAccount(chatRoom, user)
         if (chatUsers.isNotEmpty()) {
             throw DuplicatedChatUserException("ChatUser is already exist")
         }
@@ -60,7 +60,7 @@ class ChatUserServiceImpl(
         val chatUser = chatUserRepository.findBySessionId(sessionId)
             ?: throw NotFoundChatUserException("Not Found Chat User")
 
-        if (chatUser.user.id != responseUser.id) {
+        if (chatUser.account.id != responseUser.id) {
             throw AccessDeniedException("You are not a chat room member")
         }
 

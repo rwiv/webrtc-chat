@@ -2,7 +2,7 @@ package com.github.cloverchatserver.domain.chatroom.controller.domain
 
 import com.github.cloverchatserver.domain.chatroom.repository.ChatRoom
 import com.github.cloverchatserver.domain.chatroom.repository.ChatRoomType
-import com.github.cloverchatserver.domain.user.repository.User
+import com.github.cloverchatserver.domain.user.repository.Account
 import java.io.Serializable
 import java.time.LocalDateTime
 
@@ -13,7 +13,7 @@ data class RequestChatRoomCreateForm(
     val type: ChatRoomType
 ): Serializable {
 
-    fun toChatRoom(createBy: User): ChatRoom {
+    fun toChatRoom(createBy: Account): ChatRoom {
         return ChatRoom(null, createBy, password, title, LocalDateTime.now(), type)
     }
 }

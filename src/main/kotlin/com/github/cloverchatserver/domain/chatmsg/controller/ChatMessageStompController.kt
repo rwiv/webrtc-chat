@@ -26,7 +26,7 @@ class ChatMessageStompController(
 
         chatUsers.forEach { chatUser ->
             template.convertAndSendToUser(
-                chatUser.user.email,
+                chatUser.account.email,
                 "/sub/message/$chatRoomId",
                 responseStompChatMessage
             )

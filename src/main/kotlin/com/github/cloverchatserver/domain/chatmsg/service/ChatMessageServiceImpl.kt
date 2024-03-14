@@ -7,8 +7,8 @@ import com.github.cloverchatserver.domain.chatmsg.controller.domain.RequestStomp
 import com.github.cloverchatserver.domain.chatmsg.repository.ChatMessage
 import com.github.cloverchatserver.domain.chatmsg.repository.ChatMessageRepository
 import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
-import com.github.cloverchatserver.domain.user.service.UserNotFoundException
-import com.github.cloverchatserver.domain.user.service.UserService
+import com.github.cloverchatserver.domain.user.service.AccountNotFoundException
+import com.github.cloverchatserver.domain.user.service.AccountService
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,7 +18,7 @@ class ChatMessageServiceImpl(
 
     val chatMessageRepository: ChatMessageRepository,
     val chatRoomService: ChatRoomService,
-    val userService: UserService
+    val accountService: AccountService
 
 ) : ChatMessageService {
 
@@ -39,8 +39,8 @@ class ChatMessageServiceImpl(
         val chatRoom = chatRoomService.getChatRoomById(requestStompChatMessage.chatRoomId)
             ?: throw ChatRoomNotFoundException()
 
-        val createUser = userService.getUserBy(responseUser.id)
-            ?: throw UserNotFoundException()
+        val createUser = accountService.getUserBy(responseUser.id)
+            ?: throw AccountNotFoundException()
 
         val chatMessage = requestStompChatMessage.toChatMessage(chatRoom, createUser)
         chatRoom.chatMessages.add(chatMessage)

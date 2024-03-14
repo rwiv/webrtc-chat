@@ -1,29 +1,44 @@
 package com.github.cloverchatserver.security.authentication
 
-import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
 class AuthenticationToken(
-
     private val principal: String,
     private val credentials: String?,
-
-    authorities: Collection<GrantedAuthority>? = null,
-    responseUser: ResponseUser? = null
-
+    authorities: Collection<GrantedAuthority>?,
+    val accountId: Long? = null,
 ) : AbstractAuthenticationToken(authorities) {
 
-    init {
-        super.setAuthenticated(false)
-        super.setDetails(responseUser)
+    companion object {
+
+        fun requestToken(
+            principal: String,
+            credentials: String?,
+            authorities: Collection<GrantedAuthority>? = null,
+        ): AuthenticationToken {
+            val requestToken = AuthenticationToken(principal, credentials, authorities)
+            requestToken.setRequest()
+            return requestToken
+        }
+
+        fun successToken(
+            principal: String,
+            authorities: Collection<GrantedAuthority>?,
+            accountId: Long,
+        ): AuthenticationToken {
+            val successToken = AuthenticationToken(principal, null, authorities, accountId)
+            successToken.setSuccess()
+            return successToken
+        }
     }
 
-    constructor(
-        principal: String, authorities: Collection<GrantedAuthority>?, responseUser: ResponseUser?
-    ) : this(principal, null, authorities, responseUser) {
+    private fun setRequest() {
+        super.setAuthenticated(false)
+    }
+
+    private fun setSuccess() {
         super.setAuthenticated(true)
-        super.setDetails(responseUser)
     }
 
     override fun getPrincipal(): String = principal

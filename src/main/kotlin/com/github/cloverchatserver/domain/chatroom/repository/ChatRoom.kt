@@ -3,7 +3,7 @@ package com.github.cloverchatserver.domain.chatroom.repository
 import com.github.cloverchatserver.domain.chatroom.controller.domain.ResponseChatRoom
 import com.github.cloverchatserver.domain.chatmsg.repository.ChatMessage
 import com.github.cloverchatserver.domain.chatuser.repository.ChatUser
-import com.github.cloverchatserver.domain.user.repository.User
+import com.github.cloverchatserver.domain.user.repository.Account
 import java.lang.RuntimeException
 import java.time.LocalDateTime
 import jakarta.persistence.*
@@ -18,7 +18,7 @@ class ChatRoom(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val createUser: User,
+    val createAccount: Account,
 
     @Column(length = 20, nullable = true, updatable = false)
     val password: String?,
@@ -44,6 +44,6 @@ class ChatRoom(
     fun toResponseChatRoom(): ResponseChatRoom {
         if (id == null) throw RuntimeException()
 
-        return ResponseChatRoom(id!!, createUser.toResponseUser(), title, createDate, type)
+        return ResponseChatRoom(id!!, createAccount.toResponseUser(), title, createDate, type)
     }
 }

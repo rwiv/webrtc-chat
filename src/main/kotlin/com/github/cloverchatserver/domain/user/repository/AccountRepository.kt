@@ -2,7 +2,7 @@ package com.github.cloverchatserver.domain.user.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepository : JpaRepository<User, Long> {
+interface AccountRepository : JpaRepository<Account, Long> {
 
-    fun findByEmail(email: String): User?
+    fun findByEmail(email: String): Account?
 }

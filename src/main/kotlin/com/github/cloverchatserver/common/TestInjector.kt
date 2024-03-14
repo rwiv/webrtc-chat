@@ -4,8 +4,8 @@ import com.github.cloverchatserver.domain.chatroom.controller.domain.RequestChat
 import com.github.cloverchatserver.domain.chatroom.repository.ChatRoomType
 import com.github.cloverchatserver.domain.chatroom.service.ChatRoomService
 import com.github.cloverchatserver.domain.user.controller.domain.RequestUserCreateForm
-import com.github.cloverchatserver.domain.user.repository.User
-import com.github.cloverchatserver.domain.user.service.UserService
+import com.github.cloverchatserver.domain.user.repository.Account
+import com.github.cloverchatserver.domain.user.service.AccountService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 class TestInjector(
 
     val chatRoomService: ChatRoomService,
-    val userService: UserService
+    val accountService: AccountService
 
 ) : ApplicationRunner {
 
@@ -31,20 +31,20 @@ class TestInjector(
     }
 
     private fun isProd(): Boolean {
-        val user = userService.getUserBy(1L)
+        val user = accountService.getUserBy(1L)
 
         return user != null
     }
 
-    private fun createUsers(initNum: Int, size: Int): List<User> {
-        val result = ArrayList<User>()
+    private fun createUsers(initNum: Int, size: Int): List<Account> {
+        val result = ArrayList<Account>()
 
         val maxNum = initNum + size - 1
         for (i in initNum .. maxNum) {
             val form = RequestUserCreateForm("user${i}@gmail.com", "1234", "user$i")
-            val user: User = userService.createUser(form)
+            val account: Account = accountService.createUser(form)
 
-            result.add(user)
+            result.add(account)
         }
 
         return result

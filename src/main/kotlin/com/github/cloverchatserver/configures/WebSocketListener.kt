@@ -62,7 +62,7 @@ class WebSocketListener(
 
         chatUsers.forEach { chatUser ->
             template.convertAndSendToUser(
-                chatUser.user.email,
+                chatUser.account.email,
                 "/sub/user/$chatRoomId",
                 stompUpdateChatUser
             )

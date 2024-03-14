@@ -4,8 +4,8 @@ import com.github.cloverchatserver.domain.chatroom.controller.domain.RequestChat
 import com.github.cloverchatserver.domain.chatroom.repository.ChatRoom
 import com.github.cloverchatserver.domain.chatroom.repository.ChatRoomRepository
 import com.github.cloverchatserver.domain.user.controller.domain.ResponseUser
-import com.github.cloverchatserver.domain.user.service.UserNotFoundException
-import com.github.cloverchatserver.domain.user.service.UserService
+import com.github.cloverchatserver.domain.user.service.AccountNotFoundException
+import com.github.cloverchatserver.domain.user.service.AccountService
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 class ChatRoomServiceImpl(
 
     val chatRoomRepository: ChatRoomRepository,
-    val userService: UserService
+    val accountService: AccountService
 
 ) : ChatRoomService {
 
@@ -29,8 +29,8 @@ class ChatRoomServiceImpl(
 
     @Transactional
     override fun createChatRoom(requestChatRoomCreateForm: RequestChatRoomCreateForm): ChatRoom {
-        val createBy = userService.getUserBy(requestChatRoomCreateForm.createUserId)
-            ?: throw UserNotFoundException()
+        val createBy = accountService.getUserBy(requestChatRoomCreateForm.createUserId)
+            ?: throw AccountNotFoundException()
 
         val requestChatRoom = requestChatRoomCreateForm.toChatRoom(createBy)
 
@@ -42,7 +42,7 @@ class ChatRoomServiceImpl(
         val chatRoom = chatRoomRepository.findById(chatRoomId)
             .orElseThrow { throw ChatRoomNotFoundException() }
 
-        if (responseUser.id != chatRoom.createUser.id) {
+        if (responseUser.id != chatRoom.createAccount.id) {
             throw AccessDeniedException("This user is not ChatRoom CreateUser")
         }
 

@@ -2,7 +2,7 @@ package com.github.cloverchatserver.domain.chatmsg.repository
 
 import com.github.cloverchatserver.domain.chatroom.repository.ChatRoom
 import com.github.cloverchatserver.domain.chatmsg.controller.domain.ResponseStompChatMessage
-import com.github.cloverchatserver.domain.user.repository.User
+import com.github.cloverchatserver.domain.user.repository.Account
 import java.lang.RuntimeException
 import java.time.LocalDateTime
 import jakarta.persistence.*
@@ -21,7 +21,7 @@ class ChatMessage(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val createUser: User,
+    val createAccount: Account,
 
     @Column(length = 200, nullable = false, updatable = false)
     val content: String,
@@ -38,7 +38,7 @@ class ChatMessage(
         return ResponseStompChatMessage(
             id!!,
             chatRoom.toResponseChatRoom(),
-            createUser.toResponseUser(),
+            createAccount.toResponseUser(),
             content,
             createAt
         )
