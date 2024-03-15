@@ -1,7 +1,7 @@
 package com.github.cloverchatserver.domain.account.api
 
 import com.github.cloverchatserver.domain.account.business.data.AccountResponse
-import com.github.cloverchatserver.domain.account.business.data.RequestUserCreateForm
+import com.github.cloverchatserver.domain.account.business.data.AccountCreation
 import com.github.cloverchatserver.domain.account.business.AccountService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,9 +16,8 @@ class UserController(
 ) {
 
     @PostMapping("/register")
-    fun register(@RequestBody requestUserCreateForm: RequestUserCreateForm): ResponseEntity<AccountResponse> {
-        val user = accountService.create(requestUserCreateForm)
-
-        return ResponseEntity.ok().body(user.toResponseUser())
+    fun register(@RequestBody accountCreation: AccountCreation): ResponseEntity<AccountResponse> {
+        val user = accountService.create(accountCreation)
+        return ResponseEntity.ok().body(AccountResponse.of(user))
     }
 }

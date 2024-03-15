@@ -1,17 +1,15 @@
 type Query {
-    account(id: String!): Account
-    post(id: String!): Post
+    accounts: [Account!]
 }
 
 type Account {
-    id: Int
+    role: AccountRole
     username: String
     password: String
-    posts: [Post]
+    nickname: String
 }
 
-type Post {
-    id: String
-    title: String
-    author: Account
+enum AccountRole {
+    MEMBER
+    ADMIN
 }

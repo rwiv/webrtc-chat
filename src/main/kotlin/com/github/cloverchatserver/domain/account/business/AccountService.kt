@@ -1,6 +1,6 @@
 package com.github.cloverchatserver.domain.account.business
 
-import com.github.cloverchatserver.domain.account.business.data.RequestUserCreateForm
+import com.github.cloverchatserver.domain.account.business.data.AccountCreation
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -14,18 +14,25 @@ class AccountService(
     private val passwordEncoder: PasswordEncoder
 ) {
     @Transactional
-    fun create(requestUserCreateForm: RequestUserCreateForm): Account {
-        val user = requestUserCreateForm.toUser(passwordEncoder)
-
-        return accountRepository.save(user)
+    fun create(creation: AccountCreation): Account {
+        val tbc = Account(
+            null,
+            creation.role,
+            creation.username,
+            passwordEncoder.encode(creation.password),
+            creation.nickname,
+        )
+        return accountRepository.save(tbc)
     }
 
-    @Transactional
+    fun findAll(): List<Account> {
+        return accountRepository.findAll()
+    }
+
     fun findById(id: Long): Account? {
         return accountRepository.findById(id).getOrNull()
     }
 
-    @Transactional
     fun findByUsername(username: String): Account? {
         return accountRepository.findByUsername(username)
     }
