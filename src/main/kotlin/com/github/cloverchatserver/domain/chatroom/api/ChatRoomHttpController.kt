@@ -14,7 +14,7 @@ class ChatRoomHttpController(val chatRoomService: ChatRoomService) {
 
     @GetMapping("/list")
     fun getChatRoomList(): List<ChatRoomDto> =
-        chatRoomService.getChatRoomList()
+        chatRoomService.findAll()
             .map { chatRoom -> ChatRoomDto.of(chatRoom) }
 
     @PostMapping("/create")

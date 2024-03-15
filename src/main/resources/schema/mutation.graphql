@@ -1,0 +1,10 @@
+type Mutation {
+    createAccount(creation: AccountCreation!): Account!
+}
+
+input AccountCreation {
+    role: AccountRole!
+    username: String!
+    password: String!
+    nickname: String!
+}

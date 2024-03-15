@@ -22,5 +22,5 @@ class ChatUser(
     val account: Account,
 
     @Column(unique = true, nullable = false, updatable = false, length = 100)
-    val sessionId: String
+    val sessionId: String,
 )

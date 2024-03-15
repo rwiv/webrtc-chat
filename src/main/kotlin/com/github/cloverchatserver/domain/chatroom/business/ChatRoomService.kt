@@ -17,35 +17,29 @@ class ChatRoomService(
     val accountService: AccountService
 ) {
 
-    @Transactional
-    fun getChatRoomById(chatRoomId: Long): ChatRoom? {
+    fun findById(chatRoomId: Long): ChatRoom? {
         return chatRoomRepository.findById(chatRoomId).getOrNull()
     }
 
-    @Transactional
-    fun getChatRoomList(): List<ChatRoom> = chatRoomRepository.findAll()
+    fun findAll(): List<ChatRoom> = chatRoomRepository.findAll()
 
     @Transactional
     fun createChatRoom(creation: ChatRoomCreation): ChatRoom {
         val createBy = accountService.findById(creation.createUserId)
             ?: throw NotFoundException("not found account")
-
         val requestChatRoom = creation.toChatRoom(createBy)
-
         return chatRoomRepository.save(requestChatRoom)
     }
 
     @Transactional
     fun deleteChatRoom(chatRoomId: Long, accountResponse: AccountResponse): ChatRoom {
-        val chatRoom = chatRoomRepository.findById(chatRoomId)
-            .orElseThrow { throw NotFoundException("not found chatroom") }
-
+        val chatRoom = findById(chatRoomId)
+            ?: throw NotFoundException("not found chatroom")
         if (accountResponse.id != chatRoom.createAccount.id) {
             throw AccessDeniedException("This user is not ChatRoom CreateUser")
         }
 
         chatRoomRepository.delete(chatRoom)
-
         return chatRoom
     }
 }

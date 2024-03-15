@@ -1,0 +1,15 @@
+type ChatRoom {
+    id: Long!
+    createAccount: Account!
+    password: String
+    title: String!
+    createDate: DateTime!
+    type: ChatRoomType!
+    chatMessages: [ChatMessage!]
+    chatUsers: [ChatUser!]
+}
+
+enum ChatRoomType {
+    PUBLIC
+    PRIVATE
+}

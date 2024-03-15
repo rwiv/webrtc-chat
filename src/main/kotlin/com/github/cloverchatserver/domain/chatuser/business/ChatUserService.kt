@@ -29,7 +29,7 @@ class ChatUserService(
 
     @Transactional
     fun getChatUsersByChatRoomId(chatRoomId: Long, accountResponse: AccountResponse): List<ChatUser> {
-        val chatRoom = chatRoomService.getChatRoomById(chatRoomId)
+        val chatRoom = chatRoomService.findById(chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 
         return chatUserRepository.findByChatRoom(chatRoom)
@@ -37,7 +37,7 @@ class ChatUserService(
 
     @Transactional
     fun createChatUser(chatRoomId: Long, accountResponse: AccountResponse, sessionId: String): ChatUser {
-        val chatRoom = chatRoomService.getChatRoomById(chatRoomId)
+        val chatRoom = chatRoomService.findById(chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 
         val user = accountService.findById(accountResponse.id)

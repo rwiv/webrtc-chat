@@ -13,11 +13,11 @@ import org.springframework.stereotype.Controller
 import java.lang.RuntimeException
 import java.security.Principal
 
-@Controller
+//@Controller
 class ChatMessageStompController(
     val chatMessageService: ChatMessageService,
     val chatUserService: ChatUserService,
-    val template: SimpMessagingTemplate
+    val template: SimpMessagingTemplate,
 ) {
 
 //    @MessageMapping("/message/{chatRoomId}")
@@ -38,28 +38,28 @@ class ChatMessageStompController(
 //        }
 //    }
 
-    @MessageMapping("/message/{chatRoomId}")
-    fun chatMessageHandle(
-        chatMessageCreation: ChatMessageCreation,
-        authentication: Principal,
-        @DestinationVariable chatRoomId: Long
-    ) {
-        if (chatMessageCreation.chatRoomId != chatRoomId) {
-            throw RuntimeException("chatRoomId is different")
-        }
-
-        val accountResponse: AccountResponse = (authentication as AuthenticationToken).details as AccountResponse
-
-        val chatMessage = chatMessageService.createChatMessage(chatMessageCreation, accountResponse)
-        val stompChatMessage = StompChatMessage.of(chatMessage)
-
-        val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, accountResponse)
-        chatUsers.forEach { chatUser ->
-            template.convertAndSendToUser(
-                chatUser.account.username,
-                "/sub/message/$chatRoomId",
-                stompChatMessage,
-            )
-        }
-    }
+//    @MessageMapping("/message/{chatRoomId}")
+//    fun chatMessageHandle(
+//        chatMessageCreation: ChatMessageCreation,
+//        authentication: Principal,
+//        @DestinationVariable chatRoomId: Long
+//    ) {
+//        if (chatMessageCreation.chatRoomId != chatRoomId) {
+//            throw RuntimeException("chatRoomId is different")
+//        }
+//
+//        val accountResponse: AccountResponse = (authentication as AuthenticationToken).details as AccountResponse
+//
+//        val chatMessage = chatMessageService.createChatMessage(chatMessageCreation, accountResponse)
+//        val stompChatMessage = StompChatMessage.of(chatMessage)
+//
+//        val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, accountResponse)
+//        chatUsers.forEach { chatUser ->
+//            template.convertAndSendToUser(
+//                chatUser.account.username,
+//                "/sub/message/$chatRoomId",
+//                stompChatMessage,
+//            )
+//        }
+//    }
 }

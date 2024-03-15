@@ -25,5 +25,5 @@ class ChatMessage(
     val content: String,
 
     @Column(nullable = false, updatable = false)
-    val createAt: LocalDateTime
+    val createAt: LocalDateTime,
 )

@@ -1,0 +1,4 @@
+type Query {
+    accounts: [Account!]
+    chatRooms: [ChatRoom!]
+}

@@ -21,7 +21,7 @@ class ChatMessageService(
 
     @Transactional
     fun getChatMessagesBy(form: ChatMessagesFindForm): List<ChatMessage> {
-        val chatRoom = chatRoomService.getChatRoomById(form.chatRoomId)
+        val chatRoom = chatRoomService.findById(form.chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 
         if (form.password != chatRoom.password) {
@@ -33,7 +33,7 @@ class ChatMessageService(
 
     @Transactional
     fun createChatMessage(creation: ChatMessageCreation, accountResponse: AccountResponse): ChatMessage {
-        val chatRoom = chatRoomService.getChatRoomById(creation.chatRoomId)
+        val chatRoom = chatRoomService.findById(creation.chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 
         val createUser = accountService.findById(accountResponse.id)

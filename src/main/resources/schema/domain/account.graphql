@@ -1,0 +1,12 @@
+type Account {
+    id: Long!
+    role: AccountRole!
+    username: String!
+    password: String!
+    nickname: String!
+}
+
+enum AccountRole {
+    MEMBER
+    ADMIN
+}

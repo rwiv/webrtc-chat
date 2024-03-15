@@ -44,6 +44,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
+	implementation("com.graphql-java:graphql-java-extended-scalars:21.0")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 

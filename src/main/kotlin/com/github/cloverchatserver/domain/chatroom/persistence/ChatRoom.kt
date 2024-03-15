@@ -37,6 +37,5 @@ class ChatRoom(
     val chatMessages: MutableList<ChatMessage> = ArrayList(),
 
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
-    val chatUsers: MutableList<ChatUser> = ArrayList()
-
+    val chatUsers: MutableList<ChatUser> = ArrayList(),
 )

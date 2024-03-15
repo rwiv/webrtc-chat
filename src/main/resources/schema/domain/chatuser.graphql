@@ -1,0 +1,6 @@
+type ChatUser {
+    id: Long!
+    chatRoom: ChatRoom!
+    account: Account!
+    sessionId: String!
+}
