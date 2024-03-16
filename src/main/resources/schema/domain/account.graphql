@@ -10,3 +10,10 @@ enum AccountRole {
     MEMBER
     ADMIN
 }
+
+input AccountCreation {
+    role: AccountRole!
+    username: String!
+    password: String!
+    nickname: String!
+}

@@ -13,3 +13,10 @@ enum ChatRoomType {
     PUBLIC
     PRIVATE
 }
+
+input ChatRoomCreation {
+    createUserId: Long!
+    password: String
+    title: String!
+    type: ChatRoomType!
+}
