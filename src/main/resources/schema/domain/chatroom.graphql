@@ -14,8 +14,7 @@ enum ChatRoomType {
     PRIVATE
 }
 
-input ChatRoomCreation {
-    createUserId: Long!
+input ChatRoomCreateRequest {
     password: String
     title: String!
     type: ChatRoomType!

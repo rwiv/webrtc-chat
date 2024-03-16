@@ -65,8 +65,7 @@ export type ChatRoom = {
   type: ChatRoomType;
 };
 
-export type ChatRoomCreation = {
-  createUserId: Scalars['Long']['input'];
+export type ChatRoomCreateRequest = {
   password?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
   type: ChatRoomType;
@@ -338,7 +337,7 @@ export type MutationCreateAccountArgs = {
 
 
 export type MutationCreateChatRoomArgs = {
-  creation: ChatRoomCreation;
+  req: ChatRoomCreateRequest;
 };
 
 

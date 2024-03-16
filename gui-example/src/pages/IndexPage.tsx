@@ -1,83 +1,37 @@
-import {useQuery, gql, useMutation} from "@apollo/client";
-import {Mutation, Query} from "@/graphql/types.ts";
-import {useEffect} from "react";
-
-const chatRooms = gql`
-  query ChatRooms {
-    chatRooms {
-      id
-      createAccount {
-        id
-        username
-      }
-      title
-      password
-      createDate
-      type
-      chatMessages {
-        id
-      }
-      chatUsers {
-        id
-      }
-    }
-  }
-`;
-
-const createChatRoomQL = gql`
-  mutation CreateChatRoom($creation: ChatRoomCreation!) {
-    createChatRoom(creation: $creation) {
-      id
-      title
-      createDate
-      createAccount {
-        id
-        username
-        nickname
-      }
-    }
-  }
-`
-
-const deleteChatRoomQL = gql`
-  mutation DeleteChatRoom($chatRoomId: Long!) {
-    deleteChatRoom(chatRoomId: $chatRoomId) {
-      id
-      title
-      createDate
-      createAccount {
-        id
-        username
-        nickname
-      }
-    }
-  }
-`
+import {useChatRooms, useCreateChatRoom, useDeleteChatRoom} from "@/client/chatRoom.tsx";
+import {logout, useMe} from "@/client/account.tsx";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router";
+import {ChatRoomCreateRequest, ChatRoomType} from "@/graphql/types.ts";
+import {Link} from "react-router-dom";
 
 export default function IndexPage() {
-  const {data} = useQuery<Query>(chatRooms);
-  const [createChatRoom] = useMutation<Mutation>(createChatRoomQL, {
-    refetchQueries: [ "ChatRooms" ],
-  });
-  const [deleteChatRoom] = useMutation<Mutation>(deleteChatRoomQL, {
-    refetchQueries: [ "ChatRooms" ],
-  });
+  const [chatRoomInput, setChatRoomInput] = useState("");
+
+  const {data: me, error} = useMe();
+  const {data: chatRooms} = useChatRooms();
+  const {createChatRoom} = useCreateChatRoom();
+  const {deleteChatRoom} = useDeleteChatRoom();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    if (error) {
+      navigate("/account-select");
+    }
+  }, [error])
 
   const onAddChatRoom = async () => {
-    const variables = {
-      "creation": {
-        "createUserId": 1,
-        "password": null,
-        "title": "test chatroom",
-        "type": "PUBLIC"
-      }
-    }
-    const res = await createChatRoom({variables})
+    const variables: {req: ChatRoomCreateRequest} = {
+      req: {
+        password: null,
+        title: chatRoomInput,
+        type: ChatRoomType.Public,
+      },
+    };
+    const res = await createChatRoom({variables});
     console.log(res.data?.createChatRoom);
+    setChatRoomInput("");
   }
 
   const onDeleteChatRoom = async (chatRoomId: number) => {
@@ -88,15 +42,44 @@ export default function IndexPage() {
     console.log(res.data?.deleteChatRoom);
   }
 
+  const onLogout = async () => {
+    await logout();
+    navigate("/account-select");
+  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setState: React.Dispatch<React.SetStateAction<string>>,
+  ) => {
+    setState(e.target.value);
+  };
+
   return (
     <>
-      {data?.chatRooms?.map(chatRoom => (
+      {me && (
+        <div>
+          <div>{me?.me?.username}</div>
+          <div>{me?.me?.nickname}</div>
+          <button onClick={onLogout}>logout</button>
+          <br/>
+          <br/>
+        </div>
+      )}
+      {chatRooms?.chatRooms?.map(chatRoom => (
         <div key={chatRoom.id}>
-          <span>{chatRoom.title}  </span>
+          <Link to={`/chat-rooms/${chatRoom.id}`}>
+            <span>{chatRoom.title}</span>
+          </Link>
+          <span>  </span>
           <button onClick={() => onDeleteChatRoom(chatRoom.id)}>x</button>
         </div>
       ))}
-      <button onClick={onAddChatRoom}>add</button>
+      <div>
+        <input
+          onChange={e => handleChange(e, setChatRoomInput)}
+          value={chatRoomInput}
+        />
+        <button onClick={() => onAddChatRoom()}>add</button>
+      </div>
     </>
   )
 }

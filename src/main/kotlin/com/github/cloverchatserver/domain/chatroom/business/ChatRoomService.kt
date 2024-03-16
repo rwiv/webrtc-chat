@@ -27,7 +27,7 @@ class ChatRoomService(
     fun createChatRoom(creation: ChatRoomCreation): ChatRoom {
         val createBy = accountService.findById(creation.createUserId)
             ?: throw NotFoundException("not found account")
-        val requestChatRoom = creation.toChatRoom(createBy)
+        val requestChatRoom = creation.toTbc(createBy)
         return chatRoomRepository.save(requestChatRoom)
     }
 

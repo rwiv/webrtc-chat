@@ -1,6 +1,6 @@
 type Mutation {
     createAccount(creation: AccountCreation!): Account!
 
-    createChatRoom(creation: ChatRoomCreation!): ChatRoom!
+    createChatRoom(req: ChatRoomCreateRequest!): ChatRoom!
     deleteChatRoom(chatRoomId: Long): ChatRoom!
 }

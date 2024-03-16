@@ -12,8 +12,7 @@ data class ChatRoomCreation(
     val title: String,
     val type: ChatRoomType
 ): Serializable {
-
-    fun toChatRoom(createBy: Account): ChatRoom {
+    fun toTbc(createBy: Account): ChatRoom {
         return ChatRoom(null, createBy, password, title, LocalDateTime.now(), type)
     }
 }

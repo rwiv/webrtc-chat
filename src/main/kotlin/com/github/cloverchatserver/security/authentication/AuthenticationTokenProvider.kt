@@ -21,10 +21,11 @@ class AuthenticationTokenProvider(
 
     @Transactional
     override fun authenticate(authentication: Authentication): Authentication {
-        val req = LoginForm.of(authentication as AuthenticationToken)
-        val accountDetails: AccountDetails = accountDetailsService.loadUserByUsername(req.username)
+        val username = (authentication as AuthenticationToken).principal
+        val password = authentication.credentials
+        val accountDetails: AccountDetails = accountDetailsService.loadUserByUsername(username)
 
-        if (!passwordEncoder.matches(req.password, accountDetails.password)) {
+        if (!passwordEncoder.matches(password, accountDetails.password)) {
             throw HttpException(401, "Invalid password")
         }
 

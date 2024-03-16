@@ -1,15 +1,10 @@
 package com.github.cloverchatserver.domain.chatroom.api
 
 import com.github.cloverchatserver.domain.account.business.data.AccountResponse
+import com.github.cloverchatserver.domain.chatroom.api.data.ChatRoomCreateRequest
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
-import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreation
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
-import com.netflix.graphql.dgs.DgsComponent
-import com.netflix.graphql.dgs.DgsData
-import com.netflix.graphql.dgs.DgsDataFetchingEnvironment
-import com.netflix.graphql.dgs.DgsMutation
-import com.netflix.graphql.dgs.DgsQuery
-import com.netflix.graphql.dgs.InputArgument
+import com.netflix.graphql.dgs.*
 import org.springframework.security.core.Authentication
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -25,7 +20,9 @@ class ChatRoomDataFetcher(
     }
 
     @DgsMutation
-    fun createChatRoom(creation: ChatRoomCreation): ChatRoom {
+    fun createChatRoom(req: ChatRoomCreateRequest, authentication: Authentication): ChatRoom {
+        val accountResponse = authentication.details as AccountResponse
+        val creation = req.toChatRoomCreation(accountResponse.id)
         return chatRoomService.createChatRoom(creation)
     }
 
