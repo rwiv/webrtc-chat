@@ -5,3 +5,9 @@ type ChatMessage {
     content: String!
     createAt: DateTime!
 }
+
+input ChatMessageFindForm {
+    chatRoomId: Long!
+    type: ChatRoomType!
+    password: String
+}

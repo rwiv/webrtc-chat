@@ -19,8 +19,11 @@ class ChatMessageService(
     val accountService: AccountService
 ) {
 
-    @Transactional
-    fun getChatMessagesBy(form: ChatMessagesFindForm): List<ChatMessage> {
+    fun findAll(): MutableList<ChatMessage> {
+        return chatMessageRepository.findAll()
+    }
+
+    fun findByForm(form: ChatMessagesFindForm): List<ChatMessage> {
         val chatRoom = chatRoomService.findById(form.chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 

@@ -31,8 +31,7 @@ class WebSocketListener(
 
         try {
             val chatUser = chatUserService.deleteChatUserBySessionId(sessionId, accountResponse)
-
-            broadcastMessage(WebsocketAction.DELETE, ChatUserDto.of(chatUser), chatUser.chatRoom.id!!, accountResponse)
+            broadcastMessage(WebsocketAction.DELETE, ChatUserDto.of(chatUser), chatUser.chatRoom.id!!)
         } catch (_: RuntimeException) {}
     }
 
@@ -52,13 +51,13 @@ class WebSocketListener(
 
         try {
             val chatUser = chatUserService.createChatUser(chatRoomId, accountResponse, sessionId)
-            broadcastMessage(WebsocketAction.CREATE, ChatUserDto.of(chatUser), chatUser.chatRoom.id!!, accountResponse)
+            broadcastMessage(WebsocketAction.CREATE, ChatUserDto.of(chatUser), chatUser.chatRoom.id!!)
         } catch (_: RuntimeException) {}
     }
 
-    fun broadcastMessage(action: WebsocketAction, chatUserDto: ChatUserDto, chatRoomId: Long, accountResponse: AccountResponse) {
+    fun broadcastMessage(action: WebsocketAction, chatUserDto: ChatUserDto, chatRoomId: Long) {
         val stompChatUserUpdate = StompChatUserUpdate(action, chatUserDto)
-        val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, accountResponse)
+        val chatUsers = chatUserService.findByChatRoomId(chatRoomId)
 
         chatUsers.forEach { chatUser ->
             template.convertAndSendToUser(

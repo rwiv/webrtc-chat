@@ -17,18 +17,21 @@ class ChatUserService(
     val accountService: AccountService
 ) {
 
-    @Transactional
-    fun getChatUsersByChatRoomIdAssertUser(chatRoomId: Long, accountResponse: AccountResponse): List<ChatUser> {
-        val chatUsers = getChatUsersByChatRoomId(chatRoomId, accountResponse)
+    fun findAll(): MutableList<ChatUser> {
+        return chatUserRepository.findAll()
+    }
 
-        chatUsers.find { chatUser -> chatUser.account.id == accountResponse.id }
+    fun findByChatRoomIdAssertUser(chatRoomId: Long, accountResponse: AccountResponse): List<ChatUser> {
+        val chatUsers = findByChatRoomId(chatRoomId)
+
+        chatUsers
+            .find { chatUser -> chatUser.account.id == accountResponse.id }
             ?: throw AccessDeniedException("You are not a chat room member")
 
         return chatUsers
     }
 
-    @Transactional
-    fun getChatUsersByChatRoomId(chatRoomId: Long, accountResponse: AccountResponse): List<ChatUser> {
+    fun findByChatRoomId(chatRoomId: Long): List<ChatUser> {
         val chatRoom = chatRoomService.findById(chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 

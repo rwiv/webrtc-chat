@@ -22,7 +22,7 @@ class ChatMessageHttpController(
     @PostMapping("/list")
     fun getChatMessages(@ModelAttribute form: ChatMessagesFindForm): List<StompChatMessage> {
         return chatMessageService
-            .getChatMessagesBy(form)
+            .findByForm(form)
             .map { chatMessage -> StompChatMessage.of(chatMessage) }
     }
 
@@ -40,7 +40,7 @@ class ChatMessageHttpController(
         val chatMessage = chatMessageService.createChatMessage(chatMessageCreation, accountResponse)
         val stompMessage = StompChatMessage.of(chatMessage)
 
-        val chatUsers = chatUserService.getChatUsersByChatRoomId(chatRoomId, accountResponse)
+        val chatUsers = chatUserService.findByChatRoomId(chatRoomId)
 
         chatUsers.forEach { chatUser ->
             template.convertAndSendToUser(

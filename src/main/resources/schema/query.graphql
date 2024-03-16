@@ -1,4 +1,12 @@
 type Query {
     accounts: [Account!]
+    me: Account
+
     chatRooms: [ChatRoom!]
+
+    chatUsers: [ChatUser!]
+    chatUsersByChatRoomId(chatRoomId: Long): [ChatUser!]
+
+    chatMessages: [ChatMessage!]
+    chatMessagesByForm(form: ChatMessageFindForm): [ChatMessage!]
 }

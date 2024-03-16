@@ -12,6 +12,11 @@
 java -jar ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar
 ```
 
+## GraphQL testing
+
 - 브라우저에서 http://localhost:8080/graphiql 로 접속해 graphql 테스트 가능
     - 서버를 `dev` 모드로 실행했다면 test용 mock data가 db에 존재할 것
-- graphql schema: [src/main/resources/schema](src/main/resources/schema)
+- graphql schema: [click](src/main/resources/schema)
+- test example: [click](test/graphql_test.md)
+
+

@@ -32,7 +32,7 @@ class DefaultSecurityConfig(
         "/users/register",
         "/dev/**",
         "/test/stomp",
-        "/graphiql/**"
+        "/graphiql/**",
     )
     val ignoreList = listOf(
         "/favicon.ico",

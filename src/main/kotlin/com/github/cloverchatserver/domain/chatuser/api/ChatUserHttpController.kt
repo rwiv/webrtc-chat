@@ -14,7 +14,7 @@ class ChatUserHttpController(val chatUserService: ChatUserService) {
     fun getChatUsersByChatRoomId(@PathVariable chatRoomId: Long, authentication: Authentication): List<ChatUserDto> {
         val accountResponse = authentication.details as AccountResponse
 
-        return chatUserService.getChatUsersByChatRoomIdAssertUser(chatRoomId, accountResponse)
+        return chatUserService.findByChatRoomIdAssertUser(chatRoomId, accountResponse)
             .map { chatUser -> ChatUserDto.of(chatUser) }
     }
 
