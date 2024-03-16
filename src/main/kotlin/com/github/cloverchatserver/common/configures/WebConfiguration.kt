@@ -1,6 +1,7 @@
 package com.github.cloverchatserver.common.configures
 
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -8,8 +9,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebConfiguration : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/**")
-            .allowedOrigins("/**")
-            .allowedMethods("GET", "POST", "PUT", "DELETE")
+        registry
+            .addMapping("/**")
+//            .allowCredentials(true)
+//            .allowedOrigins("http://localhost:5173")
+            .allowedOrigins(CorsConfiguration.ALL)
+            .allowedMethods(CorsConfiguration.ALL)
+            .allowedHeaders(CorsConfiguration.ALL)
     }
 }

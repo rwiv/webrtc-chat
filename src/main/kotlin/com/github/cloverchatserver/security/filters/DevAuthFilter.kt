@@ -33,7 +33,8 @@ class DevAuthFilter(
         }
 
         val reqApiKey: String = request.getHeader("Authorization") ?: ""
-        if (reqApiKey == "admin" || request.servletPath.startsWith("/graphql")) {
+        if (reqApiKey == "admin") {
+//        if (reqApiKey == "admin" || request.servletPath.startsWith("/graphql")) {
             val account = accountService.findAll().first { it.role == AccountRole.ADMIN }
             val roles = ArrayList<GrantedAuthority>().apply {
                 add(SimpleGrantedAuthority(account.role.name))
