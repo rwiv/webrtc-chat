@@ -8,5 +8,5 @@ type Query {
     chatUsersByChatRoomId(chatRoomId: Long): [ChatUser!]
 
     chatMessages: [ChatMessage!]
-    chatMessagesByForm(form: ChatMessageFindForm): [ChatMessage!]
+    chatMessagesByChatRoomId(chatRoomId: Long): [ChatMessage!]
 }

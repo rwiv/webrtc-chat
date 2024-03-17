@@ -20,8 +20,8 @@ export type Scalars = {
 export type Account = {
   __typename?: 'Account';
   id: Scalars['Long']['output'];
+  /**     password: String! */
   nickname: Scalars['String']['output'];
-  password: Scalars['String']['output'];
   role: AccountRole;
   username: Scalars['String']['output'];
 };
@@ -45,12 +45,6 @@ export type ChatMessage = {
   createAccount: Account;
   createAt: Scalars['DateTime']['output'];
   id: Scalars['Long']['output'];
-};
-
-export type ChatMessageFindForm = {
-  chatRoomId: Scalars['Long']['input'];
-  password?: InputMaybe<Scalars['String']['input']>;
-  type: ChatRoomType;
 };
 
 export type ChatRoom = {
@@ -342,7 +336,7 @@ export type MutationCreateChatRoomArgs = {
 
 
 export type MutationDeleteChatRoomArgs = {
-  chatRoomId?: InputMaybe<Scalars['Long']['input']>;
+  chatRoomId: Scalars['Long']['input'];
 };
 
 export type Query = {
@@ -350,7 +344,7 @@ export type Query = {
   _service: _Service;
   accounts?: Maybe<Array<Account>>;
   chatMessages?: Maybe<Array<ChatMessage>>;
-  chatMessagesByForm?: Maybe<Array<ChatMessage>>;
+  chatMessagesByChatRoomId?: Maybe<Array<ChatMessage>>;
   chatRooms?: Maybe<Array<ChatRoom>>;
   chatUsers?: Maybe<Array<ChatUser>>;
   chatUsersByChatRoomId?: Maybe<Array<ChatUser>>;
@@ -358,8 +352,8 @@ export type Query = {
 };
 
 
-export type QueryChatMessagesByFormArgs = {
-  form?: InputMaybe<ChatMessageFindForm>;
+export type QueryChatMessagesByChatRoomIdArgs = {
+  chatRoomId?: InputMaybe<Scalars['Long']['input']>;
 };
 
 

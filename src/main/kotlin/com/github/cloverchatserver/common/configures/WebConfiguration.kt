@@ -12,8 +12,7 @@ class WebConfiguration : WebMvcConfigurer {
         registry
             .addMapping("/**")
             .allowCredentials(true)
-            .allowedOrigins("http://localhost:5173")
-//            .allowedOrigins(CorsConfiguration.ALL)
+            .allowedOrigins("http://localhost:5173", "http://localhost:4173")
             .allowedMethods(CorsConfiguration.ALL)
             .allowedHeaders(CorsConfiguration.ALL)
     }

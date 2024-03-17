@@ -12,7 +12,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 class StompConfig : WebSocketMessageBrokerConfigurer {
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/stomp")
+        registry
+            .addEndpoint("/stomp")
+            .setAllowedOrigins("*")
     }
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {

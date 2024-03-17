@@ -2,5 +2,5 @@ type Mutation {
     createAccount(creation: AccountCreation!): Account!
 
     createChatRoom(req: ChatRoomCreateRequest!): ChatRoom!
-    deleteChatRoom(chatRoomId: Long): ChatRoom!
+    deleteChatRoom(chatRoomId: Long!): ChatRoom!
 }

@@ -12,18 +12,18 @@ export const accountFields = `
 `;
 
 const meQL = gql`
-  query Me {
-    me {
-      ...accountFields
+    query Me {
+        me {
+            ...accountFields
+        }
     }
-  }
-  
-  fragment accountFields on Account {
-    id
-    role
-    username
-    nickname
-  }
+
+    fragment accountFields on Account {
+        id
+        role
+        username
+        nickname
+    }
 `;
 
 export function useMe() {
@@ -31,12 +31,12 @@ export function useMe() {
 }
 
 const accounts = gql`
-  query Accounts {
-    accounts {
-      ...accountFields
+    query Accounts {
+        accounts {
+            ...accountFields
+        }
     }
-  }
-  ${accountFields}
+    ${accountFields}
 `;
 
 export function useAccounts() {
@@ -47,9 +47,9 @@ export function login(username: string, password: string) {
   return fetch(
     `${consts.endpoint}/api/auth/login`,
     {
-      credentials: "include",
       method: 'POST',
       body: JSON.stringify({username, password}),
+      credentials: "include",
     }
   );
 }
@@ -58,8 +58,8 @@ export function logout() {
   return fetch(
     `${consts.endpoint}/api/auth/logout`,
     {
-      credentials: "include",
       method: 'POST',
+      credentials: "include",
     }
   );
 }

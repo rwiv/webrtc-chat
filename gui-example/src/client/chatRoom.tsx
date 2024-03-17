@@ -3,24 +3,24 @@ import {Mutation, Query} from "@/graphql/types.ts";
 import {accountFields} from "@/client/account.tsx";
 
 const chatRooms = gql`
-  query ChatRooms {
-    chatRooms {
-      id
-      createAccount {
-        id
-      }
-      title
-      password
-      createDate
-      type
-      chatMessages {
-        id
-      }
-      chatUsers {
-        id
-      }
+    query ChatRooms {
+        chatRooms {
+            id
+            createAccount {
+                id
+            }
+            title
+            password
+            createDate
+            type
+            chatMessages {
+                id
+            }
+            chatUsers {
+                id
+            }
+        }
     }
-  }
 `;
 
 export function useChatRooms() {
@@ -28,17 +28,17 @@ export function useChatRooms() {
 }
 
 const createChatRoomQL = gql`
-  mutation CreateChatRoom($req: ChatRoomCreateRequest!) {
-    createChatRoom(req: $req) {
-      id
-      title
-      createDate
-      createAccount {
-        ...accountFields
-      }
+    mutation CreateChatRoom($req: ChatRoomCreateRequest!) {
+        createChatRoom(req: $req) {
+            id
+            title
+            createDate
+            createAccount {
+                ...accountFields
+            }
+        }
     }
-  }
-  ${accountFields}
+    ${accountFields}
 `;
 
 export function useCreateChatRoom() {
@@ -49,17 +49,17 @@ export function useCreateChatRoom() {
 }
 
 const deleteChatRoomQL = gql`
-  mutation DeleteChatRoom($chatRoomId: Long!) {
-    deleteChatRoom(chatRoomId: $chatRoomId) {
-      id
-      title
-      createDate
-      createAccount {
-        ...accountFields
-      }
+    mutation DeleteChatRoom($chatRoomId: Long!) {
+        deleteChatRoom(chatRoomId: $chatRoomId) {
+            id
+            title
+            createDate
+            createAccount {
+                ...accountFields
+            }
+        }
     }
-  }
-  ${accountFields}
+    ${accountFields}
 `;
 
 export function useDeleteChatRoom() {

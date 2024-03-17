@@ -43,15 +43,15 @@ class ChatUserService(
         val chatRoom = chatRoomService.findById(chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 
-        val user = accountService.findById(accountResponse.id)
+        val account = accountService.findById(accountResponse.id)
             ?: throw NotFoundException("not found account")
 
-        val chatUsers = chatUserRepository.findByChatRoomAndAccount(chatRoom, user)
+        val chatUsers = chatUserRepository.findByChatRoomAndAccount(chatRoom, account)
         if (chatUsers.isNotEmpty()) {
             throw DuplicatedChatUserException("ChatUser is already exist")
         }
 
-        val newChatUser = ChatUser(null, chatRoom, user, sessionId)
+        val newChatUser = ChatUser(null, chatRoom, account, sessionId)
         chatRoom.chatUsers.add(newChatUser)
 
         return chatUserRepository.save(newChatUser)

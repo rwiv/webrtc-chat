@@ -22,18 +22,17 @@ class WebSocketListener(
         const val SESSION_ID_KEY = "simpSessionId"
     }
 
-    @EventListener
-    fun handleSessionDisconnect(event: SessionDisconnectEvent) {
-        val headers = event.message.headers
-
-        val accountResponse = (event.user as AuthenticationToken).details as AccountResponse
-        val sessionId = headers[SESSION_ID_KEY] as String
-
-        try {
-            val chatUser = chatUserService.deleteChatUserBySessionId(sessionId, accountResponse)
-            broadcastMessage(WebsocketAction.DELETE, ChatUserDto.of(chatUser), chatUser.chatRoom.id!!)
-        } catch (_: RuntimeException) {}
-    }
+//    @EventListener
+//    fun handleSessionDisconnect(event: SessionDisconnectEvent) {
+//        val headers = event.message.headers
+//
+//        val accountResponse = (event.user as AuthenticationToken).details as AccountResponse
+//        val sessionId = headers[SESSION_ID_KEY] as String
+//
+//        try {
+//            val chatUser = chatUserService.deleteChatUserBySessionId(sessionId, accountResponse)
+//        } catch (_: RuntimeException) {}
+//    }
 
     @EventListener
     fun handleSessionSubscribe(event: SessionSubscribeEvent) {
@@ -50,21 +49,7 @@ class WebSocketListener(
         val sessionId = headers[SESSION_ID_KEY] as String
 
         try {
-            val chatUser = chatUserService.createChatUser(chatRoomId, accountResponse, sessionId)
-            broadcastMessage(WebsocketAction.CREATE, ChatUserDto.of(chatUser), chatUser.chatRoom.id!!)
+            chatUserService.createChatUser(chatRoomId, accountResponse, sessionId)
         } catch (_: RuntimeException) {}
-    }
-
-    fun broadcastMessage(action: WebsocketAction, chatUserDto: ChatUserDto, chatRoomId: Long) {
-        val stompChatUserUpdate = StompChatUserUpdate(action, chatUserDto)
-        val chatUsers = chatUserService.findByChatRoomId(chatRoomId)
-
-        chatUsers.forEach { chatUser ->
-            template.convertAndSendToUser(
-                chatUser.account.username,
-                "/sub/user/$chatRoomId",
-                stompChatUserUpdate
-            )
-        }
     }
 }
