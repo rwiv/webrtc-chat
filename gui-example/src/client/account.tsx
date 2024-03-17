@@ -13,7 +13,7 @@ export const accountFields = `
 
 const meQL = gql`
     query Me {
-        me {
+        account {
             ...accountFields
         }
     }
@@ -30,9 +30,9 @@ export function useMe() {
   return useQuery<Query>(meQL);
 }
 
-const accounts = gql`
-    query Accounts {
-        accounts {
+const accountsAll = gql`
+    query AccountsAll {
+        accountsAll {
             ...accountFields
         }
     }
@@ -40,7 +40,7 @@ const accounts = gql`
 `;
 
 export function useAccounts() {
-  return useQuery<Query>(accounts);
+  return useQuery<Query>(accountsAll);
 }
 
 export function login(username: string, password: string) {

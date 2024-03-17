@@ -1,12 +1,11 @@
 type Query {
-    accounts: [Account!]
-    me: Account
+    accountsAll: [Account!]
+    account: Account
 
-    chatRooms: [ChatRoom!]
+    chatRoomsAll: [ChatRoom!]
+    chatRoom(id: Long): ChatRoom
 
-    chatUsers: [ChatUser!]
-    chatUsersByChatRoomId(chatRoomId: Long): [ChatUser!]
+    chatUsersAll: [ChatUser!]
 
-    chatMessages: [ChatMessage!]
-    chatMessagesByChatRoomId(chatRoomId: Long): [ChatMessage!]
+    chatMessagesAll: [ChatMessage!]
 }

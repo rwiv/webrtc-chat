@@ -3,4 +3,6 @@ type Mutation {
 
     createChatRoom(req: ChatRoomCreateRequest!): ChatRoom!
     deleteChatRoom(chatRoomId: Long!): ChatRoom!
+
+    createChatUser(chatRoomId: Long): ChatUser!
 }

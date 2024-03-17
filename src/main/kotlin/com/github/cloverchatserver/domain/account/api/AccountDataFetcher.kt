@@ -16,13 +16,13 @@ class AccountDataFetcher(
 ) {
 
     @DgsQuery
-    fun accounts(): List<Account> {
+    fun accountsAll(): List<Account> {
         val accounts = accountService.findAll()
         return accounts
     }
 
     @DgsQuery
-    fun me(authentication: Authentication): Account? {
+    fun account(authentication: Authentication): Account? {
         if (authentication is AnonymousAuthenticationToken) {
             return null
         }

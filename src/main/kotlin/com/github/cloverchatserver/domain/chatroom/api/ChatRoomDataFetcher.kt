@@ -15,7 +15,12 @@ class ChatRoomDataFetcher(
 ) {
 
     @DgsQuery
-    fun chatRooms(): List<ChatRoom> {
+    fun chatRoom(@InputArgument id: Long): ChatRoom? {
+        return chatRoomService.findById(id)
+    }
+
+    @DgsQuery
+    fun chatRoomsAll(): List<ChatRoom> {
         return chatRoomService.findAll()
     }
 

@@ -2,9 +2,9 @@ import {gql, useMutation, useQuery} from "@apollo/client";
 import {Mutation, Query} from "@/graphql/types.ts";
 import {accountFields} from "@/client/account.tsx";
 
-const chatRooms = gql`
-    query ChatRooms {
-        chatRooms {
+const chatRoomsAll = gql`
+    query ChatRoomsAll {
+        chatRoomsAll {
             id
             createAccount {
                 id
@@ -13,18 +13,12 @@ const chatRooms = gql`
             password
             createDate
             type
-            chatMessages {
-                id
-            }
-            chatUsers {
-                id
-            }
         }
     }
 `;
 
-export function useChatRooms() {
-  return useQuery<Query>(chatRooms);
+export function useChatRoomsAll() {
+  return useQuery<Query>(chatRoomsAll);
 }
 
 const createChatRoomQL = gql`
@@ -43,7 +37,7 @@ const createChatRoomQL = gql`
 
 export function useCreateChatRoom() {
   const [createChatRoom] = useMutation<Mutation>(createChatRoomQL, {
-    refetchQueries: [ "ChatRooms" ],
+    refetchQueries: [ "ChatRoomsAll" ],
   });
   return {createChatRoom};
 }
@@ -64,7 +58,7 @@ const deleteChatRoomQL = gql`
 
 export function useDeleteChatRoom() {
   const [deleteChatRoom] = useMutation<Mutation>(deleteChatRoomQL, {
-    refetchQueries: [ "ChatRooms" ],
+    refetchQueries: [ "ChatRoomsAll" ],
   });
   return {deleteChatRoom};
 }

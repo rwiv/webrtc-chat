@@ -1,4 +1,4 @@
-import {useChatRooms, useCreateChatRoom, useDeleteChatRoom} from "@/client/chatRoom.tsx";
+import {useChatRoomsAll, useCreateChatRoom, useDeleteChatRoom} from "@/client/chatRoom.tsx";
 import {logout, useMe} from "@/client/account.tsx";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
@@ -9,7 +9,7 @@ export default function IndexPage() {
   const [chatRoomInput, setChatRoomInput] = useState("");
 
   const {data: me, error} = useMe();
-  const {data: chatRooms} = useChatRooms();
+  const {data: chatRooms} = useChatRoomsAll();
   const {createChatRoom} = useCreateChatRoom();
   const {deleteChatRoom} = useDeleteChatRoom();
 
@@ -57,14 +57,14 @@ export default function IndexPage() {
     <>
       {me && (
         <div>
-          <div>{me?.me?.username}</div>
-          <div>{me?.me?.nickname}</div>
+          <div>{me?.account?.username}</div>
+          <div>{me.account?.nickname}</div>
           <button onClick={onLogout}>logout</button>
           <br/>
           <br/>
         </div>
       )}
-      {chatRooms?.chatRooms?.map(chatRoom => (
+      {chatRooms?.chatRoomsAll?.map(chatRoom => (
         <div key={chatRoom.id}>
           <Link to={`/chat-rooms/${chatRoom.id}`}>
             <span>{chatRoom.title}</span>

@@ -15,13 +15,8 @@ class ChatMessageDataFetcher(
 ) {
 
     @DgsQuery
-    fun chatMessages(): MutableList<ChatMessage> {
+    fun chatMessagesAll(): MutableList<ChatMessage> {
         return chatMessageService.findAll()
-    }
-
-    @DgsQuery
-    fun chatMessagesByChatRoomId(chatRoomId: Long): List<ChatMessage> {
-        return chatMessageService.findByChatRoomId(chatRoomId)
     }
 
     @DgsData(parentType = "ChatMessage")

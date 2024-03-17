@@ -1,6 +1,6 @@
 import {useParams} from "react-router";
 import React, {useEffect, useState} from "react";
-import {sendMessage, useChatMessagesChatRoomId} from "@/client/chatMessage.tsx";
+import {sendMessage, useChatRoomAndMessages} from "@/client/chatMessage.tsx";
 import {useApolloClient} from "@apollo/client";
 import {Client, StompSubscription} from "@stomp/stompjs";
 import {consts} from "@/configures/consts.ts";
@@ -18,8 +18,12 @@ export function ChatRoomPage() {
   const [stompSubs, setStompSubs] = useState<StompSubscription[]>([]);
 
   // const {data: chatMessages} = useChatMessages();
-  const {data: chatMessages} = useChatMessagesChatRoomId(parseInt(chatRoomId));
+  const {data} = useChatRoomAndMessages(parseInt(chatRoomId));
   const [chatMessageInput, setChatMessageInput] = useState("");
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   useEffect(() => {
     connect();
@@ -39,7 +43,7 @@ export function ChatRoomPage() {
       onConnect: () => {
         const sub = newStompClient.subscribe(`/sub/message/${chatRoomId}`, msg => {
           apolloClient.refetchQueries({
-            include: ["ChatMessagesByChatRoomId"],
+            include: ["ChatRoomAndMessages"],
           });
           console.log(msg);
         });
@@ -82,7 +86,7 @@ export function ChatRoomPage() {
   return (
     <>
       <div>{chatRoomId}</div>
-      {chatMessages?.chatMessagesByChatRoomId?.map(chatMessage => (
+      {data?.chatRoom?.chatMessages?.map(chatMessage => (
         <div key={chatMessage.id}>
           {`${chatMessage.createAccount.nickname}: ${chatMessage.content}`}
         </div>
