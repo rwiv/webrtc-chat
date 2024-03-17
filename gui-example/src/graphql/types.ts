@@ -323,6 +323,7 @@ export type Mutation = {
   createChatRoom: ChatRoom;
   createChatUser: ChatUser;
   deleteChatRoom: ChatRoom;
+  deleteChatUserMe: ChatUser;
 };
 
 
@@ -337,11 +338,17 @@ export type MutationCreateChatRoomArgs = {
 
 
 export type MutationCreateChatUserArgs = {
-  chatRoomId?: InputMaybe<Scalars['Long']['input']>;
+  chatRoomId: Scalars['Long']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
 
 export type MutationDeleteChatRoomArgs = {
+  chatRoomId: Scalars['Long']['input'];
+};
+
+
+export type MutationDeleteChatUserMeArgs = {
   chatRoomId: Scalars['Long']['input'];
 };
 
@@ -351,26 +358,14 @@ export type Query = {
   account?: Maybe<Account>;
   accountsAll?: Maybe<Array<Account>>;
   chatMessagesAll?: Maybe<Array<ChatMessage>>;
-  chatMessagesByChatRoomId?: Maybe<Array<ChatMessage>>;
   chatRoom?: Maybe<ChatRoom>;
   chatRoomsAll?: Maybe<Array<ChatRoom>>;
   chatUsersAll?: Maybe<Array<ChatUser>>;
-  chatUsersByChatRoomId?: Maybe<Array<ChatUser>>;
-};
-
-
-export type QueryChatMessagesByChatRoomIdArgs = {
-  chatRoomId?: InputMaybe<Scalars['Long']['input']>;
 };
 
 
 export type QueryChatRoomArgs = {
   id?: InputMaybe<Scalars['Long']['input']>;
-};
-
-
-export type QueryChatUsersByChatRoomIdArgs = {
-  chatRoomId?: InputMaybe<Scalars['Long']['input']>;
 };
 
 export type _Service = {

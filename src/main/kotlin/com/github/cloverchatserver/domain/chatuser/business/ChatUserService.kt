@@ -1,5 +1,6 @@
 package com.github.cloverchatserver.domain.chatuser.business
 
+import com.github.cloverchatserver.common.error.exception.HttpException
 import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
@@ -39,9 +40,12 @@ class ChatUserService(
     }
 
     @Transactional
-    fun createChatUser(chatRoomId: Long, accountResponse: AccountResponse, sessionId: String): ChatUser {
+    fun createChatUser(chatRoomId: Long, password: String?, accountResponse: AccountResponse): ChatUser {
         val chatRoom = chatRoomService.findById(chatRoomId)
             ?: throw NotFoundException("not found chatroom")
+        if (chatRoom.password !== password) {
+            throw HttpException(403, "invalid password")
+        }
 
         val account = accountService.findById(accountResponse.id)
             ?: throw NotFoundException("not found account")
@@ -51,50 +55,28 @@ class ChatUserService(
             throw DuplicatedChatUserException("ChatUser is already exist")
         }
 
-        val newChatUser = ChatUser(null, chatRoom, account, sessionId)
+        val newChatUser = ChatUser(null, chatRoom, account)
         chatRoom.chatUsers.add(newChatUser)
 
         return chatUserRepository.save(newChatUser)
     }
 
     @Transactional
-    fun deleteChatUserBySessionId(sessionId: String, accountResponse: AccountResponse): ChatUser {
-        val chatUser = chatUserRepository.findBySessionId(sessionId)
-            ?: throw NotFoundException("not found chatuser")
+    fun deleteChatUserByAccountId(chatRoomId: Long, accountId: Long): ChatUser {
+        val chatRoom = chatRoomService.findById(chatRoomId)
+            ?: throw NotFoundException("not found chatRoom")
+        val account = accountService.findById(accountId)
+            ?: throw NotFoundException("not found account")
 
-        if (chatUser.account.id != accountResponse.id) {
-            throw AccessDeniedException("You are not a chat room member")
+        val chatUsers = chatUserRepository.findByChatRoomAndAccount(chatRoom, account)
+        if (chatUsers.size > 1) {
+            throw HttpException(400, "duplicated chatUsers")
+        }
+        if (chatUsers.size === 0) {
+            throw NotFoundException("not found chatUser")
         }
 
-        chatUserRepository.delete(chatUser)
-
-        return chatUser
+        chatUserRepository.delete(chatUsers[0])
+        return chatUsers[0]
     }
-
-//    @Transactional
-//    fun deleteChatUserByUserId(responseUser: ResponseUser): List<ChatUser> {
-//        val user = userService.getUserBy(responseUser.id)
-//            ?: throw UserNotFoundException()
-//
-//        val chatUsers = chatUserRepository.findByUser(user)
-//
-//        chatUserRepository.deleteAll(chatUsers)
-//
-//        return chatUsers
-//    }
-//
-//    @Transactional
-//    fun deleteChatUserByUserIdAndChatRoomId(chatRoomId: Long, responseUser: ResponseUser): List<ChatUser> {
-//        val chatRoom = chatRoomService.getChatRoomById(chatRoomId)
-//            ?: throw ChatRoomNotFoundException()
-//
-//        val user = userService.getUserBy(responseUser.id)
-//            ?: throw UserNotFoundException()
-//
-//        val chatUsers = chatUserRepository.findByChatRoomAndUser(chatRoom, user)
-//
-//        chatUserRepository.deleteAll(chatUsers)
-//
-//        return chatUsers
-//    }
 }

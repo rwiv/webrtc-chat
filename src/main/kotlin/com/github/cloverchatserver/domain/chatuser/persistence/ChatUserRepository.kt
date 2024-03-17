@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface ChatUserRepository : JpaRepository<ChatUser, Long> {
 
     fun findByChatRoom(chatRoom: ChatRoom): List<ChatUser>
-    fun findBySessionId(sessionId: String): ChatUser?
     fun findByChatRoomAndAccount(chatRoom: ChatRoom, account: Account): List<ChatUser>
 }

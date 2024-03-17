@@ -1,14 +1,11 @@
 package com.github.cloverchatserver.common.websocket
 
-import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserDto
-import com.github.cloverchatserver.domain.chatuser.api.domain.StompChatUserUpdate
+import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
 import com.github.cloverchatserver.security.authentication.AuthenticationToken
-import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
-import org.springframework.web.socket.messaging.SessionDisconnectEvent
 import org.springframework.web.socket.messaging.SessionSubscribeEvent
 
 @Component
@@ -34,22 +31,22 @@ class WebSocketListener(
 //        } catch (_: RuntimeException) {}
 //    }
 
-    @EventListener
-    fun handleSessionSubscribe(event: SessionSubscribeEvent) {
-        val headers = event.message.headers
-        val dest: String = headers[SESSION_DEST_KEY] as String
-
-        val chunks = dest.split("/")
-        if (chunks[2] != "message") {
-            return
-        }
-
-        val chatRoomId = chunks[3].toLong()
-        val accountResponse = (event.user as AuthenticationToken).details as AccountResponse
-        val sessionId = headers[SESSION_ID_KEY] as String
-
-        try {
-            chatUserService.createChatUser(chatRoomId, accountResponse, sessionId)
-        } catch (_: RuntimeException) {}
-    }
+//    @EventListener
+//    fun handleSessionSubscribe(event: SessionSubscribeEvent) {
+//        val headers = event.message.headers
+//        val dest: String = headers[SESSION_DEST_KEY] as String
+//
+//        val chunks = dest.split("/")
+//        if (chunks[2] != "message") {
+//            return
+//        }
+//
+//        val chatRoomId = chunks[3].toLong()
+//        val accountResponse = (event.user as AuthenticationToken).details as AccountResponse
+////        val sessionId = headers[SESSION_ID_KEY] as String
+//
+//        try {
+//            chatUserService.createChatUser(chatRoomId, accountResponse)
+//        } catch (_: RuntimeException) {}
+//    }
 }

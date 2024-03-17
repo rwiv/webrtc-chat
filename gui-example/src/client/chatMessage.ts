@@ -1,23 +1,15 @@
 import {gql, useQuery} from "@apollo/client";
 import {Query} from "@/graphql/types.ts";
 import {consts} from "@/configures/consts.ts";
+import {chatRoomDefaultFields} from "@/client/chatRoom.ts";
+import {accountDefaultFields} from "@/client/account.ts";
 
 const chatRoomAndMessages = gql`
     query ChatRoomAndMessages($id: Long) {
         chatRoom(id: $id) {
-            id
-            createAccount {
-                id
-            }
-            title
-            password
-            createDate
-            type
+            ...chatRoomDefaultFields
             chatMessages {
                 id
-                chatRoom {
-                    id
-                }
                 createAccount {
                     id
                     nickname
@@ -25,8 +17,19 @@ const chatRoomAndMessages = gql`
                 content
                 createAt
             }
+            chatUsers {
+                id
+                chatRoom {
+                    id
+                }
+                account {
+                    ...accountDefaultFields
+                }
+            }
         }
     }
+    ${chatRoomDefaultFields}
+    ${accountDefaultFields}
 `;
 
 export function useChatRoomAndMessages(chatRoomId: number) {

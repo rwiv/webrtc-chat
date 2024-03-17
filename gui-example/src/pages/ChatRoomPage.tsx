@@ -1,9 +1,10 @@
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import React, {useEffect, useState} from "react";
-import {sendMessage, useChatRoomAndMessages} from "@/client/chatMessage.tsx";
+import {sendMessage, useChatRoomAndMessages} from "@/client/chatMessage.ts";
 import {useApolloClient} from "@apollo/client";
 import {Client, StompSubscription} from "@stomp/stompjs";
 import {consts} from "@/configures/consts.ts";
+import {useDeleteChatUserMe} from "@/client/chatUser.ts";
 
 export function ChatRoomPage() {
 
@@ -13,13 +14,15 @@ export function ChatRoomPage() {
     throw Error("chatRoomId is null");
   }
 
-  const apolloClient = useApolloClient();
+  const [chatMessageInput, setChatMessageInput] = useState("");
   const [stompClient, setStompClient] = useState<Client>();
   const [stompSubs, setStompSubs] = useState<StompSubscription[]>([]);
 
-  // const {data: chatMessages} = useChatMessages();
   const {data} = useChatRoomAndMessages(parseInt(chatRoomId));
-  const [chatMessageInput, setChatMessageInput] = useState("");
+  const {deleteChatUserMe} = useDeleteChatUserMe();
+
+  const apolloClient = useApolloClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(data);
@@ -83,14 +86,25 @@ export function ChatRoomPage() {
     setState(e.target.value);
   };
 
+  const onExit = async () => {
+    const variables = { chatRoomId: parseInt(chatRoomId) };
+    const res = await deleteChatUserMe({ variables })
+    console.log(res);
+    navigate("/");
+  }
+
   return (
     <>
       <div>{chatRoomId}</div>
+      {data?.chatRoom?.chatUsers?.map(chatUser => (
+        <div key={chatUser.id}>{`${chatUser.account.nickname}`}</div>
+      ))}
+      <br/>
       {data?.chatRoom?.chatMessages?.map(chatMessage => (
         <div key={chatMessage.id}>
           {`${chatMessage.createAccount.nickname}: ${chatMessage.content}`}
         </div>
-        ))}
+      ))}
       <div>
       <input
           onChange={e => handleChange(e, setChatMessageInput)}
@@ -98,6 +112,7 @@ export function ChatRoomPage() {
         />
         <button onClick={() => send()}>send</button>
       </div>
+      <button onClick={onExit}>exit</button>
     </>
   )
 }

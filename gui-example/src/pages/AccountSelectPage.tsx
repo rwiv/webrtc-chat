@@ -1,4 +1,4 @@
-import {login} from "@/client/account.tsx";
+import {login} from "@/client/account.ts";
 import {useNavigate} from "react-router";
 import {useApolloClient} from "@apollo/client";
 

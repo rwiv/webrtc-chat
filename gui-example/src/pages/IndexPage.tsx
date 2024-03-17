@@ -1,9 +1,10 @@
-import {useChatRoomsAll, useCreateChatRoom, useDeleteChatRoom} from "@/client/chatRoom.tsx";
-import {logout, useMe} from "@/client/account.tsx";
+import {useChatRoomsAll, useCreateChatRoom, useDeleteChatRoom} from "@/client/chatRoom.ts";
+import {logout, useMe} from "@/client/account.ts";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
-import {ChatRoomCreateRequest, ChatRoomType} from "@/graphql/types.ts";
-import {Link} from "react-router-dom";
+import {ChatRoom, ChatRoomCreateRequest, ChatRoomType, Query} from "@/graphql/types.ts";
+import {chatRoomAndUsersQL, useCreateChatUser} from "@/client/chatUser.ts";
+import {useApolloClient} from "@apollo/client";
 
 export default function IndexPage() {
   const [chatRoomInput, setChatRoomInput] = useState("");
@@ -12,8 +13,10 @@ export default function IndexPage() {
   const {data: chatRooms} = useChatRoomsAll();
   const {createChatRoom} = useCreateChatRoom();
   const {deleteChatRoom} = useDeleteChatRoom();
+  const {createChatUser} = useCreateChatUser();
 
   const navigate = useNavigate();
+  const client = useApolloClient();
 
   useEffect(() => {
     if (error) {
@@ -53,6 +56,31 @@ export default function IndexPage() {
     setState(e.target.value);
   };
 
+  const onClickLink = async (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    chatRoom: ChatRoom,
+  ) => {
+    e.preventDefault();
+
+    const data = await client.query<Query>({
+      query: chatRoomAndUsersQL,
+      variables: { id: chatRoom.id },
+    });
+    const filtered = data.data?.chatRoom?.chatUsers?.filter(it => {
+      return it.account.id === me?.account?.id;
+    });
+    if (filtered?.length === 0) {
+      const variables = {
+        chatRoomId: chatRoom.id,
+        password: null,
+      }
+      const res = await createChatUser({variables})
+      console.log(res.data);
+    }
+
+    navigate(`/chat-rooms/${chatRoom.id}`);
+  }
+
   return (
     <>
       {me && (
@@ -66,9 +94,9 @@ export default function IndexPage() {
       )}
       {chatRooms?.chatRoomsAll?.map(chatRoom => (
         <div key={chatRoom.id}>
-          <Link to={`/chat-rooms/${chatRoom.id}`}>
+          <a href={""} onClick={e => onClickLink(e, chatRoom)}>
             <span>{chatRoom.title}</span>
-          </Link>
+          </a>
           <span>  </span>
           <button onClick={() => onDeleteChatRoom(chatRoom.id)}>x</button>
         </div>

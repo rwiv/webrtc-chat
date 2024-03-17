@@ -1,18 +1,35 @@
 import {gql, useMutation, useQuery} from "@apollo/client";
 import {Mutation, Query} from "@/graphql/types.ts";
-import {accountFields} from "@/client/account.tsx";
+import {accountDefaultFields} from "@/client/account.ts";
+
+export const chatRoomDefaultFields = `
+    fragment chatRoomDefaultFields on ChatRoom {
+        id
+        password
+        title
+        createDate
+        type
+        createAccount {
+            id
+        }
+    }
+`;
 
 const chatRoomsAll = gql`
     query ChatRoomsAll {
         chatRoomsAll {
+            ...chatRoomDefaultFields
+        }
+    }
+    
+    fragment chatRoomDefaultFields on ChatRoom {
+        id
+        password
+        title
+        createDate
+        type
+        createAccount {
             id
-            createAccount {
-                id
-            }
-            title
-            password
-            createDate
-            type
         }
     }
 `;
@@ -24,15 +41,14 @@ export function useChatRoomsAll() {
 const createChatRoomQL = gql`
     mutation CreateChatRoom($req: ChatRoomCreateRequest!) {
         createChatRoom(req: $req) {
-            id
-            title
-            createDate
+            ...chatRoomDefaultFields
             createAccount {
-                ...accountFields
+                ...accountDefaultFields
             }
         }
     }
-    ${accountFields}
+    ${chatRoomDefaultFields}
+    ${accountDefaultFields}
 `;
 
 export function useCreateChatRoom() {
@@ -45,15 +61,14 @@ export function useCreateChatRoom() {
 const deleteChatRoomQL = gql`
     mutation DeleteChatRoom($chatRoomId: Long!) {
         deleteChatRoom(chatRoomId: $chatRoomId) {
-            id
-            title
-            createDate
+            ...chatRoomDefaultFields
             createAccount {
-                ...accountFields
+                ...accountDefaultFields
             }
         }
     }
-    ${accountFields}
+    ${chatRoomDefaultFields}
+    ${accountDefaultFields}
 `;
 
 export function useDeleteChatRoom() {
