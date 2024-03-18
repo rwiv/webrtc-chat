@@ -1,79 +1,70 @@
-import {gql, useMutation, useQuery} from "@apollo/client";
-import {Mutation, Query} from "@/graphql/types.ts";
-import {accountDefaultFields} from "@/client/account.ts";
+import {gql, useMutation} from "@apollo/client";
+import {Mutation} from "@/graphql/types.ts";
+import {accountColumns} from "@/client/account.ts";
+import {getQueryName, useQuery} from "@/client/graphql_utils.ts";
 
-export const chatRoomDefaultFields = `
-    fragment chatRoomDefaultFields on ChatRoom {
+export const chatRoomColumns = gql`
+    fragment chatRoomColumns on ChatRoom {
         id
+        createAccount {
+            id
+        }
         password
         title
         createDate
         type
-        createAccount {
-            id
-        }
     }
 `;
 
-const chatRoomsAll = gql`
+const chatRoomsAllQL = gql`
     query ChatRoomsAll {
         chatRoomsAll {
-            ...chatRoomDefaultFields
+            ...chatRoomColumns
         }
     }
-    
-    fragment chatRoomDefaultFields on ChatRoom {
-        id
-        password
-        title
-        createDate
-        type
-        createAccount {
-            id
-        }
-    }
+    ${chatRoomColumns}
 `;
 
 export function useChatRoomsAll() {
-  return useQuery<Query>(chatRoomsAll);
+  return useQuery(chatRoomsAllQL);
 }
 
 const createChatRoomQL = gql`
     mutation CreateChatRoom($req: ChatRoomCreateRequest!) {
         createChatRoom(req: $req) {
-            ...chatRoomDefaultFields
+            ...chatRoomColumns
             createAccount {
-                ...accountDefaultFields
+                ...accountColumns
             }
         }
     }
-    ${chatRoomDefaultFields}
-    ${accountDefaultFields}
+    ${accountColumns}
+    ${chatRoomColumns}
 `;
 
 export function useCreateChatRoom() {
-  const [createChatRoom] = useMutation<Mutation>(createChatRoomQL, {
-    refetchQueries: [ "ChatRoomsAll" ],
+  const [createChatRoom, {loading, error}] = useMutation<Mutation>(createChatRoomQL, {
+    refetchQueries: [ getQueryName(chatRoomsAllQL) ],
   });
-  return {createChatRoom};
+  return {createChatRoom, loading, error};
 }
 
 const deleteChatRoomQL = gql`
     mutation DeleteChatRoom($chatRoomId: Long!) {
         deleteChatRoom(chatRoomId: $chatRoomId) {
-            ...chatRoomDefaultFields
+            ...chatRoomColumns
             createAccount {
-                ...accountDefaultFields
+                ...accountColumns
             }
         }
     }
-    ${chatRoomDefaultFields}
-    ${accountDefaultFields}
+    ${accountColumns}
+    ${chatRoomColumns}
 `;
 
 export function useDeleteChatRoom() {
-  const [deleteChatRoom] = useMutation<Mutation>(deleteChatRoomQL, {
-    refetchQueries: [ "ChatRoomsAll" ],
+  const [deleteChatRoom, {loading, error}] = useMutation<Mutation>(deleteChatRoomQL, {
+    refetchQueries: [ getQueryName(chatRoomsAllQL) ],
   });
-  return {deleteChatRoom};
+  return {deleteChatRoom, loading, error};
 }

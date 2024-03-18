@@ -1,9 +1,9 @@
-import {useQuery, gql} from "@apollo/client";
-import {Query} from "@/graphql/types.ts";
+import {gql} from "@apollo/client";
 import {consts} from "@/configures/consts.ts";
+import {useQuery} from "@/client/graphql_utils.ts";
 
-export const accountDefaultFields = `
-    fragment accountDefaultFields on Account {
+export const accountColumns = gql`
+    fragment accountColumns on Account {
         id
         role
         username
@@ -14,32 +14,27 @@ export const accountDefaultFields = `
 const meQL = gql`
     query Me {
         account {
-            ...accountDefaultFields
+            ...accountColumns
         }
     }
-
-    fragment accountDefaultFields on Account {
-        id
-        role
-        username
-        nickname
-    }
+    ${accountColumns}
 `;
 
 export function useMe() {
-  return useQuery<Query>(meQL);
+  return useQuery(meQL);
 }
 
-const accountsAll = gql`
+export const accountsAllQL = gql`
     query AccountsAll {
         accountsAll {
-            ...accountDefaultFields
+            ...accountColumns
         }
     }
+    ${accountColumns}
 `;
 
 export function useAccounts() {
-  return useQuery<Query>(accountsAll);
+  return useQuery(accountsAllQL);
 }
 
 export function login(username: string, password: string) {

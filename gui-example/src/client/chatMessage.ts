@@ -1,40 +1,50 @@
-import {gql, useQuery} from "@apollo/client";
-import {Query} from "@/graphql/types.ts";
+import {gql} from "@apollo/client";
 import {consts} from "@/configures/consts.ts";
-import {chatRoomDefaultFields} from "@/client/chatRoom.ts";
-import {accountDefaultFields} from "@/client/account.ts";
+import {chatRoomColumns} from "@/client/chatRoom.ts";
+import {accountColumns} from "@/client/account.ts";
+import {useQuery} from "@/client/graphql_utils.ts";
+import {chatUserColumns} from "@/client/chatUser.ts";
 
-const chatRoomAndMessages = gql`
+export const chatMessageColumns = gql`
+    fragment chatMessageColumns on ChatMessage {
+        id
+        chatRoom {
+            id
+        }
+        createAccount {
+            id
+        }
+        content
+        createAt
+    }
+`;
+
+export const chatRoomAndMessagesQL = gql`
     query ChatRoomAndMessages($id: Long) {
         chatRoom(id: $id) {
-            ...chatRoomDefaultFields
+            ...chatRoomColumns
             chatMessages {
-                id
+                ...chatMessageColumns
                 createAccount {
-                    id
-                    nickname
+                    ...accountColumns
                 }
-                content
-                createAt
             }
             chatUsers {
-                id
-                chatRoom {
-                    id
-                }
+                ...chatUserColumns
                 account {
-                    ...accountDefaultFields
+                    ...accountColumns
                 }
             }
         }
     }
-    ${chatRoomDefaultFields}
-    ${accountDefaultFields}
+    ${accountColumns}
+    ${chatRoomColumns}
+    ${chatMessageColumns}
+    ${chatUserColumns}
 `;
 
 export function useChatRoomAndMessages(chatRoomId: number) {
-    const variables = { id: chatRoomId };
-    return useQuery<Query>(chatRoomAndMessages, {variables});
+    return useQuery(chatRoomAndMessagesQL, { id: chatRoomId });
 }
 
 export async function sendMessage(chatRoomId: string, content: string) {

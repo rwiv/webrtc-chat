@@ -1,10 +1,11 @@
 import {useNavigate, useParams} from "react-router";
 import React, {useEffect, useState} from "react";
-import {sendMessage, useChatRoomAndMessages} from "@/client/chatMessage.ts";
+import {chatRoomAndMessagesQL, sendMessage, useChatRoomAndMessages} from "@/client/chatMessage.ts";
 import {useApolloClient} from "@apollo/client";
 import {Client, StompSubscription} from "@stomp/stompjs";
 import {consts} from "@/configures/consts.ts";
 import {useDeleteChatUserMe} from "@/client/chatUser.ts";
+import {getQueryName} from "@/client/graphql_utils.ts";
 
 export function ChatRoomPage() {
 
@@ -25,10 +26,6 @@ export function ChatRoomPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     connect();
     return disconnect;
   }, []);
@@ -46,7 +43,7 @@ export function ChatRoomPage() {
       onConnect: () => {
         const sub = newStompClient.subscribe(`/sub/message/${chatRoomId}`, msg => {
           apolloClient.refetchQueries({
-            include: ["ChatRoomAndMessages"],
+            include: [getQueryName(chatRoomAndMessagesQL)],
           });
           console.log(msg);
         });
