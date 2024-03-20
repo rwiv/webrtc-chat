@@ -7,7 +7,6 @@ import com.github.cloverchatserver.domain.account.persistence.Account
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsMutation
 import com.netflix.graphql.dgs.DgsQuery
-import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.core.Authentication
 
 @DgsComponent
@@ -23,9 +22,6 @@ class AccountDataFetcher(
 
     @DgsQuery
     fun account(authentication: Authentication): Account? {
-        if (authentication is AnonymousAuthenticationToken) {
-            return null
-        }
         val accountResponse = authentication.details as AccountResponse
         return accountService.findById(accountResponse.id)
     }

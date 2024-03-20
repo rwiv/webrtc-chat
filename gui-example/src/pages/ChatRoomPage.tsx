@@ -6,6 +6,9 @@ import {Client, StompSubscription} from "@stomp/stompjs";
 import {consts} from "@/configures/consts.ts";
 import {useDeleteChatUserMe} from "@/client/chatUser.ts";
 import {getQueryName} from "@/client/graphql_utils.ts";
+import {Input} from "@/components/ui/input.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {HStack} from "@/lib/layouts.tsx";
 
 export function ChatRoomPage() {
 
@@ -102,14 +105,15 @@ export function ChatRoomPage() {
           {`${chatMessage.createAccount.nickname}: ${chatMessage.content}`}
         </div>
       ))}
-      <div>
-      <input
-          onChange={e => handleChange(e, setChatMessageInput)}
+      <HStack className="m-2">
+        <Input
+          className="w-56"
+          onChange={(e: any) => handleChange(e, setChatMessageInput)}
           value={chatMessageInput}
         />
-        <button onClick={() => send()}>send</button>
-      </div>
-      <button onClick={onExit}>exit</button>
+        <Button onClick={() => send()}>send</Button>
+      </HStack>
+      <Button className="m-2" onClick={onExit}>exit</Button>
     </>
   )
 }

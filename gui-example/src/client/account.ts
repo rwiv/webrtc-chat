@@ -1,6 +1,7 @@
 import {gql} from "@apollo/client";
 import {consts} from "@/configures/consts.ts";
 import {useQuery} from "@/client/graphql_utils.ts";
+import {AccountCreation} from "@/graphql/types.ts";
 
 export const accountColumns = gql`
     fragment accountColumns on Account {
@@ -11,8 +12,8 @@ export const accountColumns = gql`
     }
 `;
 
-const meQL = gql`
-    query Me {
+export const getMyInfoQL = gql`
+    query GetMyInfo {
         account {
             ...accountColumns
         }
@@ -20,8 +21,8 @@ const meQL = gql`
     ${accountColumns}
 `;
 
-export function useMe() {
-  return useQuery(meQL);
+export function useMyInfo() {
+  return useQuery(getMyInfoQL);
 }
 
 export const accountsAllQL = gql`
@@ -37,15 +38,35 @@ export function useAccounts() {
   return useQuery(accountsAllQL);
 }
 
-export function login(username: string, password: string) {
+export function signup(creation: AccountCreation) {
   return fetch(
-    `${consts.endpoint}/api/auth/login`,
+    `${consts.endpoint}/api/auth/signup`,
     {
       method: 'POST',
-      body: JSON.stringify({username, password}),
+      body: JSON.stringify(creation),
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
     }
   );
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export function login(req: LoginRequest, remember: boolean) {
+  let url = `${consts.endpoint}/api/auth/login`;
+  if (remember) {
+    url += "?remember=true";
+  }
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(req),
+    credentials: "include",
+  });
 }
 
 export function logout() {

@@ -8,11 +8,15 @@ import {consts} from "@/configures/consts.ts";
 import {ChatRoomPage} from "@/pages/ChatRoomPage.tsx";
 import React from "react";
 import "./globals.css";
+import {SignupPage} from "@/pages/SignupPage.tsx";
+import {LoginPage} from "@/pages/LoginPage.tsx";
 
 const router = createBrowserRouter([
   { path: '/', element: <IndexPage /> },
   { path: '/account-select', element: <AccountSelectPage /> },
   { path: '/chat-rooms/:chatRoomId', element: <ChatRoomPage /> },
+  { path: '/users/login', element: <LoginPage /> },
+  { path: '/users/signup', element: <SignupPage /> },
 ]);
 
 const client = new ApolloClient({

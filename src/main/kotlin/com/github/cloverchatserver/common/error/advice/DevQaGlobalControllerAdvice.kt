@@ -15,7 +15,7 @@ class DevQaGlobalControllerAdvice(val resolver: HttpErrorResolver) {
     @ExceptionHandler
     fun handle(throwable: Throwable, req: HttpServletRequest): ResponseEntity<HttpErrorResponse> {
         val err = resolver.toHttpError(throwable, req)
-//        resolver.printErrorInfo(err)
+        resolver.printErrorInfo(err)
         return err.toResponseEntity()
     }
 }

@@ -14,22 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/users")
-class UserController(
-    val accountService: AccountService
+@RequestMapping("/api/auth")
+class AuthController(
+    val accountService: AccountService,
 ) {
 
-    @GetMapping("/me")
-    fun me(authentication: Authentication): Account? {
-        if (authentication is AnonymousAuthenticationToken) {
-            return null
-        }
-        val accountResponse = authentication.details as AccountResponse
-        return accountService.findById(accountResponse.id)
-    }
-
-    @PostMapping("/register")
-    fun register(@RequestBody accountCreation: AccountCreation): ResponseEntity<AccountResponse> {
+    @PostMapping("/signup")
+    fun signup(@RequestBody accountCreation: AccountCreation): ResponseEntity<AccountResponse> {
         val user = accountService.create(accountCreation)
         return ResponseEntity.ok().body(AccountResponse.of(user))
     }
