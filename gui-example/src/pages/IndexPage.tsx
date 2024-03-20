@@ -5,6 +5,7 @@ import {useNavigate} from "react-router";
 import {ChatRoom, ChatRoomCreateRequest, ChatRoomType, Query} from "@/graphql/types.ts";
 import {chatRoomAndUsersQL, useCreateChatUser} from "@/client/chatUser.ts";
 import {useApolloClient} from "@apollo/client";
+import {Button} from "@/components/ui/button.tsx";
 
 export default function IndexPage() {
   const [chatRoomInput, setChatRoomInput] = useState("");
@@ -87,7 +88,7 @@ export default function IndexPage() {
         <div>
           <div>{me?.account?.username}</div>
           <div>{me.account?.nickname}</div>
-          <button onClick={onLogout}>logout</button>
+          <Button onClick={onLogout}>logout</Button>
           <br/>
           <br/>
         </div>

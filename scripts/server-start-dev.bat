@@ -1,1 +1,3 @@
-docker-compose -f ../docker/docker-compose-dev.yml up
+cd ..
+
+java -jar ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar
