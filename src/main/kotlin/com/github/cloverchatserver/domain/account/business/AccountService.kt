@@ -3,6 +3,7 @@ package com.github.cloverchatserver.domain.account.business
 import com.github.cloverchatserver.domain.account.business.data.AccountCreation
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,8 +12,9 @@ import kotlin.jvm.optionals.getOrNull
 @Service
 class AccountService(
     private val accountRepository: AccountRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
 ) {
+
     @Transactional
     fun create(creation: AccountCreation): Account {
         val tbc = Account(
@@ -27,6 +29,10 @@ class AccountService(
 
     fun findAll(): List<Account> {
         return accountRepository.findAll()
+    }
+
+    fun findByPage(page: Int, size: Int): List<Account> {
+        return accountRepository.findAllBy(PageRequest.of(page, size)).content
     }
 
     fun findById(id: Long): Account? {

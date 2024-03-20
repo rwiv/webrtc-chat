@@ -1,20 +1,23 @@
 package com.github.cloverchatserver.domain.chatmsg.business
 
+import com.github.cloverchatserver.common.error.exception.NotFoundException
 import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
+import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageReadEvent
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessageRepository
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
-import com.github.cloverchatserver.common.error.exception.NotFoundException
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ChatMessageService(
-    val chatMessageRepository: ChatMessageRepository,
-    val chatRoomService: ChatRoomService,
-    val accountService: AccountService
+    private val chatMessageRepository: ChatMessageRepository,
+    private val chatRoomService: ChatRoomService,
+    private val accountService: AccountService,
+    private val publisher: ApplicationEventPublisher,
 ) {
 
     fun findAll(): MutableList<ChatMessage> {
@@ -25,7 +28,11 @@ class ChatMessageService(
         val chatRoom = chatRoomService.findById(chatRoomId)
             ?: throw NotFoundException("not found chatroom")
 
-        return chatMessageRepository.findByChatRoom(chatRoom)
+        val chatMessages = chatMessageRepository.findByChatRoom(chatRoom)
+
+        publisher.publishEvent(ChatMessageReadEvent("read"))
+
+        return chatMessages
     }
 
     @Transactional
