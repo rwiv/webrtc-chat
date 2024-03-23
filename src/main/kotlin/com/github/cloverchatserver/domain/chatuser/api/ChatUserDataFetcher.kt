@@ -26,7 +26,7 @@ class ChatUserDataFetcher(
         authentication: Authentication,
     ): ChatUser {
         val accountResponse = authentication.details as AccountResponse
-        return chatUserService.createChatUser(chatRoomId, password, accountResponse)
+        return chatUserService.create(chatRoomId, password, accountResponse.id)
     }
 
     @DgsMutation
@@ -35,6 +35,6 @@ class ChatUserDataFetcher(
         authentication: Authentication,
     ): ChatUser {
         val accountResponse = authentication.details as AccountResponse
-        return chatUserService.deleteChatUserByAccountId(chatRoomId, accountResponse.id)
+        return chatUserService.deleteByAccountId(chatRoomId, accountResponse.id)
     }
 }

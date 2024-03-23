@@ -1,12 +1,12 @@
 package com.github.cloverchatserver.common.dev
 
-import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreation
-import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomType
-import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
+import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.account.business.data.AccountCreation
 import com.github.cloverchatserver.domain.account.persistence.Account
-import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.account.persistence.AccountRole
+import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
+import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreation
+import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomType
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Profile
@@ -28,7 +28,7 @@ class DevInitRunner(
         val users = createUsers(1, 5)
         for (i in 1..5) {
             val chatRoomCreation = ChatRoomCreation(users[0].id!!, null, "title$i", ChatRoomType.PUBLIC)
-            chatRoomService.createChatRoom(chatRoomCreation)
+            chatRoomService.create(chatRoomCreation, users[0].id!!)
         }
     }
 

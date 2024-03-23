@@ -28,13 +28,13 @@ class ChatRoomDataFetcher(
     fun createChatRoom(req: ChatRoomCreateRequest, authentication: Authentication): ChatRoom {
         val accountResponse = authentication.details as AccountResponse
         val creation = req.toChatRoomCreation(accountResponse.id)
-        return chatRoomService.createChatRoom(creation)
+        return chatRoomService.create(creation, accountResponse.id)
     }
 
     @DgsMutation
     fun deleteChatRoom(@InputArgument chatRoomId: Long, authentication: Authentication): ChatRoom {
         val accountResponse = authentication.details as AccountResponse
-        return chatRoomService.deleteChatRoom(chatRoomId, accountResponse)
+        return chatRoomService.delete(chatRoomId, accountResponse)
     }
 
     @DgsData(parentType = "ChatRoom")

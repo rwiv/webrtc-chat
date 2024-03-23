@@ -1,12 +1,10 @@
 package com.github.cloverchatserver.domain.chatroom.persistence
 
-import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomDto
+import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 import com.github.cloverchatserver.domain.chatuser.persistence.ChatUser
-import com.github.cloverchatserver.domain.account.persistence.Account
-import java.lang.RuntimeException
-import java.time.LocalDateTime
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "chat_room")

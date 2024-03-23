@@ -21,6 +21,5 @@ class Account(
     val password: String,
 
     @Column
-    val nickname: String
-
+    val nickname: String,
 )
