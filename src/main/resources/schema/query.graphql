@@ -1,6 +1,7 @@
 type Query {
     accountsAll: [Account!]
     account: Account
+    accounts(id: Long): Account
 
     chatRoomsAll: [ChatRoom!]
     chatRoom(id: Long): ChatRoom

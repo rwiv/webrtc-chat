@@ -2,10 +2,11 @@ package com.github.cloverchatserver.domain
 
 import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.friend.business.FriendService
-import com.github.cloverchatserver.helper.ac
+import com.github.cloverchatserver.helpers.ac
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 class FriendServiceTest(
@@ -13,6 +14,7 @@ class FriendServiceTest(
     @Autowired private val friendService: FriendService,
 ) {
 
+    @Transactional
     @Test fun `test friend creation`() {
         val a1 = accountService.create(ac("user1"))
         val a2 = accountService.create(ac("user2"))

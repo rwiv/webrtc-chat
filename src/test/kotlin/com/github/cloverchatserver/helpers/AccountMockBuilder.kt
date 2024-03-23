@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.helper
+package com.github.cloverchatserver.helpers
 
 import com.github.cloverchatserver.domain.account.business.data.AccountCreation
 import com.github.cloverchatserver.domain.account.persistence.AccountRole

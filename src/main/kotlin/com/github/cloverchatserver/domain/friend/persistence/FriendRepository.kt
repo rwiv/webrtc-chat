@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface FriendRepository : JpaRepository<Friend, Long> {
 
-    @EntityGraph(attributePaths = ["to"])
+    @EntityGraph(attributePaths = ["from"])
     fun findByFrom(from: Account): List<Friend>
 }

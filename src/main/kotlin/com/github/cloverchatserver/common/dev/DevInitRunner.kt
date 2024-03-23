@@ -6,7 +6,10 @@ import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRole
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreation
+import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomType
+import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
+import com.github.cloverchatserver.domain.friend.business.FriendService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Profile
@@ -15,8 +18,10 @@ import org.springframework.stereotype.Component
 @Component
 @Profile("dev")
 class DevInitRunner(
-    val chatRoomService: ChatRoomService,
-    val accountService: AccountService
+    private val accountService: AccountService,
+    private val friendService: FriendService,
+    private val chatRoomService: ChatRoomService,
+    private val chatUserService: ChatUserService,
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments?) {
@@ -24,12 +29,25 @@ class DevInitRunner(
             return
         }
 
-        createAdmin()
-        val users = createUsers(1, 5)
+        val users = ArrayList<Account>()
+        users.add(createAdmin())
+        users.addAll(createUsers(1, 5))
+
+        val chatRooms = ArrayList<ChatRoom>()
+        val user0 = users[0]
         for (i in 1..5) {
-            val chatRoomCreation = ChatRoomCreation(users[0].id!!, null, "title$i", ChatRoomType.PUBLIC)
-            chatRoomService.create(chatRoomCreation, users[0].id!!)
+            val chatRoomCreation = ChatRoomCreation(users[i].id!!, null, "title$i", ChatRoomType.PUBLIC)
+            val chatRoom = chatRoomService.create(chatRoomCreation, users[i].id!!)
+            chatRooms.add(chatRoom)
         }
+
+        chatRooms.forEach { chatRoom ->
+            chatUserService.create(chatRoom.id!!, chatRoom.password, user0.id!!)
+        }
+
+        val user2 = users[2]
+        friendService.add(user2, users[3])
+        friendService.add(user2, users[4])
     }
 
     private fun isProd(): Boolean {

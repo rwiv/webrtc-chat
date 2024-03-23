@@ -4,6 +4,9 @@ type Account {
     username: String!
 #    password: String!
     nickname: String!
+
+    chatRooms: [ChatRoom!]
+    friends: [Friend!]
 }
 
 enum AccountRole {
@@ -16,4 +19,10 @@ input AccountCreation {
     username: String!
     password: String!
     nickname: String!
+}
+
+type Friend {
+    id: Long
+    from: Account
+    to: Account
 }
