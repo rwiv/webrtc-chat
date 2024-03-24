@@ -7,12 +7,14 @@ import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsData
 import com.netflix.graphql.dgs.DgsDataFetchingEnvironment
 import com.netflix.graphql.dgs.DgsQuery
+import org.springframework.context.ApplicationEventPublisher
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 @DgsComponent
 class ChatMessageDataFetcher(
     private val chatMessageService: ChatMessageService,
+    private val publisher: ApplicationEventPublisher,
 ) {
 
     @DgsQuery
