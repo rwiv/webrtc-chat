@@ -19,11 +19,17 @@ class ChatMessage(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val createAccount: Account,
+    val createdBy: Account,
 
     @Column(length = 200, nullable = false, updatable = false)
     val content: String,
 
     @Column(nullable = false, updatable = false)
-    val createAt: LocalDateTime,
-)
+    val createdAt: LocalDateTime,
+
+    @Column
+    val num: Long,
+) {
+    @Column(unique = true)
+    private val numByCheck: String = "${chatRoom.id}-${num}"
+}

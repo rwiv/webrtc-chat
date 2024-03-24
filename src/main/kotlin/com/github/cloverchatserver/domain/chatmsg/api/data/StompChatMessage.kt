@@ -18,9 +18,9 @@ data class StompChatMessage(
         fun of(chatMessage: ChatMessage) = StompChatMessage(
             chatMessage.id!!,
             ChatRoomDto.of(chatMessage.chatRoom),
-            AccountResponse.of(chatMessage.createAccount),
+            AccountResponse.of(chatMessage.createdBy),
             chatMessage.content,
-            chatMessage.createAt
+            chatMessage.createdAt
         )
     }
 }

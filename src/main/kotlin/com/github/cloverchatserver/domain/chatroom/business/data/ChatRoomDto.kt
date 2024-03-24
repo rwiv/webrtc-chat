@@ -17,9 +17,9 @@ data class ChatRoomDto(
     companion object {
         fun of(chatRoom: ChatRoom) = ChatRoomDto(
             chatRoom.id!!,
-            AccountResponse.of(chatRoom.createAccount),
+            AccountResponse.of(chatRoom.createdBy),
             chatRoom.title,
-            chatRoom.createDate,
+            chatRoom.createdAt,
             chatRoom.type,
         )
     }

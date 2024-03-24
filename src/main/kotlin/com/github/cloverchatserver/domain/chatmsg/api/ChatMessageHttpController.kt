@@ -25,7 +25,7 @@ class ChatMessageHttpController(
         val accountResponse = authentication.details as AccountResponse
 
         val creation = ChatMessageCreation(chatRoomId, accountResponse.id, req.content)
-        val chatMessage = chatMessageService.create(creation, accountResponse)
+        val chatMessage = chatMessageService.create(creation)
         val stompMessage = StompChatMessage.of(chatMessage)
 
         template.convertAndSend("/sub/message/${chatRoomId}", stompMessage)

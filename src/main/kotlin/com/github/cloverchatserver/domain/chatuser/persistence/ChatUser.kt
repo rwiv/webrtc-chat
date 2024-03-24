@@ -20,6 +20,9 @@ class ChatUser(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     val account: Account,
+
+    @Column(nullable = true)
+    val latestNum: Long? = null,
 ) {
     @Column(unique = true)
     private val idPair: String = "${chatRoom.id}-${account.id}"

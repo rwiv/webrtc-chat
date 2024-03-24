@@ -22,6 +22,6 @@ class ChatMessageDataFetcher(
     @DgsData(parentType = "ChatMessage")
     fun createAt(dfe: DgsDataFetchingEnvironment): OffsetDateTime {
         val chatRoom = dfe.getSource<ChatMessage>()
-        return chatRoom.createAt.atOffset(ZoneOffset.UTC)
+        return chatRoom.createdAt.atOffset(ZoneOffset.UTC)
     }
 }

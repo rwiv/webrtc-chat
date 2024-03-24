@@ -4,6 +4,8 @@ import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.account.business.data.AccountCreation
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRole
+import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
+import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreation
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
@@ -22,6 +24,7 @@ class DevInitRunner(
     private val friendService: FriendService,
     private val chatRoomService: ChatRoomService,
     private val chatUserService: ChatUserService,
+    private val chatMessageService: ChatMessageService,
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments?) {
@@ -43,6 +46,11 @@ class DevInitRunner(
 
         chatRooms.forEach { chatRoom ->
             chatUserService.create(chatRoom.id!!, chatRoom.password, user0.id!!)
+        }
+
+        val chatRoom = chatRooms[0]
+        for (i in 1..5) {
+            chatMessageService.create(ChatMessageCreation(chatRoom.id!!, user0.id!!, "hello$i"))
         }
 
         val user2 = users[2]

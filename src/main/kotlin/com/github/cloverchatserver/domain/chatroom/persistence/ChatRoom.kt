@@ -16,7 +16,7 @@ class ChatRoom(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val createAccount: Account,
+    val createdBy: Account,
 
     @Column(length = 20, nullable = true, updatable = false)
     val password: String?,
@@ -25,7 +25,7 @@ class ChatRoom(
     val title: String,
 
     @Column(nullable = false, updatable = false)
-    val createDate: LocalDateTime,
+    val createdAt: LocalDateTime,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -37,14 +37,17 @@ class ChatMessageService(
     }
 
     @Transactional
-    fun create(creation: ChatMessageCreation, accountResponse: AccountResponse): ChatMessage {
+    fun create(creation: ChatMessageCreation): ChatMessage {
         val chatRoom = chatRoomRepository.findById(creation.chatRoomId).getOrNull()
             ?: throw NotFoundException("not found chatroom")
 
-        val createUser = accountRepository.findById(accountResponse.id).getOrNull()
+        val createUser = accountRepository.findById(creation.createUserId).getOrNull()
             ?: throw NotFoundException("not found account")
 
-        val chatMessage = creation.toChatMessage(chatRoom, createUser)
+        val latest = chatMessageRepository.findOneByChatRoom(chatRoom)
+        val num = if (latest == null) 0 else latest.num + 1
+
+        val chatMessage = creation.toChatMessage(chatRoom, createUser, num)
         chatRoom.chatMessages.add(chatMessage)
 
         return chatMessageRepository.save(chatMessage)

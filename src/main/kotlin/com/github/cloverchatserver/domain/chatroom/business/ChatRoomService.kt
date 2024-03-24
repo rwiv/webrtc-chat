@@ -61,7 +61,7 @@ class ChatRoomService(
     fun delete(chatRoomId: Long, accountResponse: AccountResponse): ChatRoom {
         val chatRoom = findById(chatRoomId)
             ?: throw NotFoundException("not found chatroom")
-        if (accountResponse.id != chatRoom.createAccount.id) {
+        if (accountResponse.id != chatRoom.createdBy.id) {
             throw AccessDeniedException("This user is not ChatRoom CreateUser")
         }
 
