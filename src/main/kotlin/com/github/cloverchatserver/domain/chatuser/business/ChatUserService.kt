@@ -7,6 +7,7 @@ import com.github.cloverchatserver.common.error.exception.NotFoundException
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRepository
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomRepository
+import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserCreation
 import com.github.cloverchatserver.domain.friend.persistence.Friend
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -35,14 +36,14 @@ class ChatUserService(
     }
 
     @Transactional
-    fun create(chatRoomId: Long, chatRoomPassword: String?, accountId: Long): ChatUser {
-        val chatRoom = chatRoomRepository.findById(chatRoomId).getOrNull()
+    fun create(creation: ChatUserCreation): ChatUser {
+        val chatRoom = chatRoomRepository.findById(creation.chatRoomId).getOrNull()
             ?: throw NotFoundException("not found chatroom")
-        if (chatRoom.password !== chatRoomPassword) {
+        if (chatRoom.password !== creation.chatRoomPassword) {
             throw HttpException(403, "invalid password")
         }
 
-        val account = accountRepository.findById(accountId).getOrNull()
+        val account = accountRepository.findById(creation.accountId).getOrNull()
             ?: throw NotFoundException("not found account")
 
         val chatUsers = chatUserRepository.findByChatRoomAndAccount(chatRoom, account)
@@ -58,7 +59,7 @@ class ChatUserService(
 
     @Transactional
     fun createByFriend(chatRoomId: Long, password: String?, friend: Friend): ChatUser {
-        return create(chatRoomId, password, friend.to.id!!)
+        return create(ChatUserCreation(chatRoomId, password, friend.to.id!!))
     }
 
     @Transactional
@@ -78,5 +79,11 @@ class ChatUserService(
 
         chatUserRepository.delete(chatUsers[0])
         return chatUsers[0]
+    }
+
+    @Transactional
+    fun updateLatestNum(chatUser: ChatUser, num: Int): ChatUser {
+        chatUser.latestNum = num
+        return chatUserRepository.save(chatUser)
     }
 }

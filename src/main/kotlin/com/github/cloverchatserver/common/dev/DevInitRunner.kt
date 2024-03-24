@@ -11,6 +11,7 @@ import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreatio
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomType
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
+import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserCreation
 import com.github.cloverchatserver.domain.friend.business.FriendService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -40,12 +41,12 @@ class DevInitRunner(
         val user0 = users[0]
         for (i in 1..5) {
             val chatRoomCreation = ChatRoomCreation(users[i].id!!, null, "title$i", ChatRoomType.PUBLIC)
-            val chatRoom = chatRoomService.create(chatRoomCreation, users[i].id!!)
+            val chatRoom = chatRoomService.create(chatRoomCreation)
             chatRooms.add(chatRoom)
         }
 
         chatRooms.forEach { chatRoom ->
-            chatUserService.create(chatRoom.id!!, chatRoom.password, user0.id!!)
+            chatUserService.create(ChatUserCreation(chatRoom.id!!, chatRoom.password, user0.id!!))
         }
 
         val chatRoom = chatRooms[0]

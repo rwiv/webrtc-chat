@@ -1,6 +1,7 @@
 package com.github.cloverchatserver.domain.chatroom.api
 
 import com.github.cloverchatserver.domain.account.business.data.AccountResponse
+import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.chatroom.api.data.ChatRoomCreateRequest
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
@@ -28,7 +29,7 @@ class ChatRoomDataFetcher(
     fun createChatRoom(req: ChatRoomCreateRequest, authentication: Authentication): ChatRoom {
         val accountResponse = authentication.details as AccountResponse
         val creation = req.toChatRoomCreation(accountResponse.id)
-        return chatRoomService.create(creation, accountResponse.id)
+        return chatRoomService.create(creation)
     }
 
     @DgsMutation
@@ -37,6 +38,14 @@ class ChatRoomDataFetcher(
         return chatRoomService.delete(chatRoomId, accountResponse)
     }
 
+    // TODO: remove
+    @DgsData(parentType = "ChatRoom")
+    fun createAccount(dfe: DgsDataFetchingEnvironment): Account {
+        val chatRoom = dfe.getSource<ChatRoom>()
+        return chatRoom.createdBy
+    }
+
+    // TODO: edit field name to 'createdBy'
     @DgsData(parentType = "ChatRoom")
     fun createDate(dfe: DgsDataFetchingEnvironment): OffsetDateTime {
         val chatRoom = dfe.getSource<ChatRoom>()

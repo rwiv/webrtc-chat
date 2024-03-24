@@ -2,6 +2,7 @@ package com.github.cloverchatserver.domain.chatuser.api
 
 import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
+import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserCreation
 import com.github.cloverchatserver.domain.chatuser.persistence.ChatUser
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsMutation
@@ -26,7 +27,7 @@ class ChatUserDataFetcher(
         authentication: Authentication,
     ): ChatUser {
         val accountResponse = authentication.details as AccountResponse
-        return chatUserService.create(chatRoomId, password, accountResponse.id)
+        return chatUserService.create(ChatUserCreation(chatRoomId, password, accountResponse.id))
     }
 
     @DgsMutation

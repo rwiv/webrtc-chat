@@ -19,8 +19,8 @@ class ChatRoomServiceTest(
     @Test fun `test find by account`() {
         val a1 = accountService.create(ac("user1"))
 
-        val cr1 = chatRoomService.create(cr(a1.id!!, "cr1"), a1.id!!)
-        val cr2 = chatRoomService.create(cr(a1.id!!, "cr2"), a1.id!!)
+        val cr1 = chatRoomService.create(cr(a1.id!!, "cr1"))
+        val cr2 = chatRoomService.create(cr(a1.id!!, "cr2"))
 
         val chatRooms = chatRoomService.findByAccount(a1)
         chatRooms.forEach { println(it.title) }

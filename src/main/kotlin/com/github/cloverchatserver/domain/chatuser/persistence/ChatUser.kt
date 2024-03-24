@@ -22,7 +22,7 @@ class ChatUser(
     val account: Account,
 
     @Column(nullable = true)
-    val latestNum: Long? = null,
+    var latestNum: Int? = null,
 ) {
     @Column(unique = true)
     private val idPair: String = "${chatRoom.id}-${account.id}"

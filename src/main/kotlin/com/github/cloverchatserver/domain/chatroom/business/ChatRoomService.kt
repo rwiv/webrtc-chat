@@ -9,6 +9,7 @@ import com.github.cloverchatserver.common.error.exception.NotFoundException
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRepository
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
+import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserCreation
 import com.github.cloverchatserver.domain.chatuser.persistence.ChatUserRepository
 import com.github.cloverchatserver.domain.friend.persistence.Friend
 import org.springframework.security.access.AccessDeniedException
@@ -35,12 +36,12 @@ class ChatRoomService(
     }
 
     @Transactional
-    fun create(creation: ChatRoomCreation, createdById: Long): ChatRoom {
-        val createdBy = accountRepository.findById(createdById).getOrNull()
+    fun create(creation: ChatRoomCreation): ChatRoom {
+        val createdBy = accountRepository.findById(creation.createUserId).getOrNull()
             ?: throw NotFoundException("not found account")
         val chatRoom = chatRoomRepository.save(creation.toTbc(createdBy))
 
-        chatUserService.create(chatRoom.id!!, chatRoom.password, createdById)
+        chatUserService.create(ChatUserCreation(chatRoom.id!!, chatRoom.password, creation.createUserId))
 
         return chatRoom
     }
@@ -50,9 +51,9 @@ class ChatRoomService(
         if (friend.from.id != me.id) {
             throw HttpException(400, "friend id is invalid")
         }
-        val chatRoom = create(creation, me.id)
+        val chatRoom = create(creation)
 
-        chatUserService.create(chatRoom.id!!, chatRoom.password, friend.to.id!!)
+        chatUserService.create(ChatUserCreation(chatRoom.id!!, chatRoom.password, friend.to.id!!))
 
         return chatRoom
     }
