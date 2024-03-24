@@ -28,7 +28,7 @@ class ChatMessage(
     val createdAt: LocalDateTime,
 
     @Column
-    val num: Long,
+    val num: Int,
 ) {
     @Column(unique = true)
     private val numByCheck: String = "${chatRoom.id}-${num}"

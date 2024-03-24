@@ -3,6 +3,7 @@ package com.github.cloverchatserver.domain
 import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
 import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
+import com.github.cloverchatserver.domain.chatmsg.misc.UnreadCountCalculator
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
@@ -23,16 +24,18 @@ class ChatMessageServiceTest(
 ) {
 
     @Transactional
-    @Test fun `test num`() {
+    @Test fun `test UnreadCalculator`() {
         val a1 = accountService.create(ac("user1"))
         val a2 = accountService.create(ac("user2"))
         val a3 = accountService.create(ac("user3"))
         val a4 = accountService.create(ac("user4"))
+        val a5 = accountService.create(ac("user5"))
 
         val cr = chatRoomService.create(cr(a1.id!!, "cr1"))
         chatUserService.create(ChatUserCreation(cr.id!!, cr.password, a2.id!!))
         chatUserService.create(ChatUserCreation(cr.id!!, cr.password, a3.id!!))
         chatUserService.create(ChatUserCreation(cr.id!!, cr.password, a4.id!!))
+        chatUserService.create(ChatUserCreation(cr.id!!, cr.password, a5.id!!))
 
         val chatMessages = ArrayList<ChatMessage>()
         for (i in 0..9) {
@@ -43,45 +46,17 @@ class ChatMessageServiceTest(
         val chatUsers = chatUserService.findByChatRoomId(cr.id!!)
         chatUserService.updateLatestNum(chatUsers[0], 4)
         chatUserService.updateLatestNum(chatUsers[1], 6)
-        chatUserService.updateLatestNum(chatUsers[2], 7)
+        chatUserService.updateLatestNum(chatUsers[2], 8)
+        chatUserService.updateLatestNum(chatUsers[3], 2)
 
         chatUsers.forEach { println("${it.account.username}:${it.latestNum}") }
         chatMessages.forEach { println("${it.content}:${it.num}") }
 
+        val calculator = UnreadCountCalculator()
         val chatUserNums = chatUsers.map { it.latestNum }
-//        f(chatUserNums, chatMessages)
-        println(chatUserNums)
-    }
-
-    fun f(chatUserNumsOrigin: List<Int?>, chatMessagesOrigin: List<ChatMessage>) {
-        val chatUserNums = chatUserNumsOrigin.filterNotNull().sortedDescending()
-        val chatMessages = chatMessagesOrigin.sortedByDescending { it.num }
-
-        val nullSize = chatUserNumsOrigin.size - chatUserNums.size
-
-        val newChatUserNums = ArrayList<Int?>()
-        val newChatMessages = ArrayList<ChatMessage?>()
-        while (chatUserNums.isNotEmpty() || chatMessages.isNotEmpty()) {
-            val chatUserNum = chatUserNums.first()
-            val chatMessage = chatMessages.first()
-
-            if (chatUserNum > chatMessage.num) {
-                newChatUserNums.add(chatUserNum)
-                newChatMessages.add(null)
-                chatUserNums.removeFirst()
-            } else if (chatUserNum < chatMessage.num) {
-                newChatUserNums.add(null)
-                newChatMessages.add(chatMessage)
-                chatMessages.removeFirst()
-            } else {
-                newChatUserNums.add(chatUserNum)
-                newChatMessages.add(chatMessage)
-                chatUserNums.removeFirst()
-                chatMessages.removeFirst()
-            }
-        }
-
-        println(chatUserNums)
-        println(chatMessages.map { it.num })
+        val messageSlice = chatMessages.sortedBy { it.num }.subList(3, 8)
+//        val messageSlice = chatMessages.sortedBy { it.num }.subList(5, 10)
+        val ret = calculator.calculate(chatUserNums, messageSlice)
+        println(ret.reversed().map { "${it.first.num}:${it.second}" })
     }
 }

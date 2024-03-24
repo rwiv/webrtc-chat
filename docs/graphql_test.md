@@ -15,7 +15,6 @@ mutation CreateAccount($creation: AccountCreation!) {
         id
         role
         username
-        password
         nickname
     }
 }

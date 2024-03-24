@@ -10,7 +10,7 @@ data class ChatMessageCreation(
     val createUserId: Long,
     val content: String
 ) {
-    fun toChatMessage(chatRoom: ChatRoom, createdBy: Account, num: Long): ChatMessage {
+    fun toChatMessage(chatRoom: ChatRoom, createdBy: Account, num: Int): ChatMessage {
         return ChatMessage(null, chatRoom, createdBy, content, LocalDateTime.now(), num)
     }
 }
