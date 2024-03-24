@@ -34,10 +34,10 @@ class ChatMessageServiceTest(
         chatUserService.create(ChatUserCreation(cr.id!!, cr.password, a3.id!!))
         chatUserService.create(ChatUserCreation(cr.id!!, cr.password, a4.id!!))
 
-        val messages = ArrayList<ChatMessage>()
+        val chatMessages = ArrayList<ChatMessage>()
         for (i in 0..9) {
             val chatMessage = chatMessageService.create(ChatMessageCreation(cr.id!!, a1.id!!, "hello$i"))
-            messages.add(chatMessage)
+            chatMessages.add(chatMessage)
         }
 
         val chatUsers = chatUserService.findByChatRoomId(cr.id!!)
@@ -46,9 +46,42 @@ class ChatMessageServiceTest(
         chatUserService.updateLatestNum(chatUsers[2], 7)
 
         chatUsers.forEach { println("${it.account.username}:${it.latestNum}") }
-        messages.forEach { println("${it.content}:${it.num}") }
+        chatMessages.forEach { println("${it.content}:${it.num}") }
 
         val chatUserNums = chatUsers.map { it.latestNum }
+//        f(chatUserNums, chatMessages)
         println(chatUserNums)
+    }
+
+    fun f(chatUserNumsOrigin: List<Int?>, chatMessagesOrigin: List<ChatMessage>) {
+        val chatUserNums = chatUserNumsOrigin.filterNotNull().sortedDescending()
+        val chatMessages = chatMessagesOrigin.sortedByDescending { it.num }
+
+        val nullSize = chatUserNumsOrigin.size - chatUserNums.size
+
+        val newChatUserNums = ArrayList<Int?>()
+        val newChatMessages = ArrayList<ChatMessage?>()
+        while (chatUserNums.isNotEmpty() || chatMessages.isNotEmpty()) {
+            val chatUserNum = chatUserNums.first()
+            val chatMessage = chatMessages.first()
+
+            if (chatUserNum > chatMessage.num) {
+                newChatUserNums.add(chatUserNum)
+                newChatMessages.add(null)
+                chatUserNums.removeFirst()
+            } else if (chatUserNum < chatMessage.num) {
+                newChatUserNums.add(null)
+                newChatMessages.add(chatMessage)
+                chatMessages.removeFirst()
+            } else {
+                newChatUserNums.add(chatUserNum)
+                newChatMessages.add(chatMessage)
+                chatUserNums.removeFirst()
+                chatMessages.removeFirst()
+            }
+        }
+
+        println(chatUserNums)
+        println(chatMessages.map { it.num })
     }
 }

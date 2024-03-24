@@ -83,6 +83,9 @@ class ChatUserService(
 
     @Transactional
     fun updateLatestNum(chatUser: ChatUser, num: Int): ChatUser {
+        if (chatUser.latestNum == num) {
+            return chatUser
+        }
         chatUser.latestNum = num
         return chatUserRepository.save(chatUser)
     }
