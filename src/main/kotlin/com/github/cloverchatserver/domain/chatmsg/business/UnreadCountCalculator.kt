@@ -1,17 +1,17 @@
-package com.github.cloverchatserver.domain.chatmsg.misc
+package com.github.cloverchatserver.domain.chatmsg.business
 
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 
 class UnreadCountCalculator {
 
-    fun calculate(chatUserNumsOrigin: List<Int?>, chatMessagesOrigin: List<ChatMessage>): ArrayList<Pair<ChatMessage, Int?>> {
+    fun calculate(chatUserNumsOrigin: List<Int?>, chatMessagesOrigin: List<ChatMessage>): ArrayList<Pair<ChatMessage, Int>> {
         val tempResult = getTempResult(chatUserNumsOrigin, chatMessagesOrigin)
         val chatUserNums = tempResult.chatUserNums
         val chatMessages = tempResult.chatMessages
 
         var curCnt = tempResult.chatUserNullSize
 
-        val result = ArrayList<Pair<ChatMessage, Int?>>()
+        val result = ArrayList<Pair<ChatMessage, Int>>()
         for (i in chatMessages.indices) {
             val chatUserNum = chatUserNums[i]
             val chatMessage = chatMessages[i]
@@ -19,10 +19,9 @@ class UnreadCountCalculator {
             if (chatUserNum !== null) {
                 curCnt--
             }
-            if (chatMessage === null) {
-                continue
+            if (chatMessage !== null) {
+                result.add(Pair(chatMessage, curCnt))
             }
-            result.add(Pair(chatMessage.first, curCnt))
         }
         return result
     }
@@ -32,10 +31,10 @@ class UnreadCountCalculator {
         val chatMessages = chatMessagesOrigin.sortedByDescending { it.num }.toMutableList()
 
         val newChatUserNums = ArrayList<Int?>()
-        val newChatMessages = ArrayList<Pair<ChatMessage, Int?>?>()
+        val newChatMessages = ArrayList<ChatMessage?>()
         while (chatUserNums.isNotEmpty() || chatMessages.isNotEmpty()) {
             val chatUserNum = chatUserNums.firstOrNull()
-            val chatMessage = chatMessages.firstOrNull()?.let { Pair<ChatMessage, Int?>(it, null) }
+            val chatMessage = chatMessages.firstOrNull()
 
             if (chatUserNum === null) {
                 newChatUserNums.add(null)
@@ -50,11 +49,11 @@ class UnreadCountCalculator {
                 continue
             }
 
-            if (chatUserNum > chatMessage.first.num) {
+            if (chatUserNum > chatMessage.num) {
                 newChatUserNums.add(chatUserNum)
                 newChatMessages.add(null)
                 chatUserNums.removeFirst()
-            } else if (chatUserNum < chatMessage.first.num) {
+            } else if (chatUserNum < chatMessage.num) {
                 newChatUserNums.add(null)
                 newChatMessages.add(chatMessage)
                 chatMessages.removeFirst()
@@ -74,7 +73,7 @@ class UnreadCountCalculator {
 
     data class TempResult(
         val chatUserNums: List<Int?>,
-        val chatMessages: List<Pair<ChatMessage, Int?>?>,
+        val chatMessages: List<ChatMessage?>,
         val chatUserNullSize: Int,
     )
 }

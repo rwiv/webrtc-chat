@@ -3,7 +3,7 @@ package com.github.cloverchatserver.domain
 import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
 import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
-import com.github.cloverchatserver.domain.chatmsg.misc.UnreadCountCalculator
+import com.github.cloverchatserver.domain.chatmsg.business.UnreadCountCalculator
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
@@ -49,14 +49,16 @@ class ChatMessageServiceTest(
         chatUserService.updateLatestNum(chatUsers[2], 8)
         chatUserService.updateLatestNum(chatUsers[3], 2)
 
-        chatUsers.forEach { println("${it.account.username}:${it.latestNum}") }
-        chatMessages.forEach { println("${it.content}:${it.num}") }
+//        chatUsers.forEach { println("${it.account.username}:${it.latestNum}") }
+//        chatMessages.forEach { println("${it.content}:${it.num}") }
 
         val calculator = UnreadCountCalculator()
         val chatUserNums = chatUsers.map { it.latestNum }
         val messageSlice = chatMessages.sortedBy { it.num }.subList(3, 8)
 //        val messageSlice = chatMessages.sortedBy { it.num }.subList(5, 10)
+
         val ret = calculator.calculate(chatUserNums, messageSlice)
+
         println(ret.reversed().map { "${it.first.num}:${it.second}" })
     }
 }
