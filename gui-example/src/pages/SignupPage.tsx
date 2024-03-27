@@ -81,7 +81,9 @@ export function SignupPage() {
                 <FormMessage />
               </FormItem>
             )}/>
-            <Button type="submit" className="w-60 mt-4">Signup</Button>
+            <Center>
+              <Button type="submit" className="w-60 mt-4">Signup</Button>
+            </Center>
           </form>
         </Center>
       </Form>
