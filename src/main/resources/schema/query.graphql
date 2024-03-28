@@ -5,6 +5,7 @@ type Query {
 
     chatRoomsAll: [ChatRoom!]
     chatRoom(id: Long): ChatRoom
+    chatRooms(page: Int!, size: Int!): [ChatRoom!]
 
     chatUsersAll: [ChatUser!]
 

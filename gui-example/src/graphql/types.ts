@@ -19,6 +19,8 @@ export type Scalars = {
 
 export type Account = {
   __typename?: 'Account';
+  chatRooms?: Maybe<Array<ChatRoom>>;
+  friends?: Maybe<Array<Friend>>;
   id: Scalars['Long']['output'];
   /**     password: String! */
   nickname: Scalars['String']['output'];
@@ -75,7 +77,6 @@ export type ChatUser = {
   account: Account;
   chatRoom: ChatRoom;
   id: Scalars['Long']['output'];
-  sessionId: Scalars['String']['output'];
 };
 
 export enum ErrorDetail {
@@ -317,6 +318,13 @@ export enum ErrorType {
   Unknown = 'UNKNOWN'
 }
 
+export type Friend = {
+  __typename?: 'Friend';
+  from?: Maybe<Account>;
+  id?: Maybe<Scalars['Long']['output']>;
+  to?: Maybe<Account>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAccount: Account;
@@ -356,16 +364,29 @@ export type Query = {
   __typename?: 'Query';
   _service: _Service;
   account?: Maybe<Account>;
+  accounts?: Maybe<Account>;
   accountsAll?: Maybe<Array<Account>>;
   chatMessagesAll?: Maybe<Array<ChatMessage>>;
   chatRoom?: Maybe<ChatRoom>;
+  chatRooms?: Maybe<Array<ChatRoom>>;
   chatRoomsAll?: Maybe<Array<ChatRoom>>;
   chatUsersAll?: Maybe<Array<ChatUser>>;
 };
 
 
+export type QueryAccountsArgs = {
+  id?: InputMaybe<Scalars['Long']['input']>;
+};
+
+
 export type QueryChatRoomArgs = {
   id?: InputMaybe<Scalars['Long']['input']>;
+};
+
+
+export type QueryChatRoomsArgs = {
+  page: Scalars['Int']['input'];
+  size: Scalars['Int']['input'];
 };
 
 export type _Service = {

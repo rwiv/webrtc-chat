@@ -12,6 +12,7 @@ import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
 import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserCreation
 import com.github.cloverchatserver.domain.chatuser.persistence.ChatUserRepository
 import com.github.cloverchatserver.domain.friend.persistence.Friend
+import org.springframework.data.domain.PageRequest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -27,6 +28,13 @@ class ChatRoomService(
 
     fun findById(chatRoomId: Long): ChatRoom? {
         return chatRoomRepository.findById(chatRoomId).getOrNull()
+    }
+
+    fun findByPage(page: Int, size: Int): List<ChatRoom> {
+        if (page - 1 < 0) {
+            throw HttpException(400, "invalid page number")
+        }
+        return chatRoomRepository.findAllBy(PageRequest.of(page - 1, size)).content
     }
 
     fun findAll(): List<ChatRoom> = chatRoomRepository.findAll()

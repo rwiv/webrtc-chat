@@ -49,8 +49,14 @@ class DevInitRunner(
             chatUserService.create(ChatUserCreation(chatRoom.id!!, chatRoom.password, user0.id!!))
         }
 
+        for (i in 6..20) {
+            val chatRoomCreation = ChatRoomCreation(users[0].id!!, null, "title$i", ChatRoomType.PUBLIC)
+            val chatRoom = chatRoomService.create(chatRoomCreation)
+            chatRooms.add(chatRoom)
+        }
+
         val chatRoom = chatRooms[0]
-        for (i in 1..5) {
+        for (i in 1..15) {
             chatMessageService.create(ChatMessageCreation(chatRoom.id!!, user0.id!!, "hello$i"))
         }
 

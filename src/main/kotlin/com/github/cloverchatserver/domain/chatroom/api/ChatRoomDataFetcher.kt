@@ -25,6 +25,11 @@ class ChatRoomDataFetcher(
         return chatRoomService.findAll()
     }
 
+    @DgsQuery
+    fun chatRooms(@InputArgument page: Int, @InputArgument size: Int): List<ChatRoom> {
+        return chatRoomService.findByPage(page, size)
+    }
+
     @DgsMutation
     fun createChatRoom(req: ChatRoomCreateRequest, authentication: Authentication): ChatRoom {
         val accountResponse = authentication.details as AccountResponse

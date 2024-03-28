@@ -3,6 +3,8 @@ import {Mutation} from "@/graphql/types.ts";
 import {accountColumns} from "@/client/account.ts";
 import {getQueryName, useQuery} from "@/client/graphql_utils.ts";
 
+export const defaultSize: number = 5;
+
 export const chatRoomColumns = gql`
     fragment chatRoomColumns on ChatRoom {
         id
@@ -19,6 +21,15 @@ export const chatRoomColumns = gql`
 const chatRoomsAllQL = gql`
     query ChatRoomsAll {
         chatRoomsAll {
+            ...chatRoomColumns
+        }
+    }
+    ${chatRoomColumns}
+`;
+
+export const chatRoomsQL = gql`
+    query ChatRooms($page: Int!, $size: Int!) {
+        chatRooms(page: $page, size: $size) {
             ...chatRoomColumns
         }
     }
