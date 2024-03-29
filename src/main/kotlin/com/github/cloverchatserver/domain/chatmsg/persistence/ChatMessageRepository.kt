@@ -10,7 +10,7 @@ interface ChatMessageRepository : JpaRepository<ChatMessage, Long> {
 
     @Query("SELECT cm FROM ChatMessage cm " +
             "WHERE cm.chatRoom = :chatRoom " +
-            "ORDER BY cm.createdAt DESC " +
+            "ORDER BY cm.num DESC " +
             "LIMIT 1")
-    fun findOneByChatRoom(chatRoom: ChatRoom): ChatMessage?
+    fun findLatestOneInChatRoom(chatRoom: ChatRoom): ChatMessage?
 }

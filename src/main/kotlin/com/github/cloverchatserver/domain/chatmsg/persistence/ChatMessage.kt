@@ -6,7 +6,12 @@ import java.time.LocalDateTime
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "chat_message")
+@Table(name = "chat_message", indexes = [
+//    Index(name = "idx_chat_room_id_num", columnList = "chat_room_id, num", unique = true),
+//    Index(name = "idx_chat_room_id_num_desc", columnList = "chat_room_id, num DESC", unique = true),
+    Index(name = "idx_chat_room_id_num_asc", columnList = "chat_room_id, num"),
+    Index(name = "idx_chat_room_id_num_desc", columnList = "chat_room_id, num DESC"),
+])
 class ChatMessage(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +36,5 @@ class ChatMessage(
     val num: Int,
 ) {
     @Column(unique = true)
-    private val numByCheck: String = "${chatRoom.id}-${num}"
+    private val crIdNum: String = "${chatRoom.id}-${num}"
 }

@@ -36,7 +36,7 @@ class ChatMessageService(
         val createUser = accountRepository.findById(creation.createUserId).getOrNull()
             ?: throw NotFoundException("not found account")
 
-        val latest = chatMessageRepository.findOneByChatRoom(chatRoom)
+        val latest = chatMessageRepository.findLatestOneInChatRoom(chatRoom)
         val num = if (latest == null) 0 else latest.num + 1
 
         val chatMessage = creation.toChatMessage(chatRoom, createUser, num)

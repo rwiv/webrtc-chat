@@ -3,7 +3,10 @@ package com.github.cloverchatserver.domain.account.persistence
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "account")
+@Table(name = "account", indexes = [
+//    Index(name = "idx_username", columnList = "username", unique = true),
+    Index(name = "idx_username", columnList = "username"),
+])
 class Account(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +17,7 @@ class Account(
     @Column(nullable = false)
     val role: AccountRole,
 
-    @Column
+    @Column(unique = true)
     val username: String,
 
     @Column
