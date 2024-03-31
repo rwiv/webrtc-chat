@@ -34,7 +34,7 @@ class ChatRoomService(
         if (page - 1 < 0) {
             throw HttpException(400, "invalid page number")
         }
-        return chatRoomRepository.findAllBy(PageRequest.of(page - 1, size)).content
+        return chatRoomRepository.findBy(PageRequest.of(page - 1, size)).content
     }
 
     fun findAll(): List<ChatRoom> = chatRoomRepository.findAll()

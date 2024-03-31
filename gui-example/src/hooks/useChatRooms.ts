@@ -1,8 +1,9 @@
 import {useApolloClient} from "@apollo/client";
 import {useEffect, useState} from "react";
 import {ChatRoom, Query} from "@/graphql/types.ts";
-import {chatRoomsQL, defaultSize} from "@/client/chatRoom.ts";
+import {chatRoomsQL, defaultChatRoomSize} from "@/client/chatRoom.ts";
 import {useIntersect} from "@/hooks/useIntersect.ts";
+import type {QueryOptions} from "@apollo/client/core/watchQueryOptions";
 
 export function useChatRooms() {
 
@@ -12,14 +13,26 @@ export function useChatRooms() {
   const [loading, setLoading] = useState(false);
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([])
 
-  useEffect(() => {
-    if (page === 1) return;
-    console.log(page)
-    client.query<Query>({
+  function getQueryOptions(): QueryOptions {
+    return {
       query: chatRoomsQL,
-      variables: { page, size: defaultSize },
+      variables: { page, size: defaultChatRoomSize },
       fetchPolicy: "network-only",
-    }).then(result => {
+    }
+  }
+
+  useEffect(() => {
+    client.query<Query>(getQueryOptions()).then(result => {
+      setChatRooms(result.data.chatRooms ?? []);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (page === 1) {
+      return;
+    }
+    console.log(page)
+    client.query<Query>(getQueryOptions()).then(result => {
       console.log("fetch");
       const chatRooms = result.data.chatRooms;
       if (chatRooms?.length === 0) {
@@ -28,36 +41,19 @@ export function useChatRooms() {
         setLoading(false);
         return;
       }
-      setChatRooms(prev => {
-        const ret = [...prev];
-        chatRooms?.forEach(it => ret.push(it));
-        return ret;
-      });
+      if (chatRooms === undefined || chatRooms === null) return;
+      setChatRooms(prev => [...prev, ...chatRooms]);
       setLoading(false);
     });
   }, [page]);
 
-  useEffect(() => {
-    client.query<Query>({
-      query: chatRoomsQL,
-      variables: { page, size: defaultSize },
-      fetchPolicy: "network-only",
-    }).then(result => {
-      setChatRooms(result.data.chatRooms ?? []);
-    });
-  }, []);
-
-  const fetchNextPage = async () => {
-    setPage(prev => prev + 1);
-    setLoading(true);
-  };
-
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target)
     if (hasNextPage && !loading) {
-      await fetchNextPage();
+      setPage(prev => prev + 1);
+      setLoading(true);
     }
   }, { threshold: 0 })
 
-  return {chatRooms, ref};
+  return {chatRooms, ref, setChatRooms};
 }

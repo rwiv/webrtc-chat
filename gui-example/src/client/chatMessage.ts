@@ -1,9 +1,8 @@
 import {gql} from "@apollo/client";
 import {consts} from "@/configures/consts.ts";
-import {chatRoomColumns} from "@/client/chatRoom.ts";
 import {accountColumns} from "@/client/account.ts";
-import {useQuery} from "@/client/graphql_utils.ts";
-import {chatUserColumns} from "@/client/chatUser.ts";
+
+export const defaultChatMessageSize: number = 10;
 
 export const chatMessageColumns = gql`
     fragment chatMessageColumns on ChatMessage {
@@ -16,38 +15,37 @@ export const chatMessageColumns = gql`
         }
         content
         createAt
+        num
     }
 `;
 
-export const chatRoomAndMessagesQL = gql`
-    query ChatRoomAndMessages($id: Long) {
-        chatRoom(id: $id) {
-            ...chatRoomColumns
-            chatMessages {
-                ...chatMessageColumns
-                createAccount {
-                    ...accountColumns
-                }
-            }
-            chatUsers {
-                ...chatUserColumns
-                account {
-                    ...accountColumns
-                }
+export const chatMessagesQL = gql`
+    query ChatMessages($chatRoomId: Long!, $page: Int!, $size: Int!, $offset: Int!) {
+        chatMessages(chatRoomId: $chatRoomId, page: $page, size: $size, offset: $offset) {
+            ...chatMessageColumns
+            createAccount {
+                ...accountColumns
             }
         }
     }
-    ${accountColumns}
-    ${chatRoomColumns}
     ${chatMessageColumns}
-    ${chatUserColumns}
+    ${accountColumns}
 `;
 
-export function useChatRoomAndMessages(chatRoomId: number) {
-    return useQuery(chatRoomAndMessagesQL, { id: chatRoomId });
-}
+export const chatMessageQL = gql`
+    query ChatMessage($id: Long!) {
+        chatMessage(id: $id) {
+            ...chatMessageColumns
+            createAccount {
+                ...accountColumns
+            }
+        }
+    }
+    ${chatMessageColumns}
+    ${accountColumns}
+`;
 
-export async function sendMessage(chatRoomId: string, content: string) {
+export async function sendMessage(chatRoomId: number, content: string) {
   return await fetch(
     `${consts.endpoint}/api/chat-messages/${chatRoomId}`,
     {

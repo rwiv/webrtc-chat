@@ -6,6 +6,7 @@ import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreat
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessageRepository
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
@@ -21,11 +22,21 @@ class ChatMessageService(
         return chatMessageRepository.findAll()
     }
 
+    fun findById(id: Long): ChatMessage? {
+        return chatMessageRepository.findById(id).getOrNull()
+    }
+
     fun findByChatRoomId(chatRoomId: Long): List<ChatMessage> {
         val chatRoom = chatRoomRepository.findById(chatRoomId).getOrNull()
             ?: throw NotFoundException("not found chatroom")
 
         return chatMessageRepository.findByChatRoom(chatRoom)
+    }
+
+    fun findByPage(chatRoomId: Long, page: Int, size: Int, offset: Int): List<ChatMessage> {
+        val chatRoom = chatRoomRepository.findById(chatRoomId).getOrNull()
+            ?: throw NotFoundException("not found chatroom")
+        return chatMessageRepository.findByDescOffset(chatRoom, page - 1, size, offset)
     }
 
     @Transactional
@@ -36,7 +47,7 @@ class ChatMessageService(
         val createUser = accountRepository.findById(creation.createUserId).getOrNull()
             ?: throw NotFoundException("not found account")
 
-        val latest = chatMessageRepository.findLatestOneInChatRoom(chatRoom)
+        val latest = chatMessageRepository.findLatestOne(chatRoom)
         val num = if (latest == null) 0 else latest.num + 1
 
         val chatMessage = creation.toChatMessage(chatRoom, createUser, num)

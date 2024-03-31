@@ -3,10 +3,7 @@ package com.github.cloverchatserver.domain.chatmsg.api
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
-import com.netflix.graphql.dgs.DgsComponent
-import com.netflix.graphql.dgs.DgsData
-import com.netflix.graphql.dgs.DgsDataFetchingEnvironment
-import com.netflix.graphql.dgs.DgsQuery
+import com.netflix.graphql.dgs.*
 import org.springframework.context.ApplicationEventPublisher
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -20,6 +17,21 @@ class ChatMessageDataFetcher(
     @DgsQuery
     fun chatMessagesAll(): MutableList<ChatMessage> {
         return chatMessageService.findAll()
+    }
+
+    @DgsQuery
+    fun chatMessage(@InputArgument id: Long): ChatMessage? {
+        return chatMessageService.findById(id)
+    }
+
+    @DgsQuery
+    fun chatMessages(
+        @InputArgument chatRoomId: Long,
+        @InputArgument page: Int,
+        @InputArgument size: Int,
+        @InputArgument offset: Int,
+    ): List<ChatMessage> {
+        return chatMessageService.findByPage(chatRoomId, page, size, offset)
     }
 
     // TODO: remove

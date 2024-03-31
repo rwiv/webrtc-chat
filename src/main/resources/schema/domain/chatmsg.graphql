@@ -4,4 +4,5 @@ type ChatMessage {
     createAccount: Account!
     content: String!
     createAt: DateTime!
+    num: Int!
 }

@@ -47,6 +47,7 @@ export type ChatMessage = {
   createAccount: Account;
   createAt: Scalars['DateTime']['output'];
   id: Scalars['Long']['output'];
+  num: Scalars['Int']['output'];
 };
 
 export type ChatRoom = {
@@ -366,6 +367,8 @@ export type Query = {
   account?: Maybe<Account>;
   accounts?: Maybe<Account>;
   accountsAll?: Maybe<Array<Account>>;
+  chatMessage?: Maybe<ChatMessage>;
+  chatMessages?: Maybe<Array<ChatMessage>>;
   chatMessagesAll?: Maybe<Array<ChatMessage>>;
   chatRoom?: Maybe<ChatRoom>;
   chatRooms?: Maybe<Array<ChatRoom>>;
@@ -376,6 +379,19 @@ export type Query = {
 
 export type QueryAccountsArgs = {
   id?: InputMaybe<Scalars['Long']['input']>;
+};
+
+
+export type QueryChatMessageArgs = {
+  id: Scalars['Long']['input'];
+};
+
+
+export type QueryChatMessagesArgs = {
+  chatRoomId: Scalars['Long']['input'];
+  offset: Scalars['Int']['input'];
+  page: Scalars['Int']['input'];
+  size: Scalars['Int']['input'];
 };
 
 

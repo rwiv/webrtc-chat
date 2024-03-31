@@ -5,5 +5,5 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface ChatRoomRepository : JpaRepository<ChatRoom, Long> {
-    fun findAllBy(pageable: Pageable): Page<ChatRoom>
+    fun findBy(pageable: Pageable): Page<ChatRoom>
 }

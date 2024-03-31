@@ -9,6 +9,7 @@ import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreat
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+import java.io.Serializable
 
 @RestController
 @RequestMapping("/api/chat-messages")
@@ -22,15 +23,14 @@ class ChatMessageHttpController(
         @PathVariable chatRoomId: Long,
         @RequestBody req: ChatMessageCreateRequest,
         authentication: Authentication
-    ): StompChatMessage {
+    ): Serializable {
         val accountResponse = authentication.details as AccountResponse
 
         val creation = ChatMessageCreation(chatRoomId, accountResponse.id, req.content)
         val chatMessage = chatMessageService.create(creation)
-        val stompMessage = StompChatMessage.of(chatMessage)
 
         publisher.publishEvent(ChatMessageCreationEvent(chatMessage))
 
-        return stompMessage
+        return "ok"
     }
 }

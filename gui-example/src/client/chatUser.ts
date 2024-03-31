@@ -34,8 +34,7 @@ export const chatRoomAndUsersQL = gql`
 `;
 
 export function useChatRoomAndUsers(chatRoomId: number) {
-  const variables = { id: chatRoomId };
-  return useQuery(chatRoomAndUsersQL, {variables});
+  return useQuery(chatRoomAndUsersQL, { id: chatRoomId });
 }
 
 const createChatUserQL = gql`

@@ -9,5 +9,7 @@ type Query {
 
     chatUsersAll: [ChatUser!]
 
+    chatMessage(id: Long!): ChatMessage
+    chatMessages(chatRoomId: Long!, page: Int!, size: Int!, offset: Int!): [ChatMessage!]
     chatMessagesAll: [ChatMessage!]
 }

@@ -1,10 +1,12 @@
 package com.github.cloverchatserver.domain.chatmsg.persistence
 
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
-interface ChatMessageRepository : JpaRepository<ChatMessage, Long> {
+interface ChatMessageRepository : JpaRepository<ChatMessage, Long>, ChatMessageRepositoryCustom {
 
     fun findByChatRoom(chatRoom: ChatRoom): List<ChatMessage>
 
@@ -12,5 +14,5 @@ interface ChatMessageRepository : JpaRepository<ChatMessage, Long> {
             "WHERE cm.chatRoom = :chatRoom " +
             "ORDER BY cm.num DESC " +
             "LIMIT 1")
-    fun findLatestOneInChatRoom(chatRoom: ChatRoom): ChatMessage?
+    fun findLatestOne(chatRoom: ChatRoom): ChatMessage?
 }

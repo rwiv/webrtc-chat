@@ -7,16 +7,15 @@ import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {HStack} from "@/lib/layouts.tsx";
 import {ChatRoomList} from "@/components/chatroom/ChatRoomList.tsx";
-import {ChatRoomListReverse} from "@/components/chatroom/ChatRoomListReverse.tsx";
 
 export default function IndexPage() {
+
+  const navigate = useNavigate();
   const [chatRoomInput, setChatRoomInput] = useState("");
 
   const {data: me, error} = useMyInfo();
-
   const {createChatRoom} = useCreateChatRoom();
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
@@ -60,7 +59,6 @@ export default function IndexPage() {
         </div>
       )}
       <ChatRoomList />
-      <ChatRoomListReverse />
       <HStack>
         <Input
           className="w-52"
