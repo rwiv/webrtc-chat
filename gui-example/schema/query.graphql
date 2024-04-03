@@ -1,0 +1,15 @@
+type Query {
+    accountsAll: [Account!]
+    account: Account
+    accounts(id: Long): Account
+
+    chatRoomsAll: [ChatRoom!]
+    chatRoom(id: Long): ChatRoom
+    chatRooms(page: Int!, size: Int!): [ChatRoom!]
+
+    chatUsersAll: [ChatUser!]
+
+    chatMessage(id: Long!): ChatMessage
+    chatMessages(chatRoomId: Long!, page: Int!, size: Int!, offset: Int!): [ChatMessage!]
+    chatMessagesAll: [ChatMessage!]
+}

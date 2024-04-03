@@ -1,6 +1,5 @@
 package com.github.cloverchatserver.domain.chatmsg.api
 
-import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
 import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
 import com.netflix.graphql.dgs.*
@@ -34,16 +33,8 @@ class ChatMessageDataFetcher(
         return chatMessageService.findByPage(chatRoomId, page, size, offset)
     }
 
-    // TODO: remove
     @DgsData(parentType = "ChatMessage")
-    fun createAccount(dfe: DgsDataFetchingEnvironment): Account {
-        val chatMessage = dfe.getSource<ChatMessage>()
-        return chatMessage.createdBy
-    }
-
-    // TODO: edit field name to 'createdBy'
-    @DgsData(parentType = "ChatMessage")
-    fun createAt(dfe: DgsDataFetchingEnvironment): OffsetDateTime {
+    fun createdAt(dfe: DgsDataFetchingEnvironment): OffsetDateTime {
         val chatRoom = dfe.getSource<ChatMessage>()
         return chatRoom.createdAt.atOffset(ZoneOffset.UTC)
     }

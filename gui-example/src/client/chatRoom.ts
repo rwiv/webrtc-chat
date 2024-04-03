@@ -1,19 +1,19 @@
 import {gql, useMutation} from "@apollo/client";
 import {Mutation} from "@/graphql/types.ts";
 import {accountColumns} from "@/client/account.ts";
-import {getQueryName, useQuery} from "@/client/graphql_utils.ts";
+import {useQuery} from "@/client/graphql_utils.ts";
 
 export const defaultChatRoomSize: number = 10;
 
 export const chatRoomColumns = gql`
     fragment chatRoomColumns on ChatRoom {
         id
-        createAccount {
+        createdBy {
             id
         }
         password
         title
-        createDate
+        createdAt
         type
     }
 `;
@@ -44,7 +44,7 @@ const createChatRoomQL = gql`
     mutation CreateChatRoom($req: ChatRoomCreateRequest!) {
         createChatRoom(req: $req) {
             ...chatRoomColumns
-            createAccount {
+            createdBy {
                 ...accountColumns
             }
         }
@@ -54,9 +54,7 @@ const createChatRoomQL = gql`
 `;
 
 export function useCreateChatRoom() {
-  const [createChatRoom, {loading, error}] = useMutation<Mutation>(createChatRoomQL, {
-    refetchQueries: [ getQueryName(chatRoomsAllQL) ],
-  });
+  const [createChatRoom, {loading, error}] = useMutation<Mutation>(createChatRoomQL);
   return {createChatRoom, loading, error};
 }
 
@@ -64,7 +62,7 @@ const deleteChatRoomQL = gql`
     mutation DeleteChatRoom($chatRoomId: Long!) {
         deleteChatRoom(chatRoomId: $chatRoomId) {
             ...chatRoomColumns
-            createAccount {
+            createdBy {
                 ...accountColumns
             }
         }
@@ -74,8 +72,6 @@ const deleteChatRoomQL = gql`
 `;
 
 export function useDeleteChatRoom() {
-  const [deleteChatRoom, {loading, error}] = useMutation<Mutation>(deleteChatRoomQL, {
-    refetchQueries: [ getQueryName(chatRoomsAllQL) ],
-  });
+  const [deleteChatRoom, {loading, error}] = useMutation<Mutation>(deleteChatRoomQL);
   return {deleteChatRoom, loading, error};
 }

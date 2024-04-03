@@ -44,8 +44,8 @@ export type ChatMessage = {
   __typename?: 'ChatMessage';
   chatRoom: ChatRoom;
   content: Scalars['String']['output'];
-  createAccount: Account;
-  createAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  createdBy: Account;
   id: Scalars['Long']['output'];
   num: Scalars['Int']['output'];
 };
@@ -54,8 +54,8 @@ export type ChatRoom = {
   __typename?: 'ChatRoom';
   chatMessages?: Maybe<Array<ChatMessage>>;
   chatUsers?: Maybe<Array<ChatUser>>;
-  createAccount: Account;
-  createDate: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  createdBy: Account;
   id: Scalars['Long']['output'];
   password?: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];

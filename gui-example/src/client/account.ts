@@ -21,10 +21,6 @@ export const getMyInfoQL = gql`
     ${accountColumns}
 `;
 
-export function useMyInfo() {
-  return useQuery(getMyInfoQL);
-}
-
 export const accountsAllQL = gql`
     query AccountsAll {
         accountsAll {

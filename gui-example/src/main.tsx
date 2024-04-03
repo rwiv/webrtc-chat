@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import {createBrowserRouter} from "react-router-dom";
-import IndexPage from "@/pages/IndexPage.tsx";
 import {RouterProvider} from "react-router";
 import {ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from "@apollo/client";
 import {AccountSelectPage} from "@/pages/AccountSelectPage.tsx";
@@ -10,6 +9,7 @@ import React from "react";
 import "./globals.css";
 import {SignupPage} from "@/pages/SignupPage.tsx";
 import {LoginPage} from "@/pages/LoginPage.tsx";
+import IndexPage from "@/pages/IndexPage.tsx";
 
 const router = createBrowserRouter([
   { path: '/', element: <IndexPage /> },

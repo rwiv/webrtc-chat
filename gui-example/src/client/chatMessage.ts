@@ -10,11 +10,11 @@ export const chatMessageColumns = gql`
         chatRoom {
             id
         }
-        createAccount {
+        createdBy {
             id
         }
         content
-        createAt
+        createdAt
         num
     }
 `;
@@ -23,7 +23,7 @@ export const chatMessagesQL = gql`
     query ChatMessages($chatRoomId: Long!, $page: Int!, $size: Int!, $offset: Int!) {
         chatMessages(chatRoomId: $chatRoomId, page: $page, size: $size, offset: $offset) {
             ...chatMessageColumns
-            createAccount {
+            createdBy {
                 ...accountColumns
             }
         }
@@ -36,7 +36,7 @@ export const chatMessageQL = gql`
     query ChatMessage($id: Long!) {
         chatMessage(id: $id) {
             ...chatMessageColumns
-            createAccount {
+            createdBy {
                 ...accountColumns
             }
         }

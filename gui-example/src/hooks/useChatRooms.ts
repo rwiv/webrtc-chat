@@ -53,7 +53,15 @@ export function useChatRooms() {
       setPage(prev => prev + 1);
       setLoading(true);
     }
-  }, { threshold: 0 })
+  }, { threshold: 0 });
 
-  return {chatRooms, ref, setChatRooms};
+  const addChatRoom = (chatRoom: ChatRoom) => {
+    setChatRooms(prev => [chatRoom, ...prev]);
+  }
+
+  const removeChatRoom = (chatRoomId: number) => {
+    setChatRooms(prev => prev.filter(it => it.id !== chatRoomId));
+  }
+
+  return {chatRooms, ref, addChatRoom, removeChatRoom};
 }
