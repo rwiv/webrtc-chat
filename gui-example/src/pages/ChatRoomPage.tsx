@@ -5,8 +5,8 @@ import {css} from "@emotion/react";
 import {ChatRoomContent} from "@/components/layouts/ChatRoomContent.tsx";
 import {LeftSidebar} from "@/components/layouts/LeftSidebar.tsx";
 
-const left = mq.m_all(2,2,3,3,3,3);
-const right = mq.m_all(10,10,9, 9,9,9);
+const left = mq.m_all(3, 3, 3, 3, 3, 3);
+const right = mq.m_all(9, 9, 9, 9, 9, 9);
 
 const containerStyle = css`
     display: flex;

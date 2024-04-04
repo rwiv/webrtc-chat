@@ -7,7 +7,7 @@ import {useNavigate} from "react-router";
 import {useCurChatRoom} from "@/hooks/useCurChatRoom.ts";
 
 const listStyle = css`
-    flex-grow: 1;
+    //flex-grow: 1;
     overflow-y: auto;
 `;
 
@@ -18,7 +18,7 @@ const itemStyle = css`
 `;
 
 const buttonStyle = css`
-    width: 180px;
+    width: 15rem;
     color: white;
     padding-left: 30px !important;
     justify-content: flex-start !important;

@@ -26,8 +26,8 @@ const mainSidebarStyle = css`
 
 type SidebarState = "FRIEND" | "CHATROOM" | "SEARCH";
 
-const left = mq.m_all(2,2,3,3,3,3);
-const right = mq.m_all(10,10,9, 9,9,9);
+const left = mq.m_all(2,2,2, 2, 2, 2);
+const right = mq.m_all(10,10, 10, 10, 10, 10);
 
 const iconSize = "2.1rem";
 const iconColor = "#ffffff";

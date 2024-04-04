@@ -6,7 +6,7 @@ import {css} from "@emotion/react";
 import {useMyInfo} from "@/hooks/useMyInfo.ts";
 import {useChatRooms} from "@/hooks/useChatRooms.ts";
 
-const inputStyle = css`
+const frameStyle = css`
     display: flex; /* 플렉스박스 사용 */
     justify-content: space-between; /* 양 끝에 아이템을 놓기 */
     align-items: center; /* 세로 중앙 정렬 */
@@ -33,7 +33,7 @@ export function ChatRoomSidebar() {
 
   return (
     <>
-      <HStack css={inputStyle}>
+      <HStack css={frameStyle}>
         <label css={labelStyle}>Chat Room List</label>
         <ChatRoomCreateButton addChatRoom={addChatRoom}/>
       </HStack>
