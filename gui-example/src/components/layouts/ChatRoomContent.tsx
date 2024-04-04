@@ -9,7 +9,7 @@ const mainContentStyle = css`
     display: flex;
     flex-direction: column;
     background-color: #eeeeee;
-    //border-right: 2px solid #e2e2e2;
+    border-right: 2px solid #e2e2e2;
 `;
 
 const sidebarStyle = css`
