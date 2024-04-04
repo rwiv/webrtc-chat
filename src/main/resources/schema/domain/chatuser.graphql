@@ -2,4 +2,5 @@ type ChatUser {
     id: Long!
     chatRoom: ChatRoom!
     account: Account!
+    createdAt: DateTime!
 }

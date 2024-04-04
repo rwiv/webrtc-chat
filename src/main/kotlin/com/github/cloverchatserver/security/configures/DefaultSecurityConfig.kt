@@ -36,6 +36,7 @@ class DefaultSecurityConfig(
     )
     val ignoreList = listOf(
         "/favicon.ico",
+        "/avatars/**",
         "/js/**",
     )
 

@@ -6,6 +6,8 @@ import com.github.cloverchatserver.domain.account.business.data.AccountResponse
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
+import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
+import com.github.cloverchatserver.domain.chatuser.persistence.ChatUser
 import com.github.cloverchatserver.domain.friend.business.FriendService
 import com.github.cloverchatserver.domain.friend.persistence.Friend
 import com.netflix.graphql.dgs.*
@@ -15,6 +17,7 @@ import org.springframework.security.core.Authentication
 class AccountDataFetcher(
     private val accountService: AccountService,
     private val chatRoomService: ChatRoomService,
+    private val chatUserService: ChatUserService,
     private val friendService: FriendService,
 ) {
 
@@ -38,6 +41,12 @@ class AccountDataFetcher(
     @DgsMutation
     fun createAccount(creation: AccountCreation): Account {
         return accountService.create(creation)
+    }
+
+    @DgsData(parentType = "Account")
+    fun chatUsers(dfe: DgsDataFetchingEnvironment): List<ChatUser> {
+        val account = dfe.getSource<Account>()
+        return chatUserService.findByAccount(account)
     }
 
     @DgsData(parentType = "Account")

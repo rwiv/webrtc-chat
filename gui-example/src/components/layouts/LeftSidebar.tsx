@@ -6,6 +6,8 @@ import { MdOutlineGroup } from "react-icons/md";
 import { MdOutlineMessage } from "react-icons/md";
 import { MdOutlineSearch } from "react-icons/md";
 import {mq} from "@/lib/mediaQueryHelpers.ts";
+import {FriendSidebar} from "@/components/account/FriendSidebar.tsx";
+import {MyChatRoomSidebar} from "@/components/chatroom/MyChatRoomSidebar.tsx";
 
 const navSidebarStyle = css`
     //width: 4.5%;
@@ -41,21 +43,23 @@ export function LeftSidebar() {
       <div css={[navSidebarStyle, left]}>
         <button onClick={() => setCurState("FRIEND")}>
           <Center className="mt-5">
-            <MdOutlineGroup size={iconSize} color={iconColor} />
+            <MdOutlineGroup size={iconSize} color={iconColor}/>
           </Center>
         </button>
         <button onClick={() => setCurState("CHATROOM")}>
           <Center className="mt-5">
-            <MdOutlineMessage size={iconSize} color={iconColor} />
+            <MdOutlineMessage size={iconSize} color={iconColor}/>
           </Center>
         </button>
         <button onClick={() => setCurState("SEARCH")}>
           <Center className="mt-5">
-            <MdOutlineSearch size={iconSize} color={iconColor} />
+            <MdOutlineSearch size={iconSize} color={iconColor}/>
           </Center>
         </button>
       </div>
       <div css={[mainSidebarStyle, right]}>
+        {curState === "FRIEND" && <FriendSidebar />}
+        {curState === "CHATROOM" && <MyChatRoomSidebar />}
         {curState === "SEARCH" && <ChatRoomSidebar/>}
       </div>
     </>

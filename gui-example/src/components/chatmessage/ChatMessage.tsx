@@ -1,20 +1,15 @@
 import {ChatMessage as ChatMessageType} from "@/graphql/types.ts";
-import Avatar from "@/imgs/avatar5.svg";
 import {css} from "@emotion/react";
 import {HStack} from "@/lib/layouts.tsx";
+import {consts} from "@/configures/consts.ts";
+import {iconStyle} from "@/styles/globalStyles.ts";
 
 const frameStyle = css`
-  margin: 1.3rem;
-`;
-
-const iconStyle = css`
-    border-radius: 50%;
-    width: 2.3rem;
-    height: 2.3rem;
+    margin: 1.3rem;
 `;
 
 const contentStyle = css`
-  margin-left: 0.5rem;
+    margin-left: 0.5rem;
 `;
 
 const nicknameStyle = css`
@@ -34,7 +29,11 @@ export function ChatMessage({ chatMessage }: ChatMessageProps) {
   return (
     <HStack className="child" css={frameStyle}>
       <button>
-        <img src={Avatar} css={iconStyle} alt="my-avatar"></img>
+        <img
+          src={`${consts.endpoint}${chatMessage.createdBy.avatarUrl}`}
+          css={iconStyle}
+          alt="sender-avatar"
+        />
       </button>
       <div css={contentStyle}>
         <span css={nicknameStyle}>{chatMessage.createdBy.nickname}</span>

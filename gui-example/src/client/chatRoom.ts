@@ -1,7 +1,6 @@
 import {gql, useMutation} from "@apollo/client";
 import {Mutation} from "@/graphql/types.ts";
 import {accountColumns} from "@/client/account.ts";
-import {useQuery} from "@/client/graphql_utils.ts";
 
 export const defaultChatRoomSize: number = 10;
 
@@ -18,15 +17,6 @@ export const chatRoomColumns = gql`
     }
 `;
 
-const chatRoomsAllQL = gql`
-    query ChatRoomsAll {
-        chatRoomsAll {
-            ...chatRoomColumns
-        }
-    }
-    ${chatRoomColumns}
-`;
-
 export const chatRoomsQL = gql`
     query ChatRooms($page: Int!, $size: Int!) {
         chatRooms(page: $page, size: $size) {
@@ -35,10 +25,6 @@ export const chatRoomsQL = gql`
     }
     ${chatRoomColumns}
 `;
-
-export function useChatRoomsAll() {
-  return useQuery(chatRoomsAllQL);
-}
 
 const createChatRoomQL = gql`
     mutation CreateChatRoom($req: ChatRoomCreateRequest!) {

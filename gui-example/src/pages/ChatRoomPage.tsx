@@ -1,27 +1,12 @@
 import {useParams} from "react-router";
 import {useEffect, useState} from "react";
 import {mq} from "@/lib/mediaQueryHelpers.ts";
-import {css} from "@emotion/react";
 import {ChatRoomContent} from "@/components/layouts/ChatRoomContent.tsx";
 import {LeftSidebar} from "@/components/layouts/LeftSidebar.tsx";
+import {containerStyle, flexStyle} from "@/styles/globalStyles.ts";
 
 const left = mq.m_all(3, 3, 3, 3, 3, 3);
 const right = mq.m_all(9, 9, 9, 9, 9, 9);
-
-const containerStyle = css`
-    display: flex;
-    //flex-direction: row;
-    //justify-content: flex-start;
-    //align-items: stretch;
-    height: 100vh;
-    //margin: 0;
-    //padding: 0;
-`;
-
-const flexStyle = css`
-    display: flex;
-    //justify-content: flex-start;
-`;
 
 export function ChatRoomPage() {
 

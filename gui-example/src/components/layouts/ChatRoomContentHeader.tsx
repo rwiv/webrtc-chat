@@ -61,9 +61,9 @@ export function ChatRoomContentHeader({ chatRoomId }: ChatRoomHeaderProps) {
       )}
       {chatRoomId !== null && (
         <span css={buttonSetStyle}>
-            <Button onClick={onDeleteChatRoom} className="mr-1">delete</Button>
-            <Button onClick={onExit}>exit</Button>
-          </span>
+          <Button onClick={onDeleteChatRoom} className="mr-1">delete</Button>
+          <Button onClick={onExit}>exit</Button>
+        </span>
       )}
     </div>
   )

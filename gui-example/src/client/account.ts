@@ -9,11 +9,12 @@ export const accountColumns = gql`
         role
         username
         nickname
+        avatarUrl
     }
 `;
 
-export const getMyInfoQL = gql`
-    query GetMyInfo {
+export const myInfoQL = gql`
+    query MyInfo {
         account {
             ...accountColumns
         }
@@ -21,17 +22,22 @@ export const getMyInfoQL = gql`
     ${accountColumns}
 `;
 
-export const accountsAllQL = gql`
-    query AccountsAll {
-        accountsAll {
+export const myFriendsQL = gql`
+    query myFriends {
+        account {
             ...accountColumns
+            friends {
+                to {
+                ...accountColumns
+                }
+            }
         }
     }
     ${accountColumns}
 `;
 
-export function useAccounts() {
-  return useQuery(accountsAllQL);
+export function useMyFriends() {
+  return useQuery(myFriendsQL);
 }
 
 export function signup(creation: AccountCreation) {

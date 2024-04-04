@@ -20,4 +20,7 @@ java -jar ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar
 - graphql schema: [click](src/main/resources/schema)
 - test example: [click](docs/graphql_test.md)
 
+## Misc
+
+- graphql DateTime scalar는 `RFC-3339`
 

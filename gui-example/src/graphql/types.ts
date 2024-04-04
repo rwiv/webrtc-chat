@@ -19,7 +19,9 @@ export type Scalars = {
 
 export type Account = {
   __typename?: 'Account';
+  avatarUrl: Scalars['String']['output'];
   chatRooms?: Maybe<Array<ChatRoom>>;
+  chatUsers?: Maybe<Array<ChatUser>>;
   friends?: Maybe<Array<Friend>>;
   id: Scalars['Long']['output'];
   /**     password: String! */
@@ -77,6 +79,7 @@ export type ChatUser = {
   __typename?: 'ChatUser';
   account: Account;
   chatRoom: ChatRoom;
+  createdAt: Scalars['DateTime']['output'];
   id: Scalars['Long']['output'];
 };
 

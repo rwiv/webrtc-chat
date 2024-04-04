@@ -1,4 +1,4 @@
-import {getMyInfoQL, login, LoginRequest} from "@/client/account.ts";
+import {myInfoQL, login, LoginRequest} from "@/client/account.ts";
 import {useNavigate} from "react-router";
 import {useApolloClient} from "@apollo/client";
 import {Link} from "react-router-dom";
@@ -16,7 +16,7 @@ export function AccountSelectPage() {
       password: "1234",
     };
     await login(req, false);
-    await client.refetchQueries({ include: [getQueryName(getMyInfoQL)] });
+    await client.refetchQueries({ include: [getQueryName(myInfoQL)] });
     navigate("/");
   }
 
@@ -26,7 +26,7 @@ export function AccountSelectPage() {
       password: "1234",
     };
     await login(req, false);
-    await client.refetchQueries({ include: [getQueryName(getMyInfoQL)] });
+    await client.refetchQueries({ include: [getQueryName(myInfoQL)] });
     navigate("/");
   }
 

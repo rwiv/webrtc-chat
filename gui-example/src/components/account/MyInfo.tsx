@@ -8,20 +8,15 @@ import {LogOut, Settings, User} from "lucide-react";
 import {logout} from "@/client/account.ts";
 import {useNavigate} from "react-router";
 import {useMyInfo} from "@/hooks/useMyInfo.ts";
-import MyAvatar from "@/imgs/avatar2.svg";
 import {css} from "@emotion/react";
+import {consts} from "@/configures/consts.ts";
+import {iconStyle} from "@/styles/globalStyles.ts";
 
 const userInfoStyle = css`
     display: flex;
     align-items: center;
     padding: 10px;
     color: white;
-`;
-
-const iconStyle = css`
-    border-radius: 50%;
-    width: 2.3rem;
-    height: 2.3rem;
 `;
 
 export function MyInfo() {
@@ -40,7 +35,11 @@ export function MyInfo() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button>
-            <img src={MyAvatar} css={iconStyle} alt="my-avatar"></img>
+            <img
+              src={`${consts.endpoint}${myInfo?.avatarUrl}`}
+              css={iconStyle}
+              alt="my-avatar"
+            />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">

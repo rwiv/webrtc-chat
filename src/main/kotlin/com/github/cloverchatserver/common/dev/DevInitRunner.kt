@@ -60,9 +60,10 @@ class DevInitRunner(
             chatMessageService.create(ChatMessageCreation(chatRoom.id!!, user0.id!!, "hello$i"))
         }
 
-        val user2 = users[2]
-        friendService.add(user2, users[3])
-        friendService.add(user2, users[4])
+        val user1 = users[1]
+        friendService.add(user1, users[3])
+        friendService.add(user1, users[4])
+        friendService.add(user1, users[5])
     }
 
     private fun isProd(): Boolean {

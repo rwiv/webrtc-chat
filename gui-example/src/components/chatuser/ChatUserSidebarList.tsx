@@ -1,7 +1,8 @@
 import {useChatRoomAndUsers} from "@/client/chatUser.ts";
 import {css} from "@emotion/react";
 import {ChatUser} from "@/graphql/types.ts";
-import Avatar from "@/imgs/avatar3.svg";
+import {consts} from "@/configures/consts.ts";
+import {iconStyle} from "@/styles/globalStyles.ts";
 
 const mainStyle = css`
     flex-grow: 1;
@@ -31,12 +32,6 @@ const itemStyle = css`
     color: black;
 `;
 
-const iconStyle = css`
-    border-radius: 50%;
-    width: 2.3rem;
-    height: 2.3rem;
-`;
-
 interface ChatUserItemProps {
   chatUser: ChatUser;
 }
@@ -45,7 +40,11 @@ function ChatUserItem({ chatUser }: ChatUserItemProps) {
   return (
     <div css={itemStyle}>
       <button>
-        <img src={Avatar} css={iconStyle} alt="my-avatar"></img>
+        <img
+          src={`${consts.endpoint}${chatUser.account.avatarUrl}`}
+          css={iconStyle}
+          alt="chat-user-avatar"
+        />
       </button>
       <div css={{marginLeft: "0.7rem"}}>
         <div className="font-semibold">{chatUser.account.nickname}</div>

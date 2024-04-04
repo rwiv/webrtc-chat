@@ -3,6 +3,7 @@ package com.github.cloverchatserver.domain.chatuser.persistence
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "chat_user")
@@ -26,4 +27,7 @@ class ChatUser(
 ) {
     @Column(unique = true)
     private val idPair: String = "${chatRoom.id}-${account.id}"
+
+    @Column
+    val createdAt = LocalDateTime.now()
 }

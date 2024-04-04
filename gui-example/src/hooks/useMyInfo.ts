@@ -1,11 +1,12 @@
 import {useNavigate} from "react-router";
 import {useEffect} from "react";
 import {useQuery} from "@apollo/client";
-import {getMyInfoQL} from "@/client/account.ts";
+import {myInfoQL} from "@/client/account.ts";
+import {Query} from "@/graphql/types.ts";
 
 export function useMyInfo() {
 
-  const {data: myInfoData, error} = useQuery(getMyInfoQL);
+  const {data: myInfoData, error} = useQuery<Query>(myInfoQL);
   const myInfo = myInfoData?.account;
 
   const navigate = useNavigate();

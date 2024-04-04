@@ -23,8 +23,17 @@ class AccountService(
             creation.username,
             passwordEncoder.encode(creation.password),
             creation.nickname,
+            "/avatars/${getRandInt()}.svg",
         )
         return accountRepository.save(tbc)
+    }
+
+    private fun getRandInt(): Int {
+        val list = ArrayList<Int>()
+        for (i in 0..99) {
+            list.add(i)
+        }
+        return list.random()
     }
 
     fun findAll(): List<Account> {

@@ -25,4 +25,7 @@ class Account(
 
     @Column
     val nickname: String,
+
+    @Column
+    val avatarUrl: String,
 )

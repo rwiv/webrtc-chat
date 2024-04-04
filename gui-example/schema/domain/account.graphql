@@ -4,7 +4,9 @@ type Account {
     username: String!
 #    password: String!
     nickname: String!
+    avatarUrl: String!
 
+    chatUsers: [ChatUser!]
     chatRooms: [ChatRoom!]
     friends: [Friend!]
 }

@@ -13,6 +13,7 @@ export const chatUserColumns = gql`
         account {
             id
         }
+        createdAt
     }
 `;
 
@@ -35,6 +36,27 @@ export const chatRoomAndUsersQL = gql`
 
 export function useChatRoomAndUsers(chatRoomId: number) {
   return useQuery(chatRoomAndUsersQL, { id: chatRoomId });
+}
+
+export const myChatUsers = gql`
+    query MyChatUsers {
+        account {
+            ...accountColumns
+            chatUsers {
+                ...chatUserColumns
+                chatRoom {
+                    ...chatRoomColumns
+                }
+            }
+        }
+    }
+    ${accountColumns}
+    ${chatRoomColumns}
+    ${chatUserColumns}
+`;
+
+export function useMyChatUsers() {
+    return useQuery(myChatUsers);
 }
 
 const createChatUserQL = gql`
