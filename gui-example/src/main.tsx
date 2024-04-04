@@ -10,9 +10,11 @@ import "./globals.css";
 import {SignupPage} from "@/pages/SignupPage.tsx";
 import {LoginPage} from "@/pages/LoginPage.tsx";
 import IndexPage from "@/pages/IndexPage.tsx";
+import {TestPage} from "@/pages/TestPage.tsx";
 
 const router = createBrowserRouter([
   { path: '/', element: <IndexPage /> },
+  { path: '/test', element: <TestPage /> },
   { path: '/account-select', element: <AccountSelectPage /> },
   { path: '/chat-rooms/:chatRoomId', element: <ChatRoomPage /> },
   { path: '/users/login', element: <LoginPage /> },
