@@ -7,7 +7,7 @@ import {useCurChatRoom} from "@/hooks/useCurChatRoom.ts";
 
 const headerStyle = css`
     background-color: #eeeeee;
-    height: 7.5%;
+    //height: 10%;
     justify-content: flex-start;
     padding-top: 15px;
     border-bottom: 2px solid #e2e2e2;
@@ -16,6 +16,7 @@ const headerStyle = css`
 const nameStyle = css`
     font-size: 27px;
     padding-left: 25px;
+    margin-bottom: 1rem;
     font-family: 'Noto Sans KR'
 `;
 

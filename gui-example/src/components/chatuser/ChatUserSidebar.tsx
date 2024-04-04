@@ -2,15 +2,17 @@ import {ChatUserSidebarList} from "@/components/chatuser/ChatUserSidebarList.tsx
 import {css} from "@emotion/react";
 
 const columnStyle = css`
-    width: 17.5%;
-    background-color: #eeeeee;
-    display: flex;
-    flex-direction: column;
+    //width: 17.5%;
+    //background-color: #eeeeee;
+    //display: flex;
+    //flex-direction: column;
+    //display: flex;
+    //flex-direction: column;
 `;
 
 const headerStyle = css`
-    height: 7.5%;
-    justify-content: flex-start;
+    //height: 7.5%;
+    //justify-content: flex-start;
     border-bottom: 2px solid #e2e2e2;
     padding-top: 15px;
 `;

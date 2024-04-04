@@ -7,7 +7,8 @@ import {css} from "@emotion/react";
 
 const mainStyle = css`
     background-color: #eeeeee;
-    flex-grow: 1;
+    //margin-top: 1rem;
+    //flex-grow: 1;
 `;
 
 const inputFrameStyle = css`

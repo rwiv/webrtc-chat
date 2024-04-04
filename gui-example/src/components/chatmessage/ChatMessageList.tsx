@@ -3,13 +3,14 @@ import {ChatMessage} from "@/components/chatmessage/ChatMessage.tsx";
 import {css} from "@emotion/react";
 
 const frameStyle = css`
-    height: 43rem;
-    padding: 1rem;
+    //padding: 1rem;
 `;
 
 interface ChatMessageListProps {
   chatRoomId: number;
 }
+
+const ratio = 0.7;
 
 export function ChatMessageList({ chatRoomId }: ChatMessageListProps) {
 
@@ -20,7 +21,7 @@ export function ChatMessageList({ chatRoomId }: ChatMessageListProps) {
   return (
     <div
       className="overflow-y-auto"
-      css={frameStyle}
+      css={[frameStyle, {height: window.innerHeight * ratio}]}
       ref={scrollRef}
     >
       {(chatMessages.length > 0 && !loading) && (
