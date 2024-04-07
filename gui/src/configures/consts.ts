@@ -1,4 +1,8 @@
+
+const host = "localhost";
+const port = 8080;
+
 export const consts = {
-  endpoint: "http://localhost:8080",
-  domain: "localhost:8080",
+  endpoint: `http://${host}:${port}`,
+  domain: `${host}:${port}`,
 }

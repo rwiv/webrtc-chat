@@ -29,15 +29,16 @@ class DefaultSecurityConfig(
 ) {
 
     val permitList = listOf(
+        "/",
         "/api/auth/signup",
-        "/dev/**",
-        "/test/stomp",
         "/graphiql/**",
     )
     val ignoreList = listOf(
         "/favicon.ico",
         "/avatars/**",
-        "/js/**",
+        "/dist/**",
+        "/assets/**",
+        "/vite.svg",
     )
 
     private fun wrapMatcher(list: List<String>): Array<AntPathRequestMatcher> {

@@ -18,8 +18,6 @@ const pc_config = {
 const chatRoomId = 1;
 const myId = 2;
 const yourId = 3;
-const candidateType: RTCIceCandidateType = "host";
-// const candidateType: RTCIceCandidateType = "srflx";
 
 interface DataChannelConnection {
   connection: RTCPeerConnection;
@@ -40,47 +38,29 @@ export function TestPage() {
     const pc = new RTCPeerConnection(pc_config);
     pc.onicecandidate = async ev => {
       if (ev.candidate === undefined || ev.candidate === null) return;
-      if (ev.candidate.type !== candidateType) return;
+      // if (ev.candidate.type !== candidateType) return;
 
       await requestCandidate(chatRoomId, { candidate: ev.candidate, senderId, receiverId })
-      console.log(ev);
     }
     return pc;
   }
 
   const subOffer = (myInfo: Account) => async (msg: IMessage) => {
-    const {description: offer, senderId} = JSON.parse(msg.body) as DescriptionMessage;
+    const {description: offer} = JSON.parse(msg.body) as DescriptionMessage;
     if (myInfo.id === myId) {
       return;
     }
 
-    const pc = createPeerConnection(myInfo.id, myId)
-
-    pc.ondatachannel = async ev => {
-      console.log(ev)
-      const ch = ev.channel;
-      ch.onmessage = msg => {
-        setMessages(prev => [...prev, msg.data]);
-        console.log(msg);
-      }
-
-      setDccs(prev => {
-        const {connection} = prev[senderId];
-        prev[senderId] = {connection, channel: ev.channel};
-        return prev;
-      })
+    const con = dccs[myId]?.connection;
+    if (con === undefined) {
+      return;
     }
 
-    await pc.setRemoteDescription(new RTCSessionDescription(offer));
-    const answer = await pc.createAnswer();
-    await pc.setLocalDescription(new RTCSessionDescription(answer));
+    await con.setRemoteDescription(new RTCSessionDescription(offer));
+    const answer = await con.createAnswer();
+    await con.setLocalDescription(new RTCSessionDescription(answer));
 
     await requestAnswer(chatRoomId, {description: answer, senderId: yourId});
-
-    setDccs(prev => {
-      prev[senderId] = { connection: pc, channel: null };
-      return prev;
-    });
 
     console.log(`offer: ${msg.body}`);
   }
@@ -118,6 +98,42 @@ export function TestPage() {
   useEffect(() => {
     if (myInfo === undefined || myInfo === null) return;
 
+    if (myInfo.id === myId) {
+      const pc = createPeerConnection(myInfo.id, yourId)
+
+      const dc = pc.createDataChannel("write");
+      dc.onmessage = msg => {
+        console.log(msg);
+      }
+      setDccs(prev => {
+        prev[yourId] = { connection: pc, channel: dc };
+        return prev;
+      });
+    }
+
+    if (myInfo.id === yourId) {
+      const pc = createPeerConnection(myInfo.id, myId)
+
+      pc.ondatachannel = async ev => {
+        const ch = ev.channel;
+        ch.onmessage = msg => {
+          setMessages(prev => [...prev, msg.data]);
+          console.log(msg);
+        }
+
+        setDccs(prev => {
+          const {connection} = prev[myId]
+          prev[myId] = { connection, channel: ch };
+          return prev;
+        });
+      }
+
+      setDccs(prev => {
+        prev[myId] = { connection: pc, channel: null };
+        return prev;
+      });
+    }
+
     const stomp = createStompClient();
     stomp.onConnect  = () => {
       const offerSub = stomp.subscribe(`/sub/signal/offer/${chatRoomId}`, subOffer(myInfo));
@@ -138,21 +154,14 @@ export function TestPage() {
   const onStart = async () => {
     if (myInfo === undefined || myInfo === null) return;
 
-    const pc = createPeerConnection(myInfo.id, yourId)
-
-    const dc = pc.createDataChannel("write");
-    dc.onmessage = msg => {
-      console.log(msg);
+    const con = dccs[yourId]?.connection;
+    if (con === undefined) {
+      return;
     }
-
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(new RTCSessionDescription(offer));
+    const offer = await con.createOffer();
+    await con.setLocalDescription(new RTCSessionDescription(offer));
 
     await requestOffer(chatRoomId, { description: offer, senderId: myInfo.id });
-    setDccs(prev => {
-      prev[yourId] = { connection: pc, channel: dc };
-      return prev;
-    });
   }
 
   const onSend = () => {
