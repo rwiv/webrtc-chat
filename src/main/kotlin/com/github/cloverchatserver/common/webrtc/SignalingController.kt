@@ -14,17 +14,17 @@ class SignalingController(
 ) {
 
     @PostMapping("/offer/{chatRoomId}")
-    fun offer(@PathVariable chatRoomId: String, @RequestBody desc: RTCSessionDescription) {
-        template.convertAndSend("/sub/signal/offer/${chatRoomId}", desc)
+    fun offer(@PathVariable chatRoomId: String, @RequestBody message: DescriptionMessage) {
+        template.convertAndSend("/sub/signal/offer/${chatRoomId}", message)
     }
 
     @PostMapping("/answer/{chatRoomId}")
-    fun answer(@PathVariable chatRoomId: String, @RequestBody message: String) {
+    fun answer(@PathVariable chatRoomId: String, @RequestBody message: DescriptionMessage) {
         template.convertAndSend("/sub/signal/answer/${chatRoomId}", message)
     }
 
     @PostMapping("/candidate/{chatRoomId}")
-    fun candidate(@PathVariable chatRoomId: String, @RequestBody message: String) {
+    fun candidate(@PathVariable chatRoomId: String, @RequestBody message: CandidateMessage) {
         template.convertAndSend("/sub/signal/candidate/${chatRoomId}", message)
     }
 }

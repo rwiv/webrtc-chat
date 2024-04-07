@@ -27,7 +27,7 @@ const buttonStyle = css`
 
 interface ChatRoomListProps {
   chatRooms: ChatRoom[];
-  myInfo: Account;
+  myInfo: Account | undefined | null;
   observerRef: React.RefObject<HTMLDivElement>;
 }
 
