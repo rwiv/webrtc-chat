@@ -1,11 +1,11 @@
 import {ChatRoomSidebar} from "@/components/chatroom/ChatRoomSidebar.tsx";
 import {css} from "@emotion/react";
 import {useState} from "react";
-import {Center} from "@/lib/layouts.tsx";
+import {Center} from "@/lib/style/layouts.tsx";
 import { MdOutlineGroup } from "react-icons/md";
 import { MdOutlineMessage } from "react-icons/md";
 import { MdOutlineSearch } from "react-icons/md";
-import {mq} from "@/lib/mediaQueryHelpers.ts";
+import {mq} from "@/lib/style/mediaQueries.ts";
 import {FriendSidebar} from "@/components/account/FriendSidebar.tsx";
 import {MyChatRoomSidebar} from "@/components/chatroom/MyChatRoomSidebar.tsx";
 

@@ -1,4 +1,4 @@
-import {mq} from "@/lib/mediaQueryHelpers.ts";
+import {mq} from "@/lib/style/mediaQueries.ts";
 import {LeftSidebar} from "@/components/layouts/LeftSidebar.tsx";
 import {ChatRoomContent} from "@/components/layouts/ChatRoomContent.tsx";
 import {containerStyle, flexStyle} from "@/styles/globalStyles.ts";

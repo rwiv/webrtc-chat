@@ -1,6 +1,7 @@
 import {gql} from "@apollo/client";
 import {consts} from "@/configures/consts.ts";
 import {accountColumns} from "@/client/account.ts";
+import {post} from "@/lib/web/http.ts";
 
 export const defaultChatMessageSize: number = 10;
 
@@ -46,15 +47,5 @@ export const chatMessageQL = gql`
 `;
 
 export async function sendMessage(chatRoomId: number, content: string) {
-  return await fetch(
-    `${consts.endpoint}/api/chat-messages/${chatRoomId}`,
-    {
-      method: "POST",
-      body: JSON.stringify({ content }),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include",
-    }
-  );
+  return await post(`${consts.endpoint}/api/chat-messages/${chatRoomId}`, { content });
 }

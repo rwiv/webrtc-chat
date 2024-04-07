@@ -2,7 +2,7 @@ import {ChatUserSidebar} from "@/components/chatuser/ChatUserSidebar.tsx";
 import {ChatMessagesContent} from "@/components/chatmessage/ChatMessagesContent.tsx";
 import {css} from "@emotion/react";
 import {ChatRoomContentHeader} from "@/components/layouts/ChatRoomContentHeader.tsx";
-import {mq} from "@/lib/mediaQueryHelpers.ts";
+import {mq} from "@/lib/style/mediaQueries.ts";
 
 const mainContentStyle = css`
     //flex-grow: 1;

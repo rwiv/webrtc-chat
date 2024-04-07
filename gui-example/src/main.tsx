@@ -5,7 +5,6 @@ import {ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from "@apollo/cli
 import {AccountSelectPage} from "@/pages/AccountSelectPage.tsx";
 import {consts} from "@/configures/consts.ts";
 import {ChatRoomPage} from "@/pages/ChatRoomPage.tsx";
-import React from "react";
 import "./globals.css";
 import {SignupPage} from "@/pages/SignupPage.tsx";
 import {LoginPage} from "@/pages/LoginPage.tsx";
@@ -33,9 +32,7 @@ const client = new ApolloClient({
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <RouterProvider router={router} />
-    </ApolloProvider>
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <RouterProvider router={router} />
+  </ApolloProvider>
 );

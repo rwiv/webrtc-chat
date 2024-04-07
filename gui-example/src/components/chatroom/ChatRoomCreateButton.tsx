@@ -13,7 +13,7 @@ import React, {useRef, useState} from "react";
 import {ChatRoom, ChatRoomCreateRequest, ChatRoomType} from "@/graphql/types.ts";
 import {useCreateChatRoom} from "@/client/chatRoom.ts";
 import { MdAddCircle } from "react-icons/md";
-import {Center} from "@/lib/layouts.tsx";
+import {Center} from "@/lib/style/layouts.tsx";
 
 interface ChatRoomCreateButtonProps {
   addChatRoom: (chatRoom: ChatRoom) => void;

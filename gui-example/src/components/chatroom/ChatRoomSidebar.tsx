@@ -1,4 +1,4 @@
-import {HStack} from "@/lib/layouts.tsx";
+import {HStack} from "@/lib/style/layouts.tsx";
 import {ChatRoomCreateButton} from "@/components/chatroom/ChatRoomCreateButton.tsx";
 import {ChatRoomSidebarList} from "@/components/chatroom/ChatRoomSidebarList.tsx";
 import {MyInfo} from "@/components/account/MyInfo.tsx";

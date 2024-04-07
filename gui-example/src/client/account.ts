@@ -1,7 +1,8 @@
 import {gql} from "@apollo/client";
 import {consts} from "@/configures/consts.ts";
-import {useQuery} from "@/client/graphql_utils.ts";
+import {useQuery} from "@/lib/web/apollo.ts";
 import {AccountCreation} from "@/graphql/types.ts";
+import {post} from "@/lib/web/http.ts";
 
 export const accountColumns = gql`
     fragment accountColumns on Account {
@@ -41,17 +42,7 @@ export function useMyFriends() {
 }
 
 export function signup(creation: AccountCreation) {
-  return fetch(
-    `${consts.endpoint}/api/auth/signup`,
-    {
-      method: 'POST',
-      body: JSON.stringify(creation),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }
-  );
+  return post(`${consts.endpoint}/api/auth/signup`, creation);
 }
 
 export interface LoginRequest {
@@ -64,19 +55,9 @@ export function login(req: LoginRequest, remember: boolean) {
   if (remember) {
     url += "?remember=true";
   }
-  return fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(req),
-    credentials: "include",
-  });
+  return post(url, req);
 }
 
 export function logout() {
-  return fetch(
-    `${consts.endpoint}/api/auth/logout`,
-    {
-      method: 'POST',
-      credentials: "include",
-    }
-  );
+  return post(`${consts.endpoint}/api/auth/logout`, null);
 }

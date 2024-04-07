@@ -4,7 +4,7 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {Center, VStack} from "@/lib/layouts.tsx";
+import {Center, VStack} from "@/lib/style/layouts.tsx";
 import {useState} from "react";
 import {login, LoginRequest} from "@/client/account.ts";
 

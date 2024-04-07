@@ -2,7 +2,7 @@ import {gql, useMutation} from "@apollo/client";
 import {Mutation} from "@/graphql/types.ts";
 import {chatRoomColumns} from "@/client/chatRoom.ts";
 import {accountColumns} from "@/client/account.ts";
-import {getQueryName, useQuery} from "@/client/graphql_utils.ts";
+import {getQueryName, useQuery} from "@/lib/web/apollo.ts";
 
 export const chatUserColumns = gql`
     fragment chatUserColumns on ChatUser {

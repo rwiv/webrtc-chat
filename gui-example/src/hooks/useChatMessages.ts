@@ -4,9 +4,9 @@ import {ChatMessage, Query} from "@/graphql/types.ts";
 import {useIntersect} from "@/hooks/useIntersect.ts";
 import {chatMessageQL, chatMessagesQL, defaultChatMessageSize} from "@/client/chatMessage.ts";
 import {Client, IMessage, StompSubscription} from "@stomp/stompjs";
-import {consts} from "@/configures/consts.ts";
 import type {QueryOptions} from "@apollo/client/core/watchQueryOptions";
-import {reverse} from "@/lib/array.ts";
+import {reverse} from "@/lib/misc/array.ts";
+import {createStompClient} from "@/lib/web/stomp.ts";
 
 export function useChatMessages(chatRoomId: number) {
 
@@ -48,20 +48,15 @@ export function useChatMessages(chatRoomId: number) {
     if (stompClient !== undefined) {
       return;
     }
-    const dest = `/sub/message/${chatRoomId}`;
-    const newStompClient = new Client({
-      brokerURL: `ws://${consts.domain}/stomp`,
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-      onConnect: () => {
-        const sub = newStompClient.subscribe(dest, subscribe);
-        setStompSubs(prev => {
-          prev.push(sub);
-          return prev;
-        });
-      }
-    });
+    const newStompClient = createStompClient();
+    newStompClient.onConnect  = () => {
+      const dest = `/sub/message/${chatRoomId}`;
+      const sub = newStompClient.subscribe(dest, subscribe);
+      setStompSubs(prev => {
+        prev.push(sub);
+        return prev;
+      });
+    }
     newStompClient.activate();
     setStompClient(newStompClient);
   }
@@ -81,7 +76,7 @@ export function useChatMessages(chatRoomId: number) {
   function getQueryOptions(): QueryOptions {
     return {
       query: chatMessagesQL,
-      variables: { chatRoomId, page, size: defaultChatMessageSize, offset: offset / 2 },
+      variables: { chatRoomId, page, size: defaultChatMessageSize, offset: offset },
       fetchPolicy: "network-only",
     }
   }

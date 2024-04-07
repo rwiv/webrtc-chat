@@ -1,6 +1,6 @@
 import {ChatMessage as ChatMessageType} from "@/graphql/types.ts";
 import {css} from "@emotion/react";
-import {HStack} from "@/lib/layouts.tsx";
+import {HStack} from "@/lib/style/layouts.tsx";
 import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
 
