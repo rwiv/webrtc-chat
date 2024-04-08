@@ -6,6 +6,24 @@ import {iconStyle} from "@/styles/globalStyles.ts";
 
 const mainStyle = css`
     flex-grow: 1;
+    overflow-y: auto;
+
+    ::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+  
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  
+    ::-webkit-scrollbar-thumb {
+      background: #000000;
+      border-radius: 10px;
+    }
+  
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555555;
+    }
 `;
 
 interface ChatUserSidebarListProps {

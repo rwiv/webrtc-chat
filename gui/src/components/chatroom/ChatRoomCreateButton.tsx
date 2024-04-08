@@ -14,6 +14,7 @@ import {ChatRoom, ChatRoomCreateRequest, ChatRoomType} from "@/graphql/types.ts"
 import {useCreateChatRoom} from "@/client/chatRoom.ts";
 import { MdAddCircle } from "react-icons/md";
 import {Center} from "@/lib/style/layouts.tsx";
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface ChatRoomCreateButtonProps {
   addChatRoom: (chatRoom: ChatRoom) => void;
@@ -24,6 +25,17 @@ export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps)
   const ref = useRef<HTMLButtonElement>(null)
   const [chatRoomInput, setChatRoomInput] = useState("");
   const {createChatRoom} = useCreateChatRoom();
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setIsPrivate(checked); 
+    if (!checked) setPassword(''); 
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -35,9 +47,9 @@ export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps)
   const onAddChatRoom = async () => {
     const variables: {req: ChatRoomCreateRequest} = {
       req: {
-        password: null,
+        password: isPrivate ? password : null,
         title: chatRoomInput,
-        type: ChatRoomType.Public,
+        type: isPrivate ? ChatRoomType.Private : ChatRoomType.Public,
       },
     };
     const res = await createChatRoom({variables});
@@ -47,6 +59,8 @@ export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps)
       throw Error("created chat room is undefined");
     }
     setChatRoomInput("");
+    setIsPrivate(false);
+    setPassword("");
     ref?.current?.click();
     addChatRoom(created);
   }
@@ -79,6 +93,31 @@ export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps)
             />
           </div>
         </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox id="terms" 
+            checked={isPrivate}
+            onCheckedChange={handleCheckboxChange}/>
+            <label
+              htmlFor="terms"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              비밀방으로 만들기
+            </label>
+        </div>
+        {isPrivate && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="password" className="text-right">
+              비밀번호
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              className="col-span-3"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </div>
+        )}
         <DialogFooter>
           <Button type="submit" onClick={() => onAddChatRoom()}>채팅방 만들기</Button>
         </DialogFooter>

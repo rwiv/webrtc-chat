@@ -48,8 +48,7 @@ export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
     if (!chatRoomId) {
       throw Error("chatRoomId is null");
     }
-    const res = await sendMessage(chatRoomId, chatMessageInput);
-    console.log(await res.text())
+    await sendMessage(chatRoomId, chatMessageInput);
     setChatMessageInput("");
   }
 
@@ -58,6 +57,12 @@ export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
     setState: React.Dispatch<React.SetStateAction<string>>,
   ) => {
     setState(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      send();
+    }
   };
 
   return (
@@ -71,10 +76,11 @@ export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
             type="message" id="inputField" css={messageInputStyle}
             onChange={(e: any) => handleChange(e, setChatMessageInput)}
             value={chatMessageInput}
+            onKeyDown={handleKeyDown}
           />
           <Button
             type="submit" id="inputButton" css={sendButtonStyle}
-            onClick={send}
+            onClick={() => send()}
           >
             send
           </Button>
