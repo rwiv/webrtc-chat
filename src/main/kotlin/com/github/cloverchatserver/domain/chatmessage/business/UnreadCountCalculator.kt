@@ -1,6 +1,6 @@
-package com.github.cloverchatserver.domain.chatmsg.business
+package com.github.cloverchatserver.domain.chatmessage.business
 
-import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
+import com.github.cloverchatserver.domain.chatmessage.persistence.ChatMessage
 
 class UnreadCountCalculator {
 

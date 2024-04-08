@@ -1,8 +1,6 @@
-package com.github.cloverchatserver.domain.chatmsg.persistence
+package com.github.cloverchatserver.domain.chatmessage.persistence
 
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 

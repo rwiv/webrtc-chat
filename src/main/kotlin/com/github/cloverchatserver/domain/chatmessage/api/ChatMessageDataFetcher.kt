@@ -1,7 +1,7 @@
-package com.github.cloverchatserver.domain.chatmsg.api
+package com.github.cloverchatserver.domain.chatmessage.api
 
-import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
-import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
+import com.github.cloverchatserver.domain.chatmessage.business.ChatMessageService
+import com.github.cloverchatserver.domain.chatmessage.persistence.ChatMessage
 import com.netflix.graphql.dgs.*
 import org.springframework.context.ApplicationEventPublisher
 import java.time.OffsetDateTime

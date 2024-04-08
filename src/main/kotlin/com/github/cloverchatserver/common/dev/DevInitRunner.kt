@@ -4,8 +4,8 @@ import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.account.business.data.AccountCreation
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRole
-import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
-import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
+import com.github.cloverchatserver.domain.chatmessage.business.ChatMessageService
+import com.github.cloverchatserver.domain.chatmessage.business.data.ChatMessageCreation
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatroom.business.data.ChatRoomCreation
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom

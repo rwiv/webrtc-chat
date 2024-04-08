@@ -1,10 +1,10 @@
 package com.github.cloverchatserver.domain
 
 import com.github.cloverchatserver.domain.account.business.AccountService
-import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
-import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
-import com.github.cloverchatserver.domain.chatmsg.business.UnreadCountCalculator
-import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
+import com.github.cloverchatserver.domain.chatmessage.business.ChatMessageService
+import com.github.cloverchatserver.domain.chatmessage.business.data.ChatMessageCreation
+import com.github.cloverchatserver.domain.chatmessage.business.UnreadCountCalculator
+import com.github.cloverchatserver.domain.chatmessage.persistence.ChatMessage
 import com.github.cloverchatserver.domain.chatroom.business.ChatRoomService
 import com.github.cloverchatserver.domain.chatuser.business.ChatUserService
 import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserCreation

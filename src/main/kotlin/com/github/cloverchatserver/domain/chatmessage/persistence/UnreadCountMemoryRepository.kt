@@ -1,8 +1,6 @@
-package com.github.cloverchatserver.domain.chatmsg.persistence
+package com.github.cloverchatserver.domain.chatmessage.persistence
 
-import org.springframework.stereotype.Component
-
-@Component
+//@Component
 class UnreadCountMemoryRepository {
 
     private val map: MutableMap<Long, Int> = HashMap()

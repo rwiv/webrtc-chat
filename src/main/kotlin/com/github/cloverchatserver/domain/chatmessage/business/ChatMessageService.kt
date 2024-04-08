@@ -1,12 +1,11 @@
-package com.github.cloverchatserver.domain.chatmsg.business
+package com.github.cloverchatserver.domain.chatmessage.business
 
 import com.github.cloverchatserver.common.error.exception.NotFoundException
 import com.github.cloverchatserver.domain.account.persistence.AccountRepository
-import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
-import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
-import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessageRepository
+import com.github.cloverchatserver.domain.chatmessage.business.data.ChatMessageCreation
+import com.github.cloverchatserver.domain.chatmessage.persistence.ChatMessage
+import com.github.cloverchatserver.domain.chatmessage.persistence.ChatMessageRepository
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomRepository
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull

@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.domain.chatmsg.api
+package com.github.cloverchatserver.domain.chatmessage.api
 
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping

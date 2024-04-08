@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.domain.chatmsg.api.data
+package com.github.cloverchatserver.domain.chatmessage.api.data
 
 data class ChatMessageCreateRequest(
     val content: String,

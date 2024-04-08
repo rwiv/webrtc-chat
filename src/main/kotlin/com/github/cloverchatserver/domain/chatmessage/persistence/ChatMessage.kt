@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.domain.chatmsg.persistence
+package com.github.cloverchatserver.domain.chatmessage.persistence
 
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
 import com.github.cloverchatserver.domain.account.persistence.Account

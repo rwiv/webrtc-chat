@@ -48,7 +48,8 @@ export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
     if (!chatRoomId) {
       throw Error("chatRoomId is null");
     }
-    await sendMessage(chatRoomId, chatMessageInput);
+    const res = await sendMessage(chatRoomId, chatMessageInput);
+    console.log(await res.text())
     setChatMessageInput("");
   }
 
@@ -73,7 +74,7 @@ export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
           />
           <Button
             type="submit" id="inputButton" css={sendButtonStyle}
-            onClick={() => send()}
+            onClick={send}
           >
             send
           </Button>

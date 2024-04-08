@@ -1,7 +1,7 @@
-package com.github.cloverchatserver.domain.chatmsg.business.data
+package com.github.cloverchatserver.domain.chatmessage.business.data
 
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoom
-import com.github.cloverchatserver.domain.chatmsg.persistence.ChatMessage
+import com.github.cloverchatserver.domain.chatmessage.persistence.ChatMessage
 import com.github.cloverchatserver.domain.account.persistence.Account
 import java.time.LocalDateTime
 

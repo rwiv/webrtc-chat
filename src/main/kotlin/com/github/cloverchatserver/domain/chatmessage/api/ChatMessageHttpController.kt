@@ -1,15 +1,15 @@
-package com.github.cloverchatserver.domain.chatmsg.api
+package com.github.cloverchatserver.domain.chatmessage.api
 
 import com.github.cloverchatserver.domain.account.business.data.AccountResponse
-import com.github.cloverchatserver.domain.chatmsg.api.data.ChatMessageCreateRequest
-import com.github.cloverchatserver.domain.chatmsg.api.data.StompChatMessage
-import com.github.cloverchatserver.domain.chatmsg.api.event.ChatMessageCreationEvent
-import com.github.cloverchatserver.domain.chatmsg.business.ChatMessageService
-import com.github.cloverchatserver.domain.chatmsg.business.data.ChatMessageCreation
+import com.github.cloverchatserver.domain.chatmessage.api.data.ChatMessageCreateRequest
+import com.github.cloverchatserver.domain.chatmessage.api.data.ChatMessageResponse
+import com.github.cloverchatserver.domain.chatmessage.api.event.ChatMessageCreationEvent
+import com.github.cloverchatserver.domain.chatmessage.business.ChatMessageService
+import com.github.cloverchatserver.domain.chatmessage.business.data.ChatMessageCreation
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
-import java.io.Serializable
 
 @RestController
 @RequestMapping("/api/chat-messages")
@@ -23,7 +23,7 @@ class ChatMessageHttpController(
         @PathVariable chatRoomId: Long,
         @RequestBody req: ChatMessageCreateRequest,
         authentication: Authentication
-    ): Serializable {
+    ): ResponseEntity<ChatMessageResponse> {
         val accountResponse = authentication.details as AccountResponse
 
         val creation = ChatMessageCreation(chatRoomId, accountResponse.id, req.content)
@@ -31,6 +31,6 @@ class ChatMessageHttpController(
 
         publisher.publishEvent(ChatMessageCreationEvent(chatMessage))
 
-        return "ok"
+        return ResponseEntity.ok(ChatMessageResponse.of(chatMessage))
     }
 }

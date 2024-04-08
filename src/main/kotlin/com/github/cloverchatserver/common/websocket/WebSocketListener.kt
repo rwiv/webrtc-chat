@@ -8,7 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.messaging.SessionSubscribeEvent
 
-@Component
+//@Component
 class WebSocketListener(
     val chatUserService: ChatUserService,
     val template: SimpMessagingTemplate
