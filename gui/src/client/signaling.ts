@@ -4,6 +4,7 @@ import {consts} from "@/configures/consts.ts";
 export interface DescriptionMessage {
   description: RTCSessionDescriptionInit;
   senderId: number;
+  receiverId: number;
 }
 
 export interface CandidateMessage {

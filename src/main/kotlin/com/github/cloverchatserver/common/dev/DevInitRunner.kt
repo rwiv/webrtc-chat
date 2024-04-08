@@ -58,6 +58,7 @@ class DevInitRunner(
         // TODO remove
         chatUserService.create(ChatUserCreation(chatRooms[19].id!!, chatRooms[19].password, users[1].id!!))
         chatUserService.create(ChatUserCreation(chatRooms[19].id!!, chatRooms[19].password, users[2].id!!))
+        chatUserService.create(ChatUserCreation(chatRooms[19].id!!, chatRooms[19].password, users[3].id!!))
         //
 
         val chatRoom = chatRooms[0]

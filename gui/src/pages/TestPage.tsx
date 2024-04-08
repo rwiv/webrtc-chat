@@ -26,53 +26,99 @@ export function TestPage() {
   )
 }
 
-const pc_config = {
-  iceServers: [
-    {
-      urls: "stun:stun.l.google.com:19302",
-    },
-  ],
-};
+class DataChannelConnection {
+  constructor(
+    public readonly connection: RTCPeerConnection,
+    public readonly myChannel: RTCDataChannel,
+    public readonly target: Account,
+    public yourChannel: RTCDataChannel | null = null,
+  ) {
+  }
 
-const yourId = 3;
+  getOpenChannel() {
+    if (this.myChannel.readyState === "open") {
+      return this.myChannel;
+    } else if (this.yourChannel?.readyState === "open") {
+      return this.yourChannel;
+    } else {
+      return null;
+    }
+  }
+
+  close() {
+    this.connection.close();
+    this.myChannel.close();
+    this.yourChannel?.close();
+  }
+}
 
 interface CompProps {
   myInfo: Account;
   chatUsers: ChatUser[];
 }
 
-class DataChannelConnection {
-  constructor(
-    public readonly connection: RTCPeerConnection,
-    public readonly writeChannel: RTCDataChannel,
-    public readonly target: Account,
-    public readChannel: RTCDataChannel | null = null,
-  ) {
-  }
-}
+const pc_config = {
+  iceServers: [
+    { urls: "stun:stun.l.google.com:19302" },
+  ],
+};
 
 export function Comp({ myInfo, chatUsers }: CompProps) {
 
-  const [stompSubs, setStompSubs] = useState<StompSubscription[]>([]);
   const dccs = useRef<Map<number, DataChannelConnection>>(new Map());
-
+  const [stompSubs, setStompSubs] = useState<StompSubscription[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [messages, setMessages] = useState<string[]>([]);
   const [msgInput, setMsgInput] = useState("");
 
-  async function createPeerConnection(senderId: number, receiverId: number) {
+  function isLoading() {
+    for (const dcc of dccs.current.values()) {
+      if (dcc.getOpenChannel() !== null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async function createPeerConnection(target: Account) {
     const pc = new RTCPeerConnection(pc_config);
     pc.onicecandidate = async ev => {
       if (ev.candidate === undefined || ev.candidate === null) return;
 
-      await requestCandidate(chatRoomId, { candidate: ev.candidate, senderId, receiverId })
+      await requestCandidate(chatRoomId, { candidate: ev.candidate, senderId: myInfo.id, receiverId: target.id });
     }
-    return pc;
+
+    const dc = pc.createDataChannel(target.id.toString());
+    dc.onmessage = msg => {
+      setMessages(prev => [...prev, msg.data]);
+      console.log(msg);
+    }
+
+    pc.ondatachannel = async ev => {
+      const ch = ev.channel;
+      ch.onmessage = msg => {
+        setMessages(prev => [...prev, msg.data]);
+        console.log(msg);
+      }
+
+      const dcc = dccs.current.get(target.id);
+      if (dcc !== undefined) {
+        dcc.yourChannel = ch;
+      }
+    }
+    const dcc = new DataChannelConnection(pc, dc, target);
+    dccs.current.set(target.id, dcc);
+
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(new RTCSessionDescription(offer));
+
+    await requestOffer(chatRoomId, { description: offer, senderId: myInfo.id, receiverId: target.id });
   }
 
   const subOffer = (myInfo: Account) => async (msg: IMessage) => {
-    const {description: offer, senderId} = JSON.parse(msg.body) as DescriptionMessage;
-    if (myInfo.id === senderId) {
+    const {description: offer, senderId, receiverId} = JSON.parse(msg.body) as DescriptionMessage;
+    if (myInfo.id !== receiverId) {
       return;
     }
 
@@ -85,14 +131,14 @@ export function Comp({ myInfo, chatUsers }: CompProps) {
     const answer = await con.createAnswer();
     await con.setLocalDescription(new RTCSessionDescription(answer));
 
-    await requestAnswer(chatRoomId, {description: answer, senderId: myInfo.id});
+    await requestAnswer(chatRoomId, {description: answer, senderId: myInfo.id, receiverId: senderId});
 
     console.log(`offer: ${msg.body}`);
   }
 
   const subAnswer = (myInfo: Account) => async (msg: IMessage) => {
-    const {description: answer, senderId} = JSON.parse(msg.body) as DescriptionMessage;
-    if (myInfo?.id === senderId) {
+    const {description: answer, senderId, receiverId} = JSON.parse(msg.body) as DescriptionMessage;
+    if (myInfo?.id !== receiverId) {
       return;
     }
 
@@ -100,15 +146,12 @@ export function Comp({ myInfo, chatUsers }: CompProps) {
     if (con === undefined) {
       return;
     }
-    if (con.localDescription !== undefined) {
-      await con.setRemoteDescription(new RTCSessionDescription(answer));
-    }
+    await con.setRemoteDescription(new RTCSessionDescription(answer));
     console.log(`answer: ${msg.body}`);
   }
 
   const subCandidate = (myInfo: Account) => async (msg: IMessage) => {
     const {candidate, senderId, receiverId} = JSON.parse(msg.body) as CandidateMessage;
-    console.log(msg.body)
     if (myInfo.id !== receiverId) {
       return;
     }
@@ -121,34 +164,30 @@ export function Comp({ myInfo, chatUsers }: CompProps) {
     console.log(`candidate: ${msg.body}`);
   }
 
-  async function init() {
+  async function initRTC() {
     const targets = chatUsers.map(it => it.account).filter(it => it.id !== myInfo.id)
     for (const target of targets) {
-      const pc = await createPeerConnection(myInfo.id, target.id);
-
-      const dc = pc.createDataChannel("write");
-      dc.onmessage = msg => {
-        console.log(msg);
-      }
-
-      pc.ondatachannel = async ev => {
-        const ch = ev.channel;
-        ch.onmessage = msg => {
-          setMessages(prev => [...prev, msg.data]);
-          console.log(msg);
-        }
-
-        const dcc = dccs.current.get(target.id);
-        if (dcc !== undefined) {
-          dcc.readChannel = ch;
-        }
-      }
-      dccs.current.set(target.id, new DataChannelConnection(pc, dc, target));
+      await createPeerConnection(target);
     }
   }
 
   useEffect(() => {
-    init();
+    // setInterval(() => {
+    //   for (const dcc of dccs.current.values()) {
+    //     console.log(dcc.myChannel.readyState);
+    //     console.log(dcc.yourChannel?.readyState);
+    //   }
+    // }, 1000);
+
+    // check loading
+    const interval = setInterval(() => {
+      if (!isLoading()) {
+        setLoading(false);
+        clearInterval(interval);
+      }
+    }, 1);
+
+    // create stomp client
     const stomp = createStompClient();
     stomp.onConnect  = () => {
       const offerSub = stomp.subscribe(`/sub/signal/offer/${chatRoomId}`, subOffer(myInfo));
@@ -157,6 +196,9 @@ export function Comp({ myInfo, chatUsers }: CompProps) {
       setStompSubs(prev => [...prev, offerSub, answerSub, candidateSub]);
     }
     stomp.activate();
+
+    // set rtc connections
+    initRTC()
 
     return () => {
       stompSubs.forEach(it => {
@@ -167,31 +209,25 @@ export function Comp({ myInfo, chatUsers }: CompProps) {
   }, []);
 
   const onStart = async () => {
-    const con = dccs.current.get(yourId)?.connection;
-    if (con === undefined) {
-      return;
-    }
-    const offer = await con.createOffer();
-    await con.setLocalDescription(new RTCSessionDescription(offer));
+    for (const dcc of dccs.current.values()) {
+      const offer = await dcc.connection.createOffer();
+      await dcc.connection.setLocalDescription(new RTCSessionDescription(offer));
 
-    await requestOffer(chatRoomId, { description: offer, senderId: myInfo.id });
+      await requestOffer(chatRoomId, { description: offer, senderId: myInfo.id, receiverId: dcc.target.id });
+    }
   }
 
   const onSend = () => {
-    const dcc = dccs.current.get(yourId);
-    if (dcc === undefined) {
-      throw Error("not found dcc");
+    for (const dcc of dccs.current.values()) {
+      dcc.getOpenChannel()?.send(msgInput);
     }
-    dcc.writeChannel.send(msgInput);
     setMsgInput("");
   }
 
   const onStop = () => {
-    for (const [, dcc] of dccs.current.entries()) {
+    for (const dcc of dccs.current.values()) {
       console.log(`diconnect ${dcc.target.id}`);
-      dcc.connection.close();
-      dcc.writeChannel.close();
-      dcc.readChannel?.close();
+      dcc.close();
     }
   }
 
@@ -208,9 +244,13 @@ export function Comp({ myInfo, chatUsers }: CompProps) {
       />
       <div className="m-3">
         <Button onClick={onStart}>Start</Button>
-        <Button onClick={onSend}>Send</Button>
+        <Button disabled={loading} onClick={onSend}>Send</Button>
+        {/*<Button onClick={onSend}>Send</Button>*/}
         <Button onClick={onStop}>Stop</Button>
       </div>
+      {loading && (
+        <div>loading...</div>
+      )}
     </div>
   )
 }

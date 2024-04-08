@@ -30,11 +30,22 @@ export function AccountSelectPage() {
     navigate("/");
   }
 
+  const onLoginUser3 = async () => {
+    const req: LoginRequest = {
+      username: "user3@gmail.com",
+      password: "1234",
+    };
+    await login(req, false);
+    await client.refetchQueries({ include: [getQueryName(myInfoQL)] });
+    navigate("/");
+  }
+
   return (
     <>
       <div>
         <Button onClick={onLoginUser1}>user1</Button>
         <Button onClick={onLoginUser2}>user2</Button>
+        <Button onClick={onLoginUser3}>user3</Button>
       </div>
       <div>
         <Link to={"/users/signup"}><Button>회원가입</Button></Link>
