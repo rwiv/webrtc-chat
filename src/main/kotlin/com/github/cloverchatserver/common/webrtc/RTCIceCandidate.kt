@@ -24,7 +24,7 @@ data class RTCIceCandidate(
 //        RELAY,
 //    }
 //
-//    fun getType() {
+//    fun getTypeEnum() {
 //        when(type) {
 //            "host" -> CandidateType.HOST
 //            "srflx" -> CandidateType.SRFLX
