@@ -1,4 +1,4 @@
-import {useChatMessages} from "@/hooks/useChatMessages.ts";
+import {useChatMessagesServerBased} from "@/hooks/chatmessage/useChatMessagesServerBased.ts";
 import {ChatMessage} from "@/components/chatmessage/ChatMessage.tsx";
 import {css} from "@emotion/react";
 
@@ -33,7 +33,7 @@ export function ChatMessageList({ chatRoomId }: ChatMessageListProps) {
 
   const {
     chatMessages, observerRef, scrollRef, loading
-  } = useChatMessages(chatRoomId);
+  } = useChatMessagesServerBased(chatRoomId);
 
   return (
     <div
@@ -42,7 +42,7 @@ export function ChatMessageList({ chatRoomId }: ChatMessageListProps) {
       ref={scrollRef}
     >
       {(chatMessages.length > 0 && !loading) && (
-        <div ref={observerRef} css={css({height: "1rem"})} />
+        <div ref={observerRef} css={css({height: 1})}/>
       )}
       {chatMessages?.map(chatMessage => (
         <ChatMessage key={chatMessage.id} chatMessage={chatMessage}/>
