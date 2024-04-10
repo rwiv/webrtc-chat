@@ -7,18 +7,24 @@ export function useChatMessagesServerBased(chatRoomId: number) {
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
 
   const {
+    loading,
     scrollRef, observerRef,
     setOffset, setScrollType
-  } = useChatMessagesScroll(chatRoomId, page, setPage, loading, setLoading, chatMessages, setChatMessages);
+  } = useChatMessagesScroll(
+    chatRoomId, page, setPage, chatMessages, setChatMessages,
+  );
 
-  const {connect, disconnect} = useChatMessagesServerBasedStomp(chatRoomId, setChatMessages, setOffset, setScrollType);
+  const {connect, disconnect} = useChatMessagesServerBasedStomp(
+    chatRoomId, setChatMessages, setOffset, setScrollType,
+  );
 
   useEffect(() => {
     connect();
-    return disconnect;
+    return () => {
+      disconnect();
+    }
   }, []);
 
   return {chatMessages, page, observerRef, scrollRef, loading};

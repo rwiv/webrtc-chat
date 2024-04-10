@@ -27,7 +27,7 @@ interface ChatMessageProps {
 export function ChatMessage({ chatMessage }: ChatMessageProps) {
 
   return (
-    <HStack className="child" css={frameStyle}>
+    <HStack css={frameStyle}>
       <button>
         <img
           src={`${consts.endpoint}${chatMessage.createdBy.avatarUrl}`}
