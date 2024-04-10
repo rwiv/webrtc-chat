@@ -31,7 +31,7 @@ class AuthenticationTokenProvider(
 
         val account = accountService.findById(accountDetails.id)
             ?: throw NotFoundException("not found account")
-        val accountResponse = AccountResponse(account.id!!, account.username, account.nickname)
+        val accountResponse = AccountResponse.of(account)
         return AuthenticationToken.successToken(
             accountDetails.username,
             accountDetails.authorities,

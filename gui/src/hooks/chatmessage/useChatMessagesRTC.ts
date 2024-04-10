@@ -1,14 +1,18 @@
-import {Account, ChatUser} from "@/graphql/types.ts";
-import React, {useCallback, useRef, useState} from "react";
+import {Account, ChatMessage, ChatUser} from "@/graphql/types.ts";
+import React, {useRef, useState} from "react";
 import {Client, IMessage, StompSubscription} from "@stomp/stompjs";
 import { CandidateMessage, DescriptionMessage, requestAnswer, requestCandidate, requestOffer } from "@/client/signaling.ts";
 import {createStompClient} from "@/lib/web/stomp.ts";
+import {sendMessage} from "@/client/chatMessage.ts";
+import {ScrollType} from "@/hooks/chatmessage/useChatMessagesScroll.ts";
 
-export function useChatMessagesP2PBasedRTC(
+export function useChatMessagesRTC(
   chatRoomId: number,
   myInfo: Account,
   chatUsers: ChatUser[],
-  setChatMessages: React.Dispatch<React.SetStateAction<string[]>>,
+  setChatMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
+  setOffset: React.Dispatch<React.SetStateAction<number>>,
+  setScrollType: React.Dispatch<React.SetStateAction<ScrollType>>,
 ) {
 
   const dccs = useRef<Map<number, DataChannelConnection>>(new Map());
@@ -16,35 +20,40 @@ export function useChatMessagesP2PBasedRTC(
   const [stompSubs, setStompSubs] = useState<StompSubscription[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const isLoading = useCallback(() => {
+  const isLoading = () => {
     for (const dcc of dccs.current.values()) {
       if (dcc.getOpenChannel() !== null) return false;
     }
     return true;
-  }, [dccs]);
+  }
 
-  const createPeerConnection = useCallback(async (target: Account) => {
+  const onMessage = (ev: MessageEvent) => {
+    const chatMessage = JSON.parse(ev.data) as ChatMessage;
+    setChatMessages(prev => [...prev, chatMessage]);
+    setOffset(prev => prev + 1);
+    setScrollType("BOTTOM");
+  }
+
+  const createPeerConnection = async (target: Account) => {
     const pc = new RTCPeerConnection({
       iceServers: [ { urls: "stun:stun.l.google.com:19302" } ],
     });
     pc.onicecandidate = async ev => {
       if (ev.candidate === undefined || ev.candidate === null) return;
 
-      await requestCandidate(chatRoomId, { candidate: ev.candidate, senderId: myInfo.id, receiverId: target.id });
+      await requestCandidate(chatRoomId, {
+        candidate: ev.candidate,
+        senderId: myInfo.id,
+        receiverId: target.id,
+      });
     }
 
     const myChannel = pc.createDataChannel(target.id.toString());
-    myChannel.onmessage = msg => {
-      setChatMessages(prev => [...prev, msg.data]);
-      console.log(msg);
-    }
+    myChannel.onmessage = onMessage;
 
     pc.ondatachannel = async ev => {
       const yourChannel = ev.channel;
-      yourChannel.onmessage = msg => {
-        setChatMessages(prev => [...prev, msg.data]);
-        console.log(msg);
-      }
+      yourChannel.onmessage = onMessage;
 
       const dcc = dccs.current.get(target.id);
       if (dcc !== undefined) {
@@ -57,8 +66,12 @@ export function useChatMessagesP2PBasedRTC(
     const offer = await pc.createOffer();
     await pc.setLocalDescription(new RTCSessionDescription(offer));
 
-    await requestOffer(chatRoomId, { description: offer, senderId: myInfo.id, receiverId: target.id });
-  }, [dccs, chatRoomId, myInfo, setChatMessages])
+    await requestOffer(chatRoomId, {
+      description: offer,
+      senderId: myInfo.id,
+      receiverId: target.id,
+    });
+  }
 
   const subOffer = async (msg: IMessage) => {
     const {description: offer, senderId, receiverId} = JSON.parse(msg.body) as DescriptionMessage;
@@ -75,7 +88,11 @@ export function useChatMessagesP2PBasedRTC(
     const answer = await con.createAnswer();
     await con.setLocalDescription(new RTCSessionDescription(answer));
 
-    await requestAnswer(chatRoomId, {description: answer, senderId: myInfo.id, receiverId: senderId});
+    await requestAnswer(chatRoomId, {
+      description: answer,
+      senderId: myInfo.id,
+      receiverId: senderId,
+    });
 
     console.log(`offer: ${msg.body}`);
   }
@@ -119,21 +136,21 @@ export function useChatMessagesP2PBasedRTC(
 
     // create stomp client
     const stomp = createStompClient();
-    stomp.onConnect  = () => {
+    stomp.onConnect  = async () => {
       const offerSub = stomp.subscribe(`/sub/signal/offer/${chatRoomId}`, subOffer);
       const answerSub = stomp.subscribe(`/sub/signal/answer/${chatRoomId}`, subAnswer);
       const candidateSub = stomp.subscribe(`/sub/signal/candidate/${chatRoomId}`, subCandidate);
       setStompSubs(prev => [...prev, offerSub, answerSub, candidateSub]);
+
+      // set rtc connections
+      const targets = chatUsers.map(it => it.account).filter(it => it.id !== myInfo.id)
+      for (const target of targets) {
+        await createPeerConnection(target);
+      }
     }
 
     setStompClient(stomp);
     stomp.activate();
-
-    // set rtc connections
-    const targets = chatUsers.map(it => it.account).filter(it => it.id !== myInfo.id)
-    for (const target of targets) {
-      await createPeerConnection(target);
-    }
   }
 
   const disconnect = async () => {
@@ -146,15 +163,26 @@ export function useChatMessagesP2PBasedRTC(
       it.unsubscribe();
     });
     await stompClient?.deactivate();
+
+    dccs.current = new Map();
+    setStompSubs([]);
+    setStompClient(undefined);
   }
 
-  const broadcast = (message: string) => {
+  const send = async (message: string) => {
+    const res = await sendMessage(chatRoomId, message);
+    const chatMessage = await res.json();
+
+    setChatMessages(prev => [...prev, chatMessage]);
+    setOffset(prev => prev + 1);
+    setScrollType("BOTTOM");
+
     for (const dcc of dccs.current.values()) {
-      dcc.getOpenChannel()?.send(message);
+      dcc.getOpenChannel()?.send(JSON.stringify(chatMessage));
     }
   }
 
-  return {loading, connect, disconnect, broadcast};
+  return {connect, disconnect, send, loading};
 }
 
 class DataChannelConnection {

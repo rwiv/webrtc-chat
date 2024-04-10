@@ -1,15 +1,16 @@
 import React, {useState} from "react";
 import {Client, IMessage, StompSubscription} from "@stomp/stompjs";
 import {ChatMessage, Query} from "@/graphql/types.ts";
-import {chatMessageQL} from "@/client/chatMessage.ts";
+import {chatMessageQL, sendMessage} from "@/client/chatMessage.ts";
 import {createStompClient} from "@/lib/web/stomp.ts";
 import {useApolloClient} from "@apollo/client";
+import {ScrollType} from "@/hooks/chatmessage/useChatMessagesScroll.ts";
 
-export function useChatMessagesServerBasedStomp(
+export function useChatMessagesStomp(
   chatRoomId: number,
   setChatMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
   setOffset: React.Dispatch<React.SetStateAction<number>>,
-  setScrollType: React.Dispatch<React.SetStateAction<"BOTTOM" | "TOP">>,
+  setScrollType: React.Dispatch<React.SetStateAction<ScrollType>>,
 ) {
 
   const apolloClient = useApolloClient();
@@ -17,7 +18,7 @@ export function useChatMessagesServerBasedStomp(
   const [stompClient, setStompClient] = useState<Client>();
   const [stompSubs, setStompSubs] = useState<StompSubscription[]>([]);
 
-  async function subscribe(msg: IMessage) {
+  async function onMessage(msg: IMessage) {
     const body = JSON.parse(msg.body) as { id: number, num: number };
     const res = await apolloClient.query<Query>({
       query: chatMessageQL, variables: { id: body.id }, fetchPolicy: "network-only",
@@ -43,7 +44,7 @@ export function useChatMessagesServerBasedStomp(
     const newStompClient = createStompClient();
     newStompClient.onConnect  = () => {
       const dest = `/sub/message/${chatRoomId}`;
-      const sub = newStompClient.subscribe(dest, subscribe);
+      const sub = newStompClient.subscribe(dest, onMessage);
       setStompSubs(prev => {
         prev.push(sub);
         return prev;
@@ -64,5 +65,11 @@ export function useChatMessagesServerBasedStomp(
     setStompClient(undefined);
   }
 
-  return {connect, disconnect};
+  const send = async (message: string) => {
+    const res = await sendMessage(chatRoomId, message);
+    const chatMessage = await res.json();
+    setChatMessages(prev => [...prev, chatMessage]);
+  }
+
+  return {connect, disconnect, send};
 }

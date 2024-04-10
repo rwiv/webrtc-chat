@@ -1,10 +1,10 @@
 import {Button} from "@/components/ui/button.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Account, ChatUser} from "@/graphql/types.ts";
 import {useMyInfo} from "@/hooks/useMyInfo.ts";
 import {Input} from "@/components/ui/input.tsx";
 import {useChatRoomAndUsers} from "@/client/chatUser.ts";
-import {useChatMessagesP2PBasedRTC} from "@/hooks/chatmessage/useChatMessagesP2PBasedRTC.ts";
+import {useChatMessages} from "@/hooks/chatmessage/useChatMessages.ts";
 
 const chatRoomId = 20;
 
@@ -12,46 +12,38 @@ export function TestPage() {
 
   const {myInfo} = useMyInfo();
   const {data: users} = useChatRoomAndUsers(chatRoomId);
-  const chatUsers = users?.chatRoom?.chatUsers;
+  const chatUsers = users?.chatRoom?.chatUsers ?? undefined;
 
   return (
     <div>
-      {myInfo !== undefined && myInfo !== null
-        && chatUsers !== undefined && chatUsers !== null && (
-        <Comp myInfo={myInfo} chatUsers={chatUsers} />
+      {myInfo !== undefined && chatUsers !== undefined && (
+        <Comp chatRoomId={chatRoomId} myInfo={myInfo} chatUsers={chatUsers} />
       )}
     </div>
   )
 }
 
 interface CompProps {
+  chatRoomId: number;
   myInfo: Account;
   chatUsers: ChatUser[];
 }
 
-export function Comp({ myInfo, chatUsers }: CompProps) {
+export function Comp({ chatRoomId, myInfo, chatUsers }: CompProps) {
 
   const [msgInput, setMsgInput] = useState("");
 
-  const [messages, setMessages] = useState<string[]>([]);
-  const {loading, connect, disconnect, broadcast} = useChatMessagesP2PBasedRTC(chatRoomId, myInfo, chatUsers, setMessages);
+  const {chatMessages, loading, send} = useChatMessages(chatRoomId, myInfo, chatUsers);
 
-  useEffect(() => {
-    connect();
-    return () => {
-      disconnect();
-    }
-  }, []);
-
-  const onSend = () => {
-    broadcast(msgInput);
+  const onSend = async () => {
+    await send(msgInput);
     setMsgInput("");
   }
 
   return (
     <div>
-      {messages.map((msg, idx) => (
-        <div key={idx}>{msg}</div>
+      {chatMessages.map((chatMessage, idx) => (
+        <div key={idx}>{chatMessage.content}</div>
       ))}
       <Input
         id="name"
@@ -60,8 +52,8 @@ export function Comp({ myInfo, chatUsers }: CompProps) {
         value={msgInput}
       />
       <div className="m-3">
-        <Button disabled={loading} onClick={onSend}>Send</Button>
-        {/*<Button onClick={onSend}>Send</Button>*/}
+        {/*<Button disabled={loading} onClick={onSend}>Send</Button>*/}
+        <Button onClick={onSend}>Send</Button>
       </div>
       {loading && (
         <div>loading...</div>

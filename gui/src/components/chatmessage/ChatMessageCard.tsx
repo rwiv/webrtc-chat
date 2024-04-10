@@ -24,7 +24,7 @@ interface ChatMessageProps {
   chatMessage: ChatMessageType;
 }
 
-export function ChatMessage({ chatMessage }: ChatMessageProps) {
+export function ChatMessageCard({ chatMessage }: ChatMessageProps) {
 
   return (
     <HStack css={frameStyle}>

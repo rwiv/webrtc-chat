@@ -39,7 +39,7 @@ class DevAuthFilter(
             val roles = ArrayList<GrantedAuthority>().apply {
                 add(SimpleGrantedAuthority(account.role.name))
             }
-            val accountResponse = AccountResponse(account.id!!, account.username, account.nickname)
+            val accountResponse = AccountResponse.of(account)
             val successToken = AuthenticationToken.successToken(
                 account.username, roles, accountResponse,
             )

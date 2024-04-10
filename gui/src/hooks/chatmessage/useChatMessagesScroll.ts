@@ -6,6 +6,8 @@ import {reverse} from "@/lib/misc/array.ts";
 import type {QueryOptions} from "@apollo/client/core/watchQueryOptions";
 import {useIntersect} from "@/hooks/useIntersect.ts";
 
+export type ScrollType = "BOTTOM" | "TOP";
+
 export function useChatMessagesScroll(
   chatRoomId: number,
   page: number,
@@ -20,7 +22,7 @@ export function useChatMessagesScroll(
   const [loading, setLoading] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [scrollType, setScrollType] = useState<"BOTTOM" | "TOP">("BOTTOM");
+  const [scrollType, setScrollType] = useState<ScrollType>("BOTTOM");
   const [scrollHeight, setScrollHeight] = useState(0);
 
   const observerRef = useIntersect(async (entry, observer) => {
@@ -81,6 +83,7 @@ export function useChatMessagesScroll(
       const top = (scrollRef.current?.scrollHeight ?? 0) - scrollHeight;
       scrollRef.current?.scrollTo({left, top});
     }
+    setScrollType("BOTTOM");
   }, [chatMessages]);
 
   return {loading, scrollRef, observerRef, setOffset, setScrollType};

@@ -41,7 +41,9 @@ export function ChatRoomPage() {
         <LeftSidebar/>
       </div>
       <div css={[right, flexStyle]}>
-        <ChatRoomContent chatRoomId={chatRoomId}/>
+        {chatRoomId !== null && (
+          <ChatRoomContent chatRoomId={chatRoomId}/>
+        )}
       </div>
     </div>
   )

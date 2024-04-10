@@ -1,14 +1,6 @@
 import {ChatUserSidebarList} from "@/components/chatuser/ChatUserSidebarList.tsx";
 import {css} from "@emotion/react";
-
-const columnStyle = css`
-    //width: 17.5%;
-    //background-color: #eeeeee;
-    //display: flex;
-    //flex-direction: column;
-    //display: flex;
-    //flex-direction: column;
-`;
+import {ChatUser} from "@/graphql/types.ts";
 
 const headerStyle = css`
     //height: 7.5%;
@@ -24,17 +16,17 @@ const nameStyle = css`
 `;
 
 interface ChatUserSidebarProps {
-  chatRoomId: number;
+  chatUsers: ChatUser[];
 }
 
-export function ChatUserSidebar({ chatRoomId }: ChatUserSidebarProps) {
+export function ChatUserSidebar({ chatUsers }: ChatUserSidebarProps) {
 
   return (
-    <div css={columnStyle}>
+    <div>
       <div css={headerStyle}>
         <label css={nameStyle}>유저</label>
       </div>
-      <ChatUserSidebarList chatRoomId={chatRoomId} />
+      <ChatUserSidebarList chatUsers={chatUsers} />
     </div>
   )
 }

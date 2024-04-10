@@ -7,7 +7,7 @@ import {Query} from "@/graphql/types.ts";
 export function useMyInfo() {
 
   const {data: myInfoData, error} = useQuery<Query>(myInfoQL);
-  const myInfo = myInfoData?.account;
+  const myInfo = myInfoData?.account ?? undefined;
 
   const navigate = useNavigate();
 

@@ -1,4 +1,3 @@
-import {useChatRoomAndUsers} from "@/client/chatUser.ts";
 import {css} from "@emotion/react";
 import {ChatUser} from "@/graphql/types.ts";
 import {consts} from "@/configures/consts.ts";
@@ -7,36 +6,30 @@ import {iconStyle} from "@/styles/globalStyles.ts";
 const mainStyle = css`
     flex-grow: 1;
     overflow-y: auto;
-
     ::-webkit-scrollbar {
       width: 0.5rem;
     }
-  
     ::-webkit-scrollbar-track {
       background: transparent;
     }
-  
     ::-webkit-scrollbar-thumb {
       background: #000000;
       border-radius: 10px;
     }
-  
     ::-webkit-scrollbar-thumb:hover {
       background: #555555;
     }
 `;
 
 interface ChatUserSidebarListProps {
-  chatRoomId: number;
+  chatUsers: ChatUser[];
 }
 
-export function ChatUserSidebarList({ chatRoomId }: ChatUserSidebarListProps) {
-
-  const {data: users} = useChatRoomAndUsers(chatRoomId);
+export function ChatUserSidebarList({ chatUsers }: ChatUserSidebarListProps) {
 
   return (
     <div css={mainStyle}>
-      {users?.chatRoom?.chatUsers?.map(chatUser => (
+      {chatUsers?.map(chatUser => (
         <ChatUserItem key={chatUser.id} chatUser={chatUser}/>
       ))}
     </div>

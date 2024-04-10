@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import {sendMessage} from "@/client/chatMessage.ts";
 import {ChatMessageList} from "@/components/chatmessage/ChatMessageList.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {css} from "@emotion/react";
+import {useChatMessages} from "@/hooks/chatmessage/useChatMessages.ts";
+import {Account, ChatUser} from "@/graphql/types.ts";
 
 const mainStyle = css`
     background-color: #eeeeee;
@@ -38,17 +39,25 @@ const sendButtonStyle = css`
 
 interface ChatMessagesContentProps {
   chatRoomId: number;
+  myInfo: Account;
+  chatUsers: ChatUser[];
 }
 
-export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
+export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessagesContentProps) {
 
   const [chatMessageInput, setChatMessageInput] = useState("");
 
-  async function send() {
+  const {
+    chatMessages, send,
+    // loading,
+    observerRef, scrollRef,
+  } = useChatMessages(chatRoomId, myInfo, chatUsers);
+
+  async function onSend() {
     if (!chatRoomId) {
       throw Error("chatRoomId is null");
     }
-    await sendMessage(chatRoomId, chatMessageInput);
+    await send(chatMessageInput);
     setChatMessageInput("");
   }
 
@@ -61,14 +70,18 @@ export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      send();
+      onSend();
     }
   };
 
   return (
     <>
       <div css={mainStyle}>
-        <ChatMessageList chatRoomId={chatRoomId}/>
+        <ChatMessageList
+          chatMessages={chatMessages}
+          scrollRef={scrollRef}
+          observerRef={observerRef}
+        />
       </div>
       <div css={inputFrameStyle}>
         <div className="flex w-full items-center space-x-2">
@@ -80,12 +93,13 @@ export function ChatMessagesContent({ chatRoomId }: ChatMessagesContentProps) {
           />
           <Button
             type="submit" id="inputButton" css={sendButtonStyle}
-            onClick={() => send()}
+            onClick={() => onSend()}
           >
             send
           </Button>
         </div>
       </div>
+      {/*{loading && (<div>loading...</div>)}*/}
     </>
   )
 }
