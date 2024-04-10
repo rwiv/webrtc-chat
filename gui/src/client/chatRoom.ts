@@ -2,7 +2,7 @@ import {gql, useMutation} from "@apollo/client";
 import {Mutation} from "@/graphql/types.ts";
 import {accountColumns} from "@/client/account.ts";
 
-export const defaultChatRoomSize: number = 10;
+export const defaultChatRoomSize: number = 5;
 
 export const chatRoomColumns = gql`
     fragment chatRoomColumns on ChatRoom {
@@ -10,10 +10,11 @@ export const chatRoomColumns = gql`
         createdBy {
             id
         }
-        password
         title
         createdAt
         type
+        chatUserCnt
+        hasPassword
     }
 `;
 
@@ -21,9 +22,13 @@ export const chatRoomsQL = gql`
     query ChatRooms($page: Int!, $size: Int!) {
         chatRooms(page: $page, size: $size) {
             ...chatRoomColumns
+            createdBy {
+                ...accountColumns
+            }
         }
     }
     ${chatRoomColumns}
+    ${accountColumns}
 `;
 
 const createChatRoomQL = gql`

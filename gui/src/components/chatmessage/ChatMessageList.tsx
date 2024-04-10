@@ -4,7 +4,6 @@ import React from "react";
 import {ChatMessage} from "@/graphql/types.ts";
 
 const frameStyle = css`
-    //padding: 1rem;
     ::-webkit-scrollbar {
       width: 0.5rem;
     }
@@ -12,7 +11,7 @@ const frameStyle = css`
       background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: #000000;
+      background: #222831;
       border-radius: 10px;
     }
     ::-webkit-scrollbar-thumb:hover {

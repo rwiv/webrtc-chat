@@ -5,8 +5,8 @@ import {ChatRoomContent} from "@/components/layouts/ChatRoomContent.tsx";
 import {LeftSidebar} from "@/components/layouts/LeftSidebar.tsx";
 import {containerStyle, flexStyle} from "@/styles/globalStyles.ts";
 
-const left = mq.m_all(3, 3, 3, 3, 3, 3);
-const right = mq.m_all(9, 9, 9, 9, 9, 9);
+const left = mq.m_all(0, 0, 3, 3, 3, 3);
+const right = mq.m_all(12, 12, 9, 9, 9, 9);
 
 export function ChatRoomPage() {
 

@@ -13,7 +13,6 @@ const frameStyle = css`
     padding-top : 20px;
     padding-bottom: 20px;
     padding-left: 20px;
-    //padding-right: 20px;
 `;
 
 const labelStyle = css`
@@ -34,7 +33,7 @@ export function ChatRoomSidebar() {
   return (
     <>
       <HStack css={frameStyle}>
-        <label css={labelStyle}>Chat Room List</label>
+        <label css={labelStyle}>공개 채팅방 목록</label>
         <ChatRoomCreateButton addChatRoom={addChatRoom}/>
       </HStack>
       <ChatRoomSidebarList myInfo={myInfo} chatRooms={chatRooms} observerRef={ref} />

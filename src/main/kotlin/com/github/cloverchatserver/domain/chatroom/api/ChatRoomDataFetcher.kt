@@ -32,8 +32,16 @@ class ChatRoomDataFetcher(
     @DgsMutation
     fun createChatRoom(req: ChatRoomCreateRequest, authentication: Authentication): ChatRoom {
         val accountResponse = authentication.details as AccountResponse
-        val creation = req.toChatRoomCreation(accountResponse.id)
-        return chatRoomService.create(creation)
+        return chatRoomService.create(req.toChatRoomCreation(accountResponse.id))
+    }
+
+    @DgsMutation
+    fun createChatRoomByFriend(
+        @InputArgument friendId: Long,
+        authentication: Authentication,
+    ): ChatRoom {
+        val accountResponse = authentication.details as AccountResponse
+        return chatRoomService.createByFriend(friendId, accountResponse)
     }
 
     @DgsMutation

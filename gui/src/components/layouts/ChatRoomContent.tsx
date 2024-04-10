@@ -7,7 +7,6 @@ import {useMyInfo} from "@/hooks/useMyInfo.ts";
 import {useChatRoomAndUsers} from "@/client/chatUser.ts";
 
 const mainContentStyle = css`
-    //flex-grow: 1;
     display: flex;
     flex-direction: column;
     background-color: #eeeeee;
@@ -24,8 +23,8 @@ interface ChatRoomContentProps {
   chatRoomId: number;
 }
 
-const left = mq.m_all(10,10,9, 9,9,9);
-const right = mq.m_all(2,2,3,3,3,3);
+const left = mq.m_all(12,8,8, 9,9,9);
+const right = mq.m_all(0,4,4,3,3,3);
 
 export function ChatRoomContent({ chatRoomId }: ChatRoomContentProps) {
 

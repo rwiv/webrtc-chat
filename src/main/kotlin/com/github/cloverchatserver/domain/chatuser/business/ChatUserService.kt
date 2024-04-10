@@ -39,6 +39,7 @@ class ChatUserService(
     fun create(creation: ChatUserCreation): ChatUser {
         val chatRoom = chatRoomRepository.findById(creation.chatRoomId).getOrNull()
             ?: throw NotFoundException("not found chatroom")
+
         if (chatRoom.password !== creation.chatRoomPassword) {
             throw HttpException(403, "invalid password")
         }
@@ -51,10 +52,11 @@ class ChatUserService(
             throw DuplicatedChatUserException("ChatUser is already exist")
         }
 
-        val newChatUser = ChatUser(null, chatRoom, account)
-        chatRoom.chatUsers.add(newChatUser)
+        val chatUser = chatUserRepository.save(ChatUser(null, chatRoom, account))
+        chatRoom.chatUsers.add(chatUser)
+        chatRoom.chatUserCnt += 1
 
-        return chatUserRepository.save(newChatUser)
+        return chatUser
     }
 
     @Transactional
@@ -78,6 +80,8 @@ class ChatUserService(
         }
 
         chatUserRepository.delete(chatUsers[0])
+        chatRoom.chatUserCnt -= 1
+
         return chatUsers[0]
     }
 

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query
 interface ChatRoomRepository : JpaRepository<ChatRoom, Long> {
 
     @Query("SELECT cr FROM ChatRoom cr " +
+            "WHERE cr.type = com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomType.PUBLIC " +
             "ORDER BY cr.createdAt DESC")
-    fun findBy(pageable: Pageable): Page<ChatRoom>
+    fun findPublic(pageable: Pageable): Page<ChatRoom>
 }

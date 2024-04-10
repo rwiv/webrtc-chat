@@ -38,7 +38,7 @@ export function useChatRoomAndUsers(chatRoomId: number) {
   return useQuery(chatRoomAndUsersQL, { id: chatRoomId });
 }
 
-export const myChatUsers = gql`
+export const myChatUsersQL = gql`
     query MyChatUsers {
         account {
             ...accountColumns
@@ -56,7 +56,7 @@ export const myChatUsers = gql`
 `;
 
 export function useMyChatUsers() {
-    return useQuery(myChatUsers);
+    return useQuery(myChatUsersQL);
 }
 
 const createChatUserQL = gql`

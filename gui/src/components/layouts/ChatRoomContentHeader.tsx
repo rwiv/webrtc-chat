@@ -1,13 +1,12 @@
 import {Button} from "@/components/ui/button.tsx";
 import {css} from "@emotion/react";
 import {useNavigate} from "react-router";
-import {useDeleteChatUserMe} from "@/client/chatUser.ts";
+import {myChatUsersQL, useDeleteChatUserMe} from "@/client/chatUser.ts";
 import {useDeleteChatRoom} from "@/client/chatRoom.ts";
-import {useCurChatRoom} from "@/hooks/useCurChatRoom.ts";
+import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 
 const headerStyle = css`
     background-color: #eeeeee;
-    //height: 10%;
     justify-content: flex-start;
     padding-top: 15px;
     border-bottom: 2px solid #e2e2e2;
@@ -34,6 +33,7 @@ export function ChatRoomContentHeader({ chatRoomId }: ChatRoomHeaderProps) {
   const navigate = useNavigate();
 
   const {curChatRoom} = useCurChatRoom();
+  const {setCurChatRoom} = useCurChatRoom();
   const {deleteChatUserMe} = useDeleteChatUserMe();
   const {deleteChatRoom} = useDeleteChatRoom();
 
@@ -48,8 +48,13 @@ export function ChatRoomContentHeader({ chatRoomId }: ChatRoomHeaderProps) {
     const variables = {
       chatRoomId,
     }
-    const res = await deleteChatRoom({ variables})
+    const res = await deleteChatRoom({
+      variables,
+      refetchQueries: [ myChatUsersQL ],
+    });
     console.log(res.data?.deleteChatRoom);
+    setCurChatRoom(null);
+    navigate("/");
   }
 
   return (

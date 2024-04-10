@@ -31,9 +31,16 @@ class ChatRoom(
     @Column(nullable = false)
     val type: ChatRoomType,
 
-    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
-    val chatMessages: MutableList<ChatMessage> = ArrayList(),
+    @Column(nullable = false)
+    var chatUserCnt: Int = 0,
+) {
+
+    @Column(nullable = false)
+    val hasPassword = password !== null
 
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
-    val chatUsers: MutableList<ChatUser> = ArrayList(),
-)
+    val chatMessages: MutableList<ChatMessage> = ArrayList()
+
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = [ CascadeType.REMOVE ])
+    val chatUsers: MutableList<ChatUser> = ArrayList()
+}

@@ -3,8 +3,6 @@ import {css} from "@emotion/react";
 import {ChatUser} from "@/graphql/types.ts";
 
 const headerStyle = css`
-    //height: 7.5%;
-    //justify-content: flex-start;
     border-bottom: 2px solid #e2e2e2;
     padding-top: 15px;
 `;

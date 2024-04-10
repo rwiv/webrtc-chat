@@ -2,7 +2,7 @@ import {useApolloClient} from "@apollo/client";
 import {useEffect, useState} from "react";
 import {ChatRoom, Query} from "@/graphql/types.ts";
 import {chatRoomsQL, defaultChatRoomSize} from "@/client/chatRoom.ts";
-import {useIntersect} from "@/hooks/useIntersect.ts";
+import {useIntersect} from "@/hooks/common/useIntersect.ts";
 import type {QueryOptions} from "@apollo/client/core/watchQueryOptions";
 
 export function useChatRooms() {

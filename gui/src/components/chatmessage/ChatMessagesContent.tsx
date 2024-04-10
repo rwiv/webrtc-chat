@@ -8,8 +8,6 @@ import {Account, ChatUser} from "@/graphql/types.ts";
 
 const mainStyle = css`
     background-color: #eeeeee;
-    //margin-top: 1rem;
-    //flex-grow: 1;
 `;
 
 const inputFrameStyle = css`

@@ -1,32 +1,26 @@
 import {ChatRoomSidebar} from "@/components/chatroom/ChatRoomSidebar.tsx";
 import {css} from "@emotion/react";
-import {useState} from "react";
 import {Center} from "@/lib/style/layouts.tsx";
 import { MdOutlineGroup } from "react-icons/md";
 import { MdOutlineMessage } from "react-icons/md";
 import { MdOutlineSearch } from "react-icons/md";
 import {mq} from "@/lib/style/mediaQueries.ts";
 import {FriendSidebar} from "@/components/account/FriendSidebar.tsx";
-import {MyChatRoomSidebar} from "@/components/chatroom/MyChatRoomSidebar.tsx";
+import {ParticipatedChatRoomSidebar} from "@/components/chatroom/ParticipatedChatRoomSidebar.tsx";
+import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
 
 const navSidebarStyle = css`
-    //width: 4.5%;
     display: flex;
     flex-direction: column;
-    //padding: 0;
     background-color: #222831;
 `;
 
 const mainSidebarStyle = css`
     display: flex;
     flex-direction: column;
-    //width: 17.5%;
+    background-color: #31363F;
     overflow-y: auto;
-    background-color: #31363f;
-    //height: 100%;
 `;
-
-type SidebarState = "FRIEND" | "CHATROOM" | "SEARCH";
 
 const left = mq.m_all(2,2,2, 2, 2, 2);
 const right = mq.m_all(10,10, 10, 10, 10, 10);
@@ -36,31 +30,31 @@ const iconColor = "#ffffff";
 
 export function LeftSidebar() {
 
-  const [curState, setCurState] = useState<SidebarState>("SEARCH");
+  const {sidebarState, setSidebarState} = useSidebarState();
 
   return (
     <>
       <div css={[navSidebarStyle, left]}>
-        <button onClick={() => setCurState("FRIEND")}>
+        <button onClick={() => setSidebarState("FRIEND")}>
           <Center className="mt-5">
             <MdOutlineGroup size={iconSize} color={iconColor}/>
           </Center>
         </button>
-        <button onClick={() => setCurState("CHATROOM")}>
+        <button onClick={() => setSidebarState("CHATROOM")}>
           <Center className="mt-5">
             <MdOutlineMessage size={iconSize} color={iconColor}/>
           </Center>
         </button>
-        <button onClick={() => setCurState("SEARCH")}>
+        <button onClick={() => setSidebarState("SEARCH")}>
           <Center className="mt-5">
             <MdOutlineSearch size={iconSize} color={iconColor}/>
           </Center>
         </button>
       </div>
       <div css={[mainSidebarStyle, right]}>
-        {curState === "FRIEND" && <FriendSidebar />}
-        {curState === "CHATROOM" && <MyChatRoomSidebar />}
-        {curState === "SEARCH" && <ChatRoomSidebar/>}
+        {sidebarState === "FRIEND" && <FriendSidebar />}
+        {sidebarState === "CHATROOM" && <ParticipatedChatRoomSidebar />}
+        {sidebarState === "SEARCH" && <ChatRoomSidebar/>}
       </div>
     </>
   )

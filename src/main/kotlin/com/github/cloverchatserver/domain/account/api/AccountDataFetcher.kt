@@ -28,9 +28,13 @@ class AccountDataFetcher(
     }
 
     @DgsQuery
-    fun account(authentication: Authentication): Account? {
-        val accountResponse = authentication.details as AccountResponse
-        return accountService.findById(accountResponse.id)
+    fun account(@InputArgument username: String?, authentication: Authentication): Account? {
+        if (username !== null) {
+            return accountService.findByUsername(username)
+        } else {
+            val accountResponse = authentication.details as AccountResponse
+            return accountService.findById(accountResponse.id)
+        }
     }
 
     @DgsQuery

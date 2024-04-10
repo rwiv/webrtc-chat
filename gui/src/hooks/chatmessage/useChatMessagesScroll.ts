@@ -4,7 +4,7 @@ import {ChatMessage, Query} from "@/graphql/types.ts";
 import {chatMessagesQL, defaultChatMessageSize} from "@/client/chatMessage.ts";
 import {reverse} from "@/lib/misc/array.ts";
 import type {QueryOptions} from "@apollo/client/core/watchQueryOptions";
-import {useIntersect} from "@/hooks/useIntersect.ts";
+import {useIntersect} from "@/hooks/common/useIntersect.ts";
 
 export type ScrollType = "BOTTOM" | "TOP";
 

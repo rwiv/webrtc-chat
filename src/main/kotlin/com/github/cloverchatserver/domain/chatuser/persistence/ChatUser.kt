@@ -24,10 +24,10 @@ class ChatUser(
 
     @Column(nullable = true)
     var latestNum: Int? = null,
+
+    @Column
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 ) {
     @Column(unique = true)
     private val idPair: String = "${chatRoom.id}-${account.id}"
-
-    @Column
-    val createdAt = LocalDateTime.now()
 }

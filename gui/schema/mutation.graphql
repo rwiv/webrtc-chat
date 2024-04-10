@@ -2,6 +2,7 @@ type Mutation {
     createAccount(creation: AccountCreation!): Account!
 
     createChatRoom(req: ChatRoomCreateRequest!): ChatRoom!
+    createChatRoomByFriend(friendId: Long!): ChatRoom!
     deleteChatRoom(chatRoomId: Long!): ChatRoom!
 
     createChatUser(chatRoomId: Long!, password: String): ChatUser!

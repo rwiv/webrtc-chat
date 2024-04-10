@@ -55,11 +55,12 @@ export type ChatMessage = {
 export type ChatRoom = {
   __typename?: 'ChatRoom';
   chatMessages?: Maybe<Array<ChatMessage>>;
+  chatUserCnt: Scalars['Int']['output'];
   chatUsers?: Maybe<Array<ChatUser>>;
   createdAt: Scalars['DateTime']['output'];
   createdBy: Account;
+  hasPassword: Scalars['Boolean']['output'];
   id: Scalars['Long']['output'];
-  password?: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];
   type: ChatRoomType;
 };
@@ -333,6 +334,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createAccount: Account;
   createChatRoom: ChatRoom;
+  createChatRoomByFriend: ChatRoom;
   createChatUser: ChatUser;
   deleteChatRoom: ChatRoom;
   deleteChatUserMe: ChatUser;
@@ -346,6 +348,11 @@ export type MutationCreateAccountArgs = {
 
 export type MutationCreateChatRoomArgs = {
   req: ChatRoomCreateRequest;
+};
+
+
+export type MutationCreateChatRoomByFriendArgs = {
+  friendId: Scalars['Long']['input'];
 };
 
 
@@ -377,6 +384,11 @@ export type Query = {
   chatRooms?: Maybe<Array<ChatRoom>>;
   chatRoomsAll?: Maybe<Array<ChatRoom>>;
   chatUsersAll?: Maybe<Array<ChatUser>>;
+};
+
+
+export type QueryAccountArgs = {
+  username?: InputMaybe<Scalars['String']['input']>;
 };
 
 

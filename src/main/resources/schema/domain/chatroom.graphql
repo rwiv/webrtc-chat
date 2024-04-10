@@ -1,10 +1,12 @@
 type ChatRoom {
     id: Long!
     createdBy: Account!
-    password: String
     title: String!
     createdAt: DateTime!
     type: ChatRoomType!
+    chatUserCnt: Int!
+    hasPassword: Boolean!
+
     chatMessages: [ChatMessage!]
     chatUsers: [ChatUser!]
 }
