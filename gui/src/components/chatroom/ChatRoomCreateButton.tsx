@@ -22,7 +22,7 @@ interface ChatRoomCreateButtonProps {
 
 export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps) {
 
-  const ref = useRef<HTMLButtonElement>(null)
+  const ref = useRef<HTMLButtonElement>(null);
   const [chatRoomInput, setChatRoomInput] = useState("");
   const {createChatRoom} = useCreateChatRoom();
   const [isPrivate, setIsPrivate] = useState(false);

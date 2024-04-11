@@ -6,6 +6,8 @@ import {useNavigate} from "react-router";
 import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 import {HStack} from "@/lib/style/layouts.tsx";
 import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
+import React, {useRef} from "react";
+import {PasswordInputDialog} from "@/components/chatroom/PasswordInputDialog.tsx";
 
 const listStyle = css`
     overflow-y: auto;
@@ -50,6 +52,9 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
   const {setCurChatRoom} = useCurChatRoom();
   const {setSidebarState} = useSidebarState();
 
+  const openRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   const onClickLink = async (chatRoom: ChatRoom) => {
     const data = await client.query<Query>({
       query: chatRoomAndUsersQL,
@@ -62,6 +67,10 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
       return it.account.id === myInfo?.id;
     });
     if (filtered?.length === 0) {
+      if (chatRoom.hasPassword) {
+        openRef.current?.click();
+        return;
+      }
       const variables = {
         chatRoomId: chatRoom.id,
         password: null,
@@ -81,34 +90,39 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
     return Math.round(now / 1000 / 60);
   }
 
+  const onSubmitPassword = (passwordInput: string) => {
+    console.log(passwordInput);
+  }
+
   return (
-    <div css={listStyle}>
-      {chatRooms.map(chatRoom => (
-        <div
-          key={chatRoom.id}
-          css={itemFrameStyle}
-          onClick={() => onClickLink(chatRoom)}
-        >
-          <HStack>
-            <div css={{width: "50%"}}>
-              <span css={{fontWeight: 600, fontSize: "1.1rem"}}>{chatRoom.title}</span>
-              {chatRoom?.hasPassword && (<span> [p]</span>)}
-            </div>
-            <div>
-              <div css={{color: "#aaaaaa", fontSize: "0.9rem"}}>{prettyDate(chatRoom.createdAt)}분 전</div>
-            </div>
-          </HStack>
-          <HStack>
-            <div css={{width: "50%"}}>
-              <div css={{color: "#eeeeee", fontSize: "0.9rem"}}>{chatRoom.createdBy.nickname}</div>
-            </div>
-            <div>
-              <div css={{color: "#eeeeee", fontSize: "0.9rem"}}>{chatRoom.chatUserCnt}명 참여중</div>
-            </div>
-          </HStack>
-        </div>
-      ))}
-      <div ref={observerRef} css={css({height: "1rem"})}/>
-    </div>
+      <div css={listStyle}>
+        <PasswordInputDialog openRef={openRef} closeRef={closeRef} onSubmit={onSubmitPassword} />
+        {chatRooms.map(chatRoom => (
+          <div
+            key={chatRoom.id}
+            css={itemFrameStyle}
+            onClick={() => onClickLink(chatRoom)}
+          >
+            <HStack>
+              <div css={{width: "50%"}}>
+                <span css={{fontWeight: 600, fontSize: "1.1rem"}}>{chatRoom.title}</span>
+                {chatRoom?.hasPassword && (<span> [p]</span>)}
+              </div>
+              <div>
+                <div css={{color: "#aaaaaa", fontSize: "0.9rem"}}>{prettyDate(chatRoom.createdAt)}분 전</div>
+              </div>
+            </HStack>
+            <HStack>
+              <div css={{width: "50%"}}>
+                <div css={{color: "#eeeeee", fontSize: "0.9rem"}}>{chatRoom.createdBy.nickname}</div>
+              </div>
+              <div>
+                <div css={{color: "#eeeeee", fontSize: "0.9rem"}}>{chatRoom.chatUserCnt}명 참여중</div>
+              </div>
+            </HStack>
+          </div>
+        ))}
+        <div ref={observerRef} css={css({height: "1rem"})}/>
+      </div>
   )
 }
