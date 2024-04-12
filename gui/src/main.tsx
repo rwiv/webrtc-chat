@@ -1,24 +1,29 @@
+import "./globals.css";
 import ReactDOM from "react-dom/client";
-import {createHashRouter} from "react-router-dom";
+import {createHashRouter, RouteObject} from "react-router-dom";
 import {RouterProvider} from "react-router";
 import {ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from "@apollo/client";
-import {AccountSelectPage} from "@/pages/AccountSelectPage.tsx";
+import {AccountSelectPage} from "@/dev/pages/AccountSelectPage.tsx";
 import {consts} from "@/configures/consts.ts";
 import {ChatRoomPage} from "@/pages/ChatRoomPage.tsx";
-import "./globals.css";
 import {SignupPage} from "@/pages/SignupPage.tsx";
 import {LoginPage} from "@/pages/LoginPage.tsx";
-import IndexPage from "@/pages/IndexPage.tsx";
-import {TestPage} from "@/pages/TestPage.tsx";
+import {IndexPage} from "@/pages/IndexPage.tsx";
+import {TestPage} from "@/dev/pages/TestPage.tsx";
 
-const router = createHashRouter([
+const routes: RouteObject[] = [
   { path: '/', element: <IndexPage /> },
-  { path: '/test', element: <TestPage /> },
-  { path: '/account-select', element: <AccountSelectPage /> },
   { path: '/chat-rooms/:chatRoomId', element: <ChatRoomPage /> },
   { path: '/login', element: <LoginPage /> },
   { path: '/signup', element: <SignupPage /> },
-]);
+];
+
+if (consts.isDev) {
+  routes.push({ path: '/test', element: <TestPage /> });
+  routes.push({ path: '/account-select', element: <AccountSelectPage /> });
+}
+
+const router = createHashRouter(routes);
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -26,9 +31,6 @@ const client = new ApolloClient({
     credentials: "include",
   }),
   cache: new InMemoryCache(),
-  // headers: {
-  //   Authorization: "admin",
-  // }
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

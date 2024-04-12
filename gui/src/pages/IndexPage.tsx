@@ -9,7 +9,7 @@ import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
 const left = mq.m_all(2,2,3,3,3,3);
 const right = mq.m_all(10,10,9, 9,9,9);
 
-export default function IndexPage() {
+export function IndexPage() {
 
   const {setCurChatRoom} = useCurChatRoom();
   const {setSidebarState} = useSidebarState();
