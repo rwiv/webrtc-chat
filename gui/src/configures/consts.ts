@@ -1,5 +1,5 @@
 
-const protocol = "https"
+const protocol = "http"
 const host = "localhost";
 const port = 8080;
 const domain = `${host}:${port}`;
