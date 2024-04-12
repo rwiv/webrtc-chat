@@ -1,8 +1,13 @@
 
+const protocol = "https"
 const host = "localhost";
 const port = 8080;
+const domain = `${host}:${port}`;
 
 export const consts = {
-  endpoint: `http://${host}:${port}`,
-  domain: `${host}:${port}`,
+  protocol,
+  host,
+  port,
+  domain,
+  endpoint: `${protocol}://${domain}`,
 }

@@ -4,14 +4,15 @@ import {
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import {cn} from "@/lib/utils.ts";
 import {LogOut} from "lucide-react";
-import {FriendCandidateDev} from "@/components/dev/FriendCandidateDev.tsx";
 
 export function TestPage() {
+
   return (
     <div>
       <div css={{width: "20rem"}}>
-        <FriendCandidateDev />
+        {/*<FriendCandidateDev />*/}
       </div>
+      hello
       {/*<ParticipatedChatRoomContextMenu />*/}
     </div>
   )

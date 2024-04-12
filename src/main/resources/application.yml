@@ -3,11 +3,4 @@ server:
 
 spring:
   profiles:
-    group:
-      "dev": "dev, secret"
-      "prod": "prod, secret"
     active: dev
-
-logging:
-  level:
-    root: info

@@ -30,6 +30,7 @@ class DefaultSecurityConfig(
 
     val permitList = listOf(
         "/",
+        "/dev/**",
         "/api/auth/signup",
         "/graphiql/**",
     )
