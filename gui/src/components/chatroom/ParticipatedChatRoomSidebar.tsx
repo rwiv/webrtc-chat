@@ -1,11 +1,14 @@
 import {useMyChatUsers} from "@/client/chatUser.ts";
 import {css} from "@emotion/react";
-import {ChatRoom} from "@/graphql/types.ts";
+import {Account, ChatRoom} from "@/graphql/types.ts";
 import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 import {useNavigate} from "react-router";
+import {ParticipatedChatRoomContextMenu} from "@/components/chatroom/ParticipatedChatRoomContextMenu.tsx";
+import {useMyInfo} from "@/hooks/useMyInfo.ts";
 
 export function ParticipatedChatRoomSidebar() {
 
+  const {myInfo} = useMyInfo();
   const {data} = useMyChatUsers();
   const chatUsers = data?.account?.chatUsers;
 
@@ -20,9 +23,11 @@ export function ParticipatedChatRoomSidebar() {
 
   return (
     <div>
-      {getSortedChatRooms().map(chatRoom => (
-        <ParticipatedChatRoomItem key={chatRoom.id} chatRoom={chatRoom} />
-      ))}
+      {myInfo && (
+        getSortedChatRooms().map(chatRoom => (
+          <ParticipatedChatRoomItem key={chatRoom.id} chatRoom={chatRoom} myInfo={myInfo} />
+        ))
+      )}
     </div>
   )
 }
@@ -38,7 +43,12 @@ const curChatRoomStyle = css`
   background-color: #76ABAE;
 `;
 
-function ParticipatedChatRoomItem({ chatRoom }: { chatRoom: ChatRoom }) {
+interface ParticipatedChatRoomItemProps {
+  chatRoom: ChatRoom;
+  myInfo: Account;
+}
+
+function ParticipatedChatRoomItem({ chatRoom, myInfo }: ParticipatedChatRoomItemProps) {
 
   const navigate = useNavigate();
   const {curChatRoom, setCurChatRoom} = useCurChatRoom();
@@ -56,10 +66,12 @@ function ParticipatedChatRoomItem({ chatRoom }: { chatRoom: ChatRoom }) {
   }
 
   return (
-    <div css={[itemStyle, getCurChatRoomStyle()]} onClick={onClick}>
-      <div>
-        # {chatRoom.title}
+    <ParticipatedChatRoomContextMenu chatRoom={chatRoom} myInfo={myInfo}>
+      <div css={[itemStyle, getCurChatRoomStyle()]} onClick={onClick}>
+        <div>
+          # {chatRoom.title}
+        </div>
       </div>
-    </div>
+    </ParticipatedChatRoomContextMenu>
   )
 }

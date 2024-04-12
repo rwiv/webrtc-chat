@@ -1,8 +1,4 @@
-import {Button} from "@/components/ui/button.tsx";
 import {css} from "@emotion/react";
-import {useNavigate} from "react-router";
-import {myChatUsersQL, useDeleteChatUserMe} from "@/client/chatUser.ts";
-import {useDeleteChatRoom} from "@/client/chatRoom.ts";
 import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 
 const headerStyle = css`
@@ -19,43 +15,9 @@ const nameStyle = css`
   font-family: 'Noto Sans KR'
 `;
 
-const buttonSetStyle = css`
-  float: right;
-  margin-right: 1rem;
-`;
-
-interface ChatRoomHeaderProps {
-  chatRoomId: number | null;
-}
-
-export function ChatRoomContentHeader({ chatRoomId }: ChatRoomHeaderProps) {
-
-  const navigate = useNavigate();
+export function ChatRoomContentHeader() {
 
   const {curChatRoom} = useCurChatRoom();
-  const {setCurChatRoom} = useCurChatRoom();
-  const {deleteChatUserMe} = useDeleteChatUserMe();
-  const {deleteChatRoom} = useDeleteChatRoom();
-
-  const onExit = async () => {
-    const variables = { chatRoomId };
-    const res = await deleteChatUserMe({ variables })
-    console.log(res);
-    navigate("/");
-  }
-
-  const onDeleteChatRoom = async () => {
-    const variables = {
-      chatRoomId,
-    }
-    const res = await deleteChatRoom({
-      variables,
-      refetchQueries: [ myChatUsersQL ],
-    });
-    console.log(res.data?.deleteChatRoom);
-    setCurChatRoom(null);
-    navigate("/");
-  }
 
   return (
     <div css={headerStyle}>
@@ -63,12 +25,6 @@ export function ChatRoomContentHeader({ chatRoomId }: ChatRoomHeaderProps) {
         <label css={nameStyle}>{curChatRoom.title}</label>
       ) : (
         <label css={nameStyle}>채팅방 선택</label>
-      )}
-      {chatRoomId !== null && (
-        <span css={buttonSetStyle}>
-          <Button onClick={onDeleteChatRoom} className="mr-1">delete</Button>
-          <Button onClick={onExit}>exit</Button>
-        </span>
       )}
     </div>
   )

@@ -35,7 +35,7 @@ export function ChatRoomContent({ chatRoomId }: ChatRoomContentProps) {
   return (
     <>
       <div css={[left, mainContentStyle]}>
-        <ChatRoomContentHeader chatRoomId={chatRoomId} />
+        <ChatRoomContentHeader />
         {myInfo !== undefined && chatUsers !== undefined && (
           <ChatMessagesContent chatRoomId={chatRoomId} myInfo={myInfo} chatUsers={chatUsers} />)
         }

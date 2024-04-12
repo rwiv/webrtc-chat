@@ -59,13 +59,6 @@ export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessa
     setChatMessageInput("");
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<string>>,
-  ) => {
-    setState(e.target.value);
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onSend();
@@ -85,7 +78,7 @@ export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessa
         <div className="flex w-full items-center space-x-2">
           <Input
             type="message" id="inputField" css={messageInputStyle}
-            onChange={(e: any) => handleChange(e, setChatMessageInput)}
+            onChange={e => setChatMessageInput(e.target.value)}
             value={chatMessageInput}
             onKeyDown={handleKeyDown}
           />
