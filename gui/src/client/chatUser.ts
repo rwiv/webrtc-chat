@@ -75,6 +75,23 @@ export function useCreateChatUser() {
   return {createChatUser, loading, error};
 }
 
+
+const createChatUserFromParticipantQL = gql`
+    mutation CreateChatUserFromParticipant($chatRoomId: Long!, $accountId: Long!) {
+        createChatUserFromParticipant(chatRoomId: $chatRoomId, accountId: $accountId) {
+            ...chatUserColumns
+        }
+    }
+    ${chatUserColumns}
+`;
+
+export function useCreateChatUserFromParticipant() {
+    const [createChatUserFromParticipant, {loading, error}] = useMutation<Mutation>(createChatUserFromParticipantQL, {
+        refetchQueries: [ getQueryName(chatRoomAndUsersQL) ],
+    });
+    return {createChatUserFromParticipant, loading, error};
+}
+
 const deleteChatUserMeQL = gql`
     mutation DeleteChatUserMe($chatRoomId: Long!) {
         deleteChatUserMe(chatRoomId: $chatRoomId) {

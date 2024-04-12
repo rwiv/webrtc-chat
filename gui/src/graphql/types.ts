@@ -337,6 +337,7 @@ export type Mutation = {
   createChatRoom: ChatRoom;
   createChatRoomByFriend: ChatRoom;
   createChatUser: ChatUser;
+  createChatUserFromParticipant: ChatUser;
   deleteChatRoom: ChatRoom;
   deleteChatUserMe: ChatUser;
 };
@@ -366,6 +367,12 @@ export type MutationCreateChatRoomByFriendArgs = {
 export type MutationCreateChatUserArgs = {
   chatRoomId: Scalars['Long']['input'];
   password?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationCreateChatUserFromParticipantArgs = {
+  accountId: Scalars['Long']['input'];
+  chatRoomId: Scalars['Long']['input'];
 };
 
 

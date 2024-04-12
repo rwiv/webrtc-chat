@@ -2,6 +2,7 @@ import {css} from "@emotion/react";
 import {ChatUser} from "@/graphql/types.ts";
 import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
+import {InviteChatUserButton} from "@/components/chatuser/InviteChatUserButton.tsx";
 
 const mainStyle = css`
   flex-grow: 1;
@@ -29,6 +30,7 @@ export function ChatUserSidebarList({ chatUsers }: ChatUserSidebarListProps) {
 
   return (
     <div css={mainStyle}>
+      <InviteChatUserButton chatUsers={chatUsers} />
       {chatUsers?.map(chatUser => (
         <ChatUserItem key={chatUser.id} chatUser={chatUser}/>
       ))}

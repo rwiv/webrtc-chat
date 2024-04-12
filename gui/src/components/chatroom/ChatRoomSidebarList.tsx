@@ -74,10 +74,7 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
         openRef.current?.click();
         return;
       }
-      const variables = {
-        chatRoomId: chatRoom.id,
-        password: null,
-      }
+      const variables = { chatRoomId: chatRoom.id };
       const res = await createChatUser({variables});
       console.log(res.data);
     }

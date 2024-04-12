@@ -22,11 +22,21 @@ class ChatUserDataFetcher(
     @DgsMutation
     fun createChatUser(
         @InputArgument chatRoomId: Long,
-        @InputArgument password: String? = null,
+        @InputArgument password: String?,
         authentication: Authentication,
     ): ChatUser {
         val accountResponse = authentication.details as AccountResponse
         return chatUserService.create(ChatUserCreation(chatRoomId, password, accountResponse.id))
+    }
+
+    @DgsMutation
+    fun createChatUserFromParticipant(
+        @InputArgument chatRoomId: Long,
+        @InputArgument accountId: Long,
+        authentication: Authentication,
+    ): ChatUser {
+        val accountResponse = authentication.details as AccountResponse
+        return chatUserService.createFromParticipant(chatRoomId, accountId, accountResponse)
     }
 
     @DgsMutation
