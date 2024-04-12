@@ -96,7 +96,7 @@ export function FriendAddButton({ myInfo }: FriendAddButtonProps) {
           searchResult ? (
             <AccountCandidate account={searchResult} onSubmit={onSubmit}/>
           ) : (
-            <div>해당 유저는 존재하지 않습니다.</div>
+            <div>존재하지 않는 회원입니다.</div>
           )
         ) : (
           <div css={{margin: "1rem"}} />

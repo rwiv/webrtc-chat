@@ -6,12 +6,7 @@ import {css} from "@emotion/react";
 import {useChatMessages} from "@/hooks/chatmessage/useChatMessages.ts";
 import {Account, ChatUser} from "@/graphql/types.ts";
 
-const mainStyle = css`
-  background-color: #eeeeee;
-`;
-
 const inputFrameStyle = css`
-  background-color: #eeeeee;
   height: 20%;
   display: flex;
   padding-left: 20px;
@@ -67,13 +62,11 @@ export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessa
 
   return (
     <>
-      <div css={mainStyle}>
-        <ChatMessageList
-          chatMessages={chatMessages}
-          scrollRef={scrollRef}
-          observerRef={observerRef}
-        />
-      </div>
+      <ChatMessageList
+        chatMessages={chatMessages}
+        scrollRef={scrollRef}
+        observerRef={observerRef}
+      />
       <div css={inputFrameStyle}>
         <div className="flex w-full items-center space-x-2">
           <Input

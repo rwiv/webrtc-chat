@@ -14,3 +14,9 @@ export const containerStyle = css`
 export const flexStyle = css`
   display: flex;
 `;
+
+export const rightAlignStyle = css`
+  margin-left: auto;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+`;

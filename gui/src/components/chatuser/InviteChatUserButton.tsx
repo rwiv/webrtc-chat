@@ -1,4 +1,4 @@
-import {Account, ChatUser} from "@/graphql/types.ts";
+import {Account, ChatUser, Query} from "@/graphql/types.ts";
 import {useRef} from "react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog.tsx";
 import {Center} from "@/lib/style/layouts.tsx";
@@ -28,30 +28,12 @@ export function InviteChatUserButton({ chatUsers }: InviteChatUserButtonProps) {
     closeRef.current?.click();
   }
 
-  const getTargetFriendAccounts = () => {
-    const map = new Map<number, boolean>();
-    chatUsers.forEach(it => map.set(it.account.id, true))
-
-    const result: Account[] = [];
-    const friendAccounts = data?.account?.friends?.map(it => it.to);
-    if (friendAccounts === undefined) return [];
-    for (const it of friendAccounts) {
-      if (it === undefined || it === null) {
-        continue;
-      }
-      if (map.get(it.id) === undefined) {
-        result.push(it);
-      }
-    }
-    return result;
-  }
-
   return (
     <Dialog>
       <DialogTrigger asChild>
         <button>
           <Center>
-            <MdAddCircle size="2rem" color="#ffffff" />
+            <MdAddCircle size="2rem" color="#000000" />
           </Center>
         </button>
       </DialogTrigger>
@@ -60,10 +42,28 @@ export function InviteChatUserButton({ chatUsers }: InviteChatUserButtonProps) {
         <DialogHeader>
           <DialogTitle>친구 초대</DialogTitle>
         </DialogHeader>
-        {getTargetFriendAccounts().map(it =>
-          <AccountCandidate account={it} onSubmit={() => onSubmit(it)} />
+        {getTargetFriendAccounts(chatUsers, data).map(it =>
+          <AccountCandidate key={it.id} account={it} onSubmit={() => onSubmit(it)} />
         )}
       </DialogContent>
     </Dialog>
   )
+}
+
+function getTargetFriendAccounts(chatUsers: ChatUser[], data: Query | undefined) {
+  const map = new Map<number, boolean>();
+  chatUsers.forEach(it => map.set(it.account.id, true))
+
+  const result: Account[] = [];
+  const friendAccounts = data?.account?.friends?.map(it => it.to);
+  if (friendAccounts === undefined) return [];
+  for (const it of friendAccounts) {
+    if (it === undefined || it === null) {
+      continue;
+    }
+    if (map.get(it.id) === undefined) {
+      result.push(it);
+    }
+  }
+  return result;
 }

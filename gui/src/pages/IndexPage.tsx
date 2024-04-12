@@ -24,7 +24,7 @@ export function IndexPage() {
       <div css={[left, flexStyle]}>
         <LeftSidebar/>
       </div>
-      <div css={[right, flexStyle]}>
+      <div css={[right, flexStyle, {background: "#eeeeee"}]}>
         <ChatRoomContent chatRoomId={-1}/>
       </div>
     </div>

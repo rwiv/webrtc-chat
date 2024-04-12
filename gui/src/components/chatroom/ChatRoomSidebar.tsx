@@ -5,6 +5,7 @@ import {MyInfo} from "@/components/account/MyInfo.tsx";
 import {css} from "@emotion/react";
 import {useMyInfo} from "@/hooks/useMyInfo.ts";
 import {useChatRooms} from "@/hooks/useChatRooms.ts";
+import {rightAlignStyle} from "@/styles/globalStyles.ts";
 
 const frameStyle = css`
   display: flex; /* 플렉스박스 사용 */
@@ -34,7 +35,9 @@ export function ChatRoomSidebar() {
     <>
       <HStack css={frameStyle}>
         <label css={labelStyle}>공개 채팅방 목록</label>
-        <ChatRoomCreateButton addChatRoom={addChatRoom}/>
+        <div css={rightAlignStyle}>
+          <ChatRoomCreateButton addChatRoom={addChatRoom}/>
+        </div>
       </HStack>
       <ChatRoomSidebarList myInfo={myInfo} chatRooms={chatRooms} observerRef={ref} />
       <MyInfo />
