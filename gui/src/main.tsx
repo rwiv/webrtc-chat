@@ -16,8 +16,8 @@ const router = createHashRouter([
   { path: '/test', element: <TestPage /> },
   { path: '/account-select', element: <AccountSelectPage /> },
   { path: '/chat-rooms/:chatRoomId', element: <ChatRoomPage /> },
-  { path: '/users/login', element: <LoginPage /> },
-  { path: '/users/signup', element: <SignupPage /> },
+  { path: '/login', element: <LoginPage /> },
+  { path: '/signup', element: <SignupPage /> },
 ]);
 
 const client = new ApolloClient({

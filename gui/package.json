@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "dev:prod": "vite -m production",
+    "build:dev": "tsc && vite build -m development",
+    "build:prod": "tsc && vite build -m production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "compile": "graphql-codegen"

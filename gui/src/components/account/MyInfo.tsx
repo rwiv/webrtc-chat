@@ -27,7 +27,7 @@ export function MyInfo() {
 
   const onLogout = async () => {
     await logout();
-    navigate("/account-select");
+    navigate("/login");
   }
 
   return (

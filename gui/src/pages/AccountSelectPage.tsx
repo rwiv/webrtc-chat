@@ -48,8 +48,8 @@ export function AccountSelectPage() {
         <Button onClick={onLoginUser3}>user3</Button>
       </div>
       <div>
-        <Link to={"/users/signup"}><Button>회원가입</Button></Link>
-        <Link to={"/users/login"}><Button>로그인</Button></Link>
+        <Link to={"/signup"}><Button>회원가입</Button></Link>
+        <Link to={"/login"}><Button>로그인</Button></Link>
       </div>
     </>
   )
