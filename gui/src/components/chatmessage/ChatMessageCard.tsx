@@ -5,19 +5,19 @@ import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
 
 const frameStyle = css`
-    margin: 1.3rem;
+  margin: 1.3rem;
 `;
 
 const contentStyle = css`
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
 `;
 
 const nicknameStyle = css`
-    font-weight: 600;
+  font-weight: 600;
 `;
 
 const messageStyle = css`
-    margin-top: 0.2rem;
+  margin-top: 0.2rem;
 `;
 
 interface ChatMessageProps {

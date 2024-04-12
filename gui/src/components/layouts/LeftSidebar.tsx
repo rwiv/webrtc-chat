@@ -16,10 +16,10 @@ const navSidebarStyle = css`
 `;
 
 const mainSidebarStyle = css`
-    display: flex;
-    flex-direction: column;
-    background-color: #31363F;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #31363F;
+  overflow-y: auto;
 `;
 
 const left = mq.m_all(2,2,2, 2, 2, 2);

@@ -6,35 +6,35 @@ import {useNavigate} from "react-router";
 import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 import {HStack} from "@/lib/style/layouts.tsx";
 import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 import {PasswordInputDialog} from "@/components/chatroom/PasswordInputDialog.tsx";
 
 const listStyle = css`
-    overflow-y: auto;
-    
-    ::-webkit-scrollbar {
-      width: 0.5rem;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #222831;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555555;
-    }
+  overflow-y: auto;
+  
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #222831;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+  }
 `;
 
 const itemFrameStyle = css`
-    color: #ffffff;
-    padding: 0.7rem;
-    margin: 0.3rem;
-    cursor: pointer;
-    border-color: #555555;
-    border-width: thin;
-    border-radius: 0.375rem;
+  color: #ffffff;
+  padding: 0.7rem;
+  margin: 0.3rem;
+  cursor: pointer;
+  border-color: #555555;
+  border-width: thin;
+  border-radius: 0.375rem;
 `;
 
 interface ChatRoomListProps {
@@ -54,6 +54,7 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
 
   const openRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const [passwordChatRoom, setPasswordChatRoom] = useState<ChatRoom | undefined>(undefined);
 
   const onClickLink = async (chatRoom: ChatRoom) => {
     const data = await client.query<Query>({
@@ -68,6 +69,7 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
     });
     if (filtered?.length === 0) {
       if (chatRoom.hasPassword) {
+        setPasswordChatRoom(chatRoom);
         openRef.current?.click();
         return;
       }
@@ -90,13 +92,13 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
     return Math.round(now / 1000 / 60);
   }
 
-  const onSubmitPassword = (passwordInput: string) => {
-    console.log(passwordInput);
-  }
-
   return (
       <div css={listStyle}>
-        <PasswordInputDialog openRef={openRef} closeRef={closeRef} onSubmit={onSubmitPassword} />
+        <PasswordInputDialog
+            openRef={openRef}
+            closeRef={closeRef}
+            chatRoom={passwordChatRoom}
+        />
         {chatRooms.map(chatRoom => (
           <div
             key={chatRoom.id}

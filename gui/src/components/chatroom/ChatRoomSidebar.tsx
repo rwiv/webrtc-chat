@@ -7,17 +7,17 @@ import {useMyInfo} from "@/hooks/useMyInfo.ts";
 import {useChatRooms} from "@/hooks/useChatRooms.ts";
 
 const frameStyle = css`
-    display: flex; /* 플렉스박스 사용 */
-    justify-content: space-between; /* 양 끝에 아이템을 놓기 */
-    align-items: center; /* 세로 중앙 정렬 */
-    padding-top : 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
+  display: flex; /* 플렉스박스 사용 */
+  justify-content: space-between; /* 양 끝에 아이템을 놓기 */
+  align-items: center; /* 세로 중앙 정렬 */
+  padding-top : 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
 `;
 
 const labelStyle = css`
-    color: white;
-    font-size: 20px;
+  color: white;
+  font-size: 20px;
 `;
 
 export function ChatRoomSidebar() {

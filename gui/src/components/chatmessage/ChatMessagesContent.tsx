@@ -7,32 +7,32 @@ import {useChatMessages} from "@/hooks/chatmessage/useChatMessages.ts";
 import {Account, ChatUser} from "@/graphql/types.ts";
 
 const mainStyle = css`
-    background-color: #eeeeee;
+  background-color: #eeeeee;
 `;
 
 const inputFrameStyle = css`
-    background-color: #eeeeee;
-    height: 20%;
-    display: flex;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 40px;
-    justify-content: space-between;
-    width: 100%;
+  background-color: #eeeeee;
+  height: 20%;
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 40px;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const messageInputStyle = css`
-    border: 2px solid #e2e2e2 !important;
-    font-family: 'Noto Sans KR';
-    font-size: 25px !important;
-    flex-grow: 1 !important;
-    height: 70px !important;
+  border: 2px solid #e2e2e2 !important;
+  font-family: 'Noto Sans KR';
+  font-size: 25px !important;
+  flex-grow: 1 !important;
+  height: 70px !important;
 `;
 
 const sendButtonStyle = css`
-    width: 30% !important;
-    height: 70px !important;
-    background-color: #222831 !important;
+  width: 30% !important;
+  height: 70px !important;
+  background-color: #222831 !important;
 `;
 
 interface ChatMessagesContentProps {

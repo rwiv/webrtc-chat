@@ -7,16 +7,16 @@ import {useMyInfo} from "@/hooks/useMyInfo.ts";
 import {useChatRoomAndUsers} from "@/client/chatUser.ts";
 
 const mainContentStyle = css`
-    display: flex;
-    flex-direction: column;
-    background-color: #eeeeee;
-    border-right: 2px solid #e2e2e2;
+  display: flex;
+  flex-direction: column;
+  background-color: #eeeeee;
+  border-right: 2px solid #e2e2e2;
 `;
 
 const sidebarStyle = css`
-    display: flex;
-    flex-direction: column;
-    background-color: #eeeeee;
+  display: flex;
+  flex-direction: column;
+  background-color: #eeeeee;
 `;
 
 interface ChatRoomContentProps {

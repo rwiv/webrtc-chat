@@ -29,19 +29,19 @@ export function FriendSidebar() {
 }
 
 const itemStyle = css`
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    color: #ffffff;
-    
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: #ffffff;
+  
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 `;
 
 const clickedStyle = css`
-    background-color: #76ABAE;
+  background-color: #76ABAE;
 `;
 
 interface FriendItemProps {

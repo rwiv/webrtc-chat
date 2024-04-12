@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import {createBrowserRouter} from "react-router-dom";
+import {createHashRouter} from "react-router-dom";
 import {RouterProvider} from "react-router";
 import {ApolloClient, ApolloProvider, HttpLink, InMemoryCache} from "@apollo/client";
 import {AccountSelectPage} from "@/pages/AccountSelectPage.tsx";
@@ -11,7 +11,7 @@ import {LoginPage} from "@/pages/LoginPage.tsx";
 import IndexPage from "@/pages/IndexPage.tsx";
 import {TestPage} from "@/pages/TestPage.tsx";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   { path: '/', element: <IndexPage /> },
   { path: '/test', element: <TestPage /> },
   { path: '/account-select', element: <AccountSelectPage /> },

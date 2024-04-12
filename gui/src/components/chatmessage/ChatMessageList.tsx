@@ -4,19 +4,19 @@ import React from "react";
 import {ChatMessage} from "@/graphql/types.ts";
 
 const frameStyle = css`
-    ::-webkit-scrollbar {
-      width: 0.5rem;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #222831;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555555;
-    }
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #222831;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+  }
 `;
 
 const SCROLL_RATIO = 0.7;

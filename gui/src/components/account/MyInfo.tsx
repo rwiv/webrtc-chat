@@ -13,10 +13,10 @@ import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
 
 const userInfoStyle = css`
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: white;
 `;
 
 export function MyInfo() {

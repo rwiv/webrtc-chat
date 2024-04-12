@@ -1,17 +1,18 @@
 package com.github.cloverchatserver.domain.chatuser.business
 
 import com.github.cloverchatserver.common.error.exception.HttpException
-import com.github.cloverchatserver.domain.chatuser.persistence.ChatUser
-import com.github.cloverchatserver.domain.chatuser.persistence.ChatUserRepository
 import com.github.cloverchatserver.common.error.exception.NotFoundException
 import com.github.cloverchatserver.domain.account.persistence.Account
 import com.github.cloverchatserver.domain.account.persistence.AccountRepository
 import com.github.cloverchatserver.domain.chatroom.persistence.ChatRoomRepository
 import com.github.cloverchatserver.domain.chatuser.business.data.ChatUserCreation
+import com.github.cloverchatserver.domain.chatuser.persistence.ChatUser
+import com.github.cloverchatserver.domain.chatuser.persistence.ChatUserRepository
 import com.github.cloverchatserver.domain.friend.persistence.Friend
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
+
 
 @Service
 class ChatUserService(
@@ -35,12 +36,22 @@ class ChatUserService(
         return chatUserRepository.findByChatRoom(chatRoom)
     }
 
+    fun stringToHex(s: String): String {
+        var result = ""
+
+        for (i in 0 until s.length) {
+            result += String.format("%02X ", s[i].code)
+        }
+
+        return result
+    }
+
     @Transactional
     fun create(creation: ChatUserCreation): ChatUser {
         val chatRoom = chatRoomRepository.findById(creation.chatRoomId).getOrNull()
             ?: throw NotFoundException("not found chatroom")
 
-        if (chatRoom.password !== creation.chatRoomPassword) {
+        if (chatRoom.password != creation.chatRoomPassword) {
             throw HttpException(403, "invalid password")
         }
 

@@ -28,14 +28,14 @@ export function ParticipatedChatRoomSidebar() {
 }
 
 const itemStyle = css`
-    color: #ffffff;
-    padding: 0.7rem;
-    margin: 0.3rem;
-    cursor: pointer;
+  color: #ffffff;
+  padding: 0.7rem;
+  margin: 0.3rem;
+  cursor: pointer;
 `;
 
 const curChatRoomStyle = css`
-    background-color: #76ABAE;
+  background-color: #76ABAE;
 `;
 
 function ParticipatedChatRoomItem({ chatRoom }: { chatRoom: ChatRoom }) {

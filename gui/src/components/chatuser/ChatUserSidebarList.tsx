@@ -4,21 +4,21 @@ import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
 
 const mainStyle = css`
-    flex-grow: 1;
-    overflow-y: auto;
-    ::-webkit-scrollbar {
-      width: 0.5rem;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #000000;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555555;
-    }
+  flex-grow: 1;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #000000;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+  }
 `;
 
 interface ChatUserSidebarListProps {
@@ -37,10 +37,10 @@ export function ChatUserSidebarList({ chatUsers }: ChatUserSidebarListProps) {
 }
 
 const itemStyle = css`
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    color: black;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: black;
 `;
 
 interface ChatUserItemProps {
