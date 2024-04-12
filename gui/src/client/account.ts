@@ -42,3 +42,12 @@ export function login(req: LoginRequest, remember: boolean) {
 export function logout() {
   return post(`${consts.endpoint}/api/auth/logout`, null);
 }
+
+export const getAccountByUsername = gql`
+  query GetAccountByUsername($username: String!) {
+      account(username: $username) {
+          ...accountColumns
+      }
+  }
+  ${accountColumns}
+`;

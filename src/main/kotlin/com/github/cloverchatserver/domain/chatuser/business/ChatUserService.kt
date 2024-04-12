@@ -36,16 +36,6 @@ class ChatUserService(
         return chatUserRepository.findByChatRoom(chatRoom)
     }
 
-    fun stringToHex(s: String): String {
-        var result = ""
-
-        for (i in 0 until s.length) {
-            result += String.format("%02X ", s[i].code)
-        }
-
-        return result
-    }
-
     @Transactional
     fun create(creation: ChatUserCreation): ChatUser {
         val chatRoom = chatRoomRepository.findById(creation.chatRoomId).getOrNull()

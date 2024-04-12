@@ -36,3 +36,20 @@ export function useCreateChatRoomByFriend() {
   const [createChatRoomByFriend, {loading, error}] = useMutation<Mutation>(createChatRoomByFriendQL);
   return {createChatRoomByFriend, loading, error};
 }
+
+const addFriendQL = gql`
+  mutation AddFriend($fromAccountId: Long!, $toAccountId: Long!) {
+      addFriend(fromAccountId: $fromAccountId, toAccountId: $toAccountId) {
+          id
+          to {
+              ...accountColumns
+          }
+      }
+  }
+  ${accountColumns}
+`;
+
+export function useAddFriend() {
+  const [addFriend, {loading, error}] = useMutation<Mutation>(addFriendQL);
+  return {addFriend, loading, error};
+}

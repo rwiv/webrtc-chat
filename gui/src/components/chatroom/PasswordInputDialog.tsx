@@ -97,7 +97,7 @@ export function PasswordInputDialog({openRef, closeRef, chatRoom}: PasswordInput
           <DialogFooter>
             <Button type="submit" onClick={onSubmit}>입장</Button>
             <DialogClose asChild>
-            <Button variant="secondary">취소</Button>
+            <Button variant="outline">취소</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

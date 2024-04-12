@@ -8,6 +8,7 @@ import {HStack} from "@/lib/style/layouts.tsx";
 import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
 import React, {useRef, useState} from "react";
 import {PasswordInputDialog} from "@/components/chatroom/PasswordInputDialog.tsx";
+import {getPrettyDateString} from "@/lib/common/date.ts";
 
 const listStyle = css`
   overflow-y: auto;
@@ -85,13 +86,6 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
     navigate(`/chat-rooms/${chatRoom.id}`);
   }
 
-  const prettyDate = (str: string) => {
-    const koreaTimeDiff = 9 * 60 * 60 * 1000 // 한국 시간은 GMT 시간보다 9시간 앞서 있다
-    const kr = Date.parse(str) - koreaTimeDiff;
-    const now = Date.now() - kr;
-    return Math.round(now / 1000 / 60);
-  }
-
   return (
       <div css={listStyle}>
         <PasswordInputDialog
@@ -111,7 +105,9 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
                 {chatRoom?.hasPassword && (<span> [p]</span>)}
               </div>
               <div>
-                <div css={{color: "#aaaaaa", fontSize: "0.9rem"}}>{prettyDate(chatRoom.createdAt)}분 전</div>
+                <div css={{color: "#aaaaaa", fontSize: "0.9rem"}}>
+                  {getPrettyDateString(chatRoom.createdAt)}
+                </div>
               </div>
             </HStack>
             <HStack>

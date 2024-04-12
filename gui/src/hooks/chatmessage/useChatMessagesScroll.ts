@@ -2,7 +2,7 @@ import {useApolloClient} from "@apollo/client";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {ChatMessage, Query} from "@/graphql/types.ts";
 import {chatMessagesQL, defaultChatMessageSize} from "@/client/chatMessage.ts";
-import {reverse} from "@/lib/misc/array.ts";
+import {reverse} from "@/lib/common/array.ts";
 import type {QueryOptions} from "@apollo/client/core/watchQueryOptions";
 import {useIntersect} from "@/hooks/common/useIntersect.ts";
 

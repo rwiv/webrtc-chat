@@ -9,7 +9,7 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import React, {useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {ChatRoom, ChatRoomCreateRequest, ChatRoomType} from "@/graphql/types.ts";
 import {useCreateChatRoom} from "@/client/chatRoom.ts";
 import { MdAddCircle } from "react-icons/md";
@@ -33,23 +33,12 @@ export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps)
     if (!checked) setPassword(''); 
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<string>>,
-  ) => {
-    setState(e.target.value);
-  };
-
   const onAddChatRoom = async () => {
     const variables: {req: ChatRoomCreateRequest} = {
       req: {
         password: isPrivate ? password : null,
         title: chatRoomInput,
-        type: isPrivate ? ChatRoomType.Private : ChatRoomType.Public,
+        type: ChatRoomType.Public,
       },
     };
     const res = await createChatRoom({variables});
@@ -86,9 +75,8 @@ export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps)
             </Label>
             <Input
               id="name"
-              defaultValue=""
               className="col-span-3"
-              onChange={(e: any) => handleChange(e, setChatRoomInput)}
+              onChange={e => setChatRoomInput(e.target.value)}
               value={chatRoomInput}
             />
           </div>
@@ -114,7 +102,7 @@ export function ChatRoomCreateButton({ addChatRoom }: ChatRoomCreateButtonProps)
               type="password"
               className="col-span-3"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={e => setPassword(e.target.value)}
             />
           </div>
         )}

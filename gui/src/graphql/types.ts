@@ -332,12 +332,19 @@ export type Friend = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addFriend: Friend;
   createAccount: Account;
   createChatRoom: ChatRoom;
   createChatRoomByFriend: ChatRoom;
   createChatUser: ChatUser;
   deleteChatRoom: ChatRoom;
   deleteChatUserMe: ChatUser;
+};
+
+
+export type MutationAddFriendArgs = {
+  fromAccountId: Scalars['Long']['input'];
+  toAccountId: Scalars['Long']['input'];
 };
 
 

@@ -7,4 +7,6 @@ type Mutation {
 
     createChatUser(chatRoomId: Long!, password: String): ChatUser!
     deleteChatUserMe(chatRoomId: Long!): ChatUser!
+
+    addFriend(fromAccountId: Long!, toAccountId: Long!): Friend!
 }

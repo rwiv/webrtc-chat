@@ -7,14 +7,20 @@ import {useNavigate} from "react-router";
 import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
 import React, {useState} from "react";
 import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
+import {FriendAddButton} from "@/components/account/FriendAddButton.tsx";
+import {useMyInfo} from "@/hooks/useMyInfo.ts";
 
 export function FriendSidebar() {
 
+  const {myInfo} = useMyInfo();
   const [clickedIdx, setClickedIdx] = useState<number | undefined>(undefined);
   const {data} = useMyFriends();
 
   return (
     <div>
+      {myInfo && (
+        <FriendAddButton myInfo={myInfo} />
+      )}
       {data?.account?.friends?.map((friend, idx) => (
         <FriendItem
           key={friend.to?.id}
