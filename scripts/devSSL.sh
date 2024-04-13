@@ -7,5 +7,5 @@ keytool \
   -keyalg RSA \
   -keysize 2048 \
   -keystore dev-keystore.p12 \
-  -validity 3650
+  -validity 365000
 

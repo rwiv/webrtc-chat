@@ -6,7 +6,6 @@ import com.github.cloverchatserver.security.filters.ExceptionHandlerFilter
 import com.github.cloverchatserver.security.handlers.DefaultAccessDeniedHandler
 import com.github.cloverchatserver.security.handlers.DefaultAuthenticationEntryPoint
 import com.github.cloverchatserver.security.userdetails.AccountDetailsService
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -90,7 +89,7 @@ class DefaultSecurityConfig(
         return WebSecurityCustomizer { web: WebSecurity -> web
             .ignoring()
             .requestMatchers(*wrapMatcher(ignoreList))
-            .requestMatchers(PathRequest.toH2Console())
+            .requestMatchers("/h2-console")
         }
     }
 }
