@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.context.SecurityContextRepository
 import org.springframework.stereotype.Component
 
-@Profile("prod")
+@Profile("stage", "prod")
 @Component
 class DefaultSuccessHandlerProd(
     val securityContextRepository: SecurityContextRepository

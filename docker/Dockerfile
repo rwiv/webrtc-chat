@@ -1,8 +1,18 @@
-FROM openjdk:17-ea-11-jdk-slim
+# gui build
+FROM node:21.7-alpine as nodeBuilder
+WORKDIR /app
+RUN git clone https://github.com/rwiv/clover-chat-server.git ./
+WORKDIR /app/gui
 
-WORKDIR /usr/src/app
+# spring build
+FROM gradle:8.7.0-jdk21-alpine as grapdleBuilder
+WORKDIR /app
+RUN git clone https://github.com/rwiv/clover-chat-server.git ./
+RUN gradle build -x check --parallel
 
-COPY .. .
+# main
+FROM openjdk:23-slim
+WORKDIR /app
+COPY --from=grapdleBuilder /app/build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar /app/app.jar
 
-#COPY ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar .
-#RUN ./gradlew build -x check --parallel
+ENTRYPOINT ["java", "-jar", "app.jar"]

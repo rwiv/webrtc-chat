@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   clover-chat-server:
     image: ghcr.io/jongho445/clover-chat-server:latest

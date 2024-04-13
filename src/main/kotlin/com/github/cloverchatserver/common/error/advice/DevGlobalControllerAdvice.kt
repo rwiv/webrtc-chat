@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@Profile("dev", "qa")
+@Profile("dev")
 @RestControllerAdvice
-class DevQaGlobalControllerAdvice(val resolver: HttpErrorResolver) {
+class DevGlobalControllerAdvice(val resolver: HttpErrorResolver) {
 
     @ExceptionHandler
     fun handle(throwable: Throwable, req: HttpServletRequest): ResponseEntity<HttpErrorResponse> {

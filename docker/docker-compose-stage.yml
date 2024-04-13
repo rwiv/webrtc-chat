@@ -1,0 +1,10 @@
+services:
+  chat-server:
+    image: server:0.0.1
+    container_name: chat-server
+    working_dir: /app
+    entrypoint: java -jar ./app.jar
+    environment:
+      spring.profiles.active: dev
+    ports:
+      - "8080:8080"
