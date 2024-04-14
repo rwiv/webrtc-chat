@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.common.dev
+package com.github.cloverchatserver.common.cors
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -14,7 +14,11 @@ class DevCorsConfiguration : WebMvcConfigurer {
         registry
             .addMapping("/**")
             .allowCredentials(true)
-            .allowedOrigins("http://localhost:5173", "http://localhost:4173")
+            .allowedOrigins(
+                "http://localhost:5173",
+                "http://localhost:4173",
+                "http://localhost:11731",
+            )
             .allowedMethods(CorsConfiguration.ALL)
             .allowedHeaders(CorsConfiguration.ALL)
     }
