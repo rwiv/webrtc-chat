@@ -5,7 +5,12 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "11731:11731"
+      - "11730:11730"
     volumes:
       - ./assets/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./assets/nginx/dist:/app/gui
+#      - ./assets/nginx/dist:/app/gui
+      - ./assets/nginx/index.html:/app/gui/index.html
+      - ./secret/fullchain.pem:/app/secret/fullchain.pem
+      - ./secret/privkey.pem:/app/secret/privkey.pem
+    environment:
+      DOMAIN_NAME: "${DOMAIN_NAME}"
