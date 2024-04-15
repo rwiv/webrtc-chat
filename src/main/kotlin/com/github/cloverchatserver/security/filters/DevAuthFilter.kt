@@ -16,8 +16,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.GenericFilterBean
 
-@Profile("dev")
-@Component
+//@Profile("dev")
+//@Component
 class DevAuthFilter(
     private val accountService: AccountService,
 ) : GenericFilterBean() {

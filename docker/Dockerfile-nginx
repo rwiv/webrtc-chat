@@ -18,5 +18,5 @@ COPY --from=nodejs /app/gui/dist /app/gui
 COPY ./docker/assets/nginx/nginx-global-base.conf /etc/nginx/nginx.conf
 COPY ./docker/assets/nginx/nginx-https-base.conf /app/nginx/nginx-https-base.conf
 COPY ./docker/assets/nginx/nginx-server.conf /app/nginx/nginx-server.conf
-COPY ./docker/secret/fullchain.pem /app/secret/fullchain.pem
-COPY ./docker/secret/privkey.pem /app/secret/privkey.pem
+COPY ./secret/fullchain.pem /app/secret/fullchain.pem
+COPY ./secret/privkey.pem /app/secret/privkey.pem

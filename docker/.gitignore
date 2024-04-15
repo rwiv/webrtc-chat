@@ -1,4 +1,0 @@
-assets/nginx/dist
-secret/fullchain.pem
-secret/privkey.pem
-secret/.env
