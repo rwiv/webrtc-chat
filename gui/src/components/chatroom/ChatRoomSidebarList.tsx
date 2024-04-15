@@ -9,6 +9,7 @@ import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
 import React, {useRef, useState} from "react";
 import {PasswordInputDialog} from "@/components/chatroom/PasswordInputDialog.tsx";
 import {getPrettyDateString} from "@/lib/common/date.ts";
+import { LockIcon } from "lucide-react";
 
 const listStyle = css`
   overflow-y: auto;
@@ -97,9 +98,9 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
             onClick={() => onClickLink(chatRoom)}
           >
             <HStack>
-              <div css={{width: "50%"}}>
+              <div css={{display: 'flex', alignItems: 'center', width: "50%"}}>
                 <span css={{fontWeight: 600, fontSize: "1.1rem"}}>{chatRoom.title}</span>
-                {chatRoom?.hasPassword && (<span> [p]</span>)}
+                {chatRoom?.hasPassword && (<span><LockIcon style={{ marginLeft: '1rem', width: '1rem', height: '1rem' }} /></span>)}
               </div>
               <div>
                 <div css={{color: "#aaaaaa", fontSize: "0.9rem"}}>

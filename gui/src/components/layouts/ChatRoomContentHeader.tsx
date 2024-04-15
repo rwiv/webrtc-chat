@@ -1,7 +1,6 @@
 import {css} from "@emotion/react";
 import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 import {HStack} from "@/lib/style/layouts.tsx";
-import {rightAlignStyle} from "@/styles/globalStyles.ts";
 
 const headerStyle = css`
   border-bottom: 2px solid #e2e2e2;
@@ -28,9 +27,6 @@ export function ChatRoomContentHeader() {
         ) : (
           <label css={nameStyle}>채팅방 선택</label>
         )}
-        <div css={rightAlignStyle}>
-          hello
-        </div>
       </HStack>
     </div>
 )

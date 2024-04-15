@@ -8,9 +8,9 @@ import {useChatRooms} from "@/hooks/useChatRooms.ts";
 import {rightAlignStyle} from "@/styles/globalStyles.ts";
 
 const frameStyle = css`
-  display: flex; /* 플렉스박스 사용 */
-  justify-content: space-between; /* 양 끝에 아이템을 놓기 */
-  align-items: center; /* 세로 중앙 정렬 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top : 20px;
   padding-bottom: 20px;
   padding-left: 20px;

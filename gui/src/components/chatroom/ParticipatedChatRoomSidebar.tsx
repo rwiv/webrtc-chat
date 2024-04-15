@@ -5,6 +5,7 @@ import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 import {useNavigate} from "react-router";
 import {ParticipatedChatRoomContextMenu} from "@/components/chatroom/ParticipatedChatRoomContextMenu.tsx";
 import {useMyInfo} from "@/hooks/useMyInfo.ts";
+import { MyInfo } from "../account/MyInfo";
 
 export function ParticipatedChatRoomSidebar() {
 
@@ -23,6 +24,10 @@ export function ParticipatedChatRoomSidebar() {
 
   return (
     <div>
+      <div css={frameStyle}>
+        <label css={labelStyle}>참여중인 채팅방</label>
+      </div>
+      <span css={infoStyle}><MyInfo /></span>
       {myInfo && (
         getSortedChatRooms().map(chatRoom => (
           <ParticipatedChatRoomItem key={chatRoom.id} chatRoom={chatRoom} myInfo={myInfo} />
@@ -31,6 +36,21 @@ export function ParticipatedChatRoomSidebar() {
     </div>
   )
 }
+
+const frameStyle = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top : 28px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 16px;
+`;
+
+const labelStyle = css`
+  color: white;
+  font-size: 20px;
+`;
 
 const itemStyle = css`
   color: #ffffff;
@@ -41,6 +61,12 @@ const itemStyle = css`
 
 const curChatRoomStyle = css`
   background-color: #76ABAE;
+`;
+
+const infoStyle = css`
+  position:fixed;
+  bottom:0;
+  width: 20.9%;
 `;
 
 interface ParticipatedChatRoomItemProps {

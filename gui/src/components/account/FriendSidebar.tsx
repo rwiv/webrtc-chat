@@ -9,18 +9,25 @@ import React, {useState} from "react";
 import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
 import {FriendAddButton} from "@/components/account/FriendAddButton.tsx";
 import {useMyInfo} from "@/hooks/useMyInfo.ts";
+import { MyInfo } from "./MyInfo";
 
 export function FriendSidebar() {
 
   const {myInfo} = useMyInfo();
   const [clickedIdx, setClickedIdx] = useState<number | undefined>(undefined);
   const {data} = useMyFriends();
+  
 
   return (
     <div>
-      {myInfo && (
+      <div css={frameStyle}>
+        <label css={labelStyle}>친구 목록</label>
+        {myInfo && (
         <FriendAddButton myInfo={myInfo} />
       )}
+      </div>
+      <span css={infoStyle}><MyInfo /></span>
+
       {data?.account?.friends?.map((friend, idx) => (
         <FriendItem
           key={friend.to?.id}
@@ -34,6 +41,16 @@ export function FriendSidebar() {
   )
 }
 
+const frameStyle = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top : 28px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 16px;
+`;
+
 const itemStyle = css`
   display: flex;
   align-items: center;
@@ -46,9 +63,22 @@ const itemStyle = css`
   user-select:none;
 `;
 
+const labelStyle = css`
+  color: white;
+  font-size: 20px;
+  flex-grow: 1;
+`;
+
 const clickedStyle = css`
   background-color: #76ABAE;
 `;
+
+const infoStyle = css`
+  position:fixed;
+  bottom:0;
+  width: 20.9%;
+`;
+
 
 interface FriendItemProps {
   friend: Friend;

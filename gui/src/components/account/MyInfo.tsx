@@ -17,6 +17,7 @@ const userInfoStyle = css`
   align-items: center;
   padding: 10px;
   color: white;
+  border-top: 2px solid #e2e2e2;
 `;
 
 export function MyInfo() {
