@@ -7,8 +7,9 @@ services:
       - "443:443"
       - "11730:11730"
     volumes:
-      - ./assets/nginx/nginx.conf:/etc/nginx/nginx.conf
-#      - ./assets/nginx/dist:/app/gui
+      - ./assets/nginx/nginx-global-base.conf:/etc/nginx/nginx.conf
+      - ./assets/nginx/nginx-https-base.conf:/app/nginx/nginx-https-base.conf
+      - ./assets/nginx/nginx-server-test.conf:/app/nginx/nginx-server.conf
       - ./assets/nginx/index.html:/app/gui/index.html
       - ./secret/fullchain.pem:/app/secret/fullchain.pem
       - ./secret/privkey.pem:/app/secret/privkey.pem

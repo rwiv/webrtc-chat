@@ -13,9 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.context.SecurityContextRepository
 import org.springframework.stereotype.Component
 
-@Profile("dev")
-@Component
-class DefaultSuccessHandlerDev(
+//@Component
+class DefaultSuccessHandlerSSL(
     val securityContextRepository: SecurityContextRepository
 ) : DefaultSuccessHandler {
 

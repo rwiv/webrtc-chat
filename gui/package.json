@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:stage": "vite -m stage",
     "dev:prod": "vite -m production",
     "build:dev": "tsc && vite build -m development",
+    "build:stage": "tsc && vite build -m stage",
     "build:prod": "tsc && vite build -m production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

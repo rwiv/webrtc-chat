@@ -1,6 +1,6 @@
 services:
   chat-db:
-    image: mysql:8.0.36-oraclelinux8
+    image: chat-db:latest
     container_name: chat-db
     ports:
       - "11731:11731"
@@ -11,5 +11,3 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./assets/initdb.d:/docker-entrypoint-initdb.d

@@ -1,0 +1,13 @@
+# spring build
+FROM gradle:8.7.0-jdk21-alpine as grapdle
+WORKDIR /app
+COPY . .
+RUN gradle build -x check --parallel
+
+# run
+FROM openjdk:23-slim
+WORKDIR /app
+COPY --from=grapdle /app/build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar /app/server.jar
+COPY ./secret/server.json /app/secret/server.json
+
+ENTRYPOINT ["java", "-jar", "server.jar"]

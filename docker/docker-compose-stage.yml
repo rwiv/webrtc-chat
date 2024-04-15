@@ -1,6 +1,6 @@
 services:
   chat-db:
-    image: mysql:8.0.36-oraclelinux8
+    image: chat-db:latest
     container_name: chat-db
     ports:
       - "11731:11731"
@@ -13,11 +13,21 @@ services:
       - --collation-server=utf8mb4_unicode_ci
     networks:
       - my-net
+  chat-nginx:
+    image: chat-nginx:latest
+    container_name: chat-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN_NAME: "${DOMAIN_NAME}"
+    networks:
+      - my-net
   chat-server:
-    image: ewr.vultrcr.com/fjdndkv/chat-server:latest
+    image: chat-server:latest
     container_name: chat-server
     working_dir: /app
-    entrypoint: bash -c "sleep 30; java -jar ./app.jar"
+    entrypoint: bash -c "sleep 30; java -jar ./server.jar"
     environment:
       spring.profiles.active: stage
       spring.datasource.url: jdbc:mysql://chat-db:11731/chat_db
@@ -26,6 +36,7 @@ services:
     networks:
       - my-net
     depends_on:
+      - chat-nginx
       - chat-db
 
 networks:

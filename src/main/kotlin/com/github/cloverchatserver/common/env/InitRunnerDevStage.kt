@@ -1,4 +1,4 @@
-package com.github.cloverchatserver.common.dev
+package com.github.cloverchatserver.common.env
 
 import com.github.cloverchatserver.domain.account.business.AccountService
 import com.github.cloverchatserver.domain.account.business.data.AccountCreation
@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
-@Profile("dev")
-class DevInitRunner(
+@Profile("dev", "stage")
+class InitRunnerDevStage(
     private val accountService: AccountService,
     private val friendService: FriendService,
     private val chatRoomService: ChatRoomService,

@@ -6,16 +6,19 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
-@Profile("prod")
+@Profile("dev")
 @Configuration
-class ProdCorsConfiguration : WebMvcConfigurer {
+class CorsConfigurationDev : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry
             .addMapping("/**")
             .allowCredentials(true)
-            // TODO change https://nginx
-            .allowedOrigins("http://nginx:11730")
+            .allowedOrigins(
+                "http://localhost:5173",
+                "http://localhost:4173",
+                "http://localhost:11731",
+            )
             .allowedMethods(CorsConfiguration.ALL)
             .allowedHeaders(CorsConfiguration.ALL)
     }

@@ -34,11 +34,7 @@ class DefaultSecurityConfig(
         "/graphiql/**",
     )
     val ignoreList = listOf(
-        "/favicon.ico",
         "/avatars/**",
-        "/dist/**",
-        "/assets/**",
-        "/vite.svg",
     )
 
     private fun wrapMatcher(list: List<String>): Array<AntPathRequestMatcher> {

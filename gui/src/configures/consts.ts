@@ -3,6 +3,7 @@ import {env} from "@/configures/env.ts";
 
 const isDev = env.MODE === "development";
 const isProd = env.MODE === "production";
+const isStage = env.MODE === "stage";
 
 const protocol = env.VITE_PROTOCOL;
 const host = env.VITE_HOST
@@ -15,6 +16,7 @@ const endpoint = `${protocol}://${domain}${apiPrefix}`;
 export const consts = {
   isDev,
   isProd,
+  isStage,
   protocol,
   host,
   port,

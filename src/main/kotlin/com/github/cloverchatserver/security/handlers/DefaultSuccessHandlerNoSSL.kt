@@ -3,7 +3,6 @@ package com.github.cloverchatserver.security.handlers
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.core.Authentication
@@ -11,9 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.context.SecurityContextRepository
 import org.springframework.stereotype.Component
 
-@Profile("stage", "prod")
 @Component
-class DefaultSuccessHandlerProd(
+class DefaultSuccessHandlerNoSSL(
     val securityContextRepository: SecurityContextRepository
 ) : DefaultSuccessHandler {
 
