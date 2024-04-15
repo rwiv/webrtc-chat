@@ -1,6 +1,6 @@
 services:
   chat-nginx:
-    image: ewr.vultrcr.com/fjdndkv/chat-nginx:latest
+    image: "ewr.vultrcr.com/${REGISTRY}/chat-nginx:latest"
     container_name: chat-nginx
     ports:
       - "80:80"
@@ -10,7 +10,7 @@ services:
     networks:
       - my-net
   chat-server:
-    image: ewr.vultrcr.com/fjdndkv/chat-server:latest
+    image: "ewr.vultrcr.com/${REGISTRY}/chat-server:latest"
     container_name: chat-server
     working_dir: /app
     entrypoint: bash -c "sleep 30; java -jar ./app.jar"

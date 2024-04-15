@@ -1,4 +1,4 @@
-## Getting Started
+## Run in DEV
 
 ### Build
 
@@ -12,15 +12,11 @@
 java -jar ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar
 ```
 
-## GraphQL testing
 
-- 브라우저에서 http://localhost:8080/graphiql 로 접속해 graphql 테스트 가능
-    - 서버를 `dev` 모드로 실행했다면 test용 mock data가 db에 존재할 것
-    - `Headers` 탭에 `{ "Authorization": "admin" }`를 추가해야 query 가능
-- graphql schema: [click](src/main/resources/schema)
-- test example: [click](docs/graphql_test.md)
+## Deploy Process
 
-## Misc
-
-- graphql DateTime scalar는 `RFC-3339`
+1. vultr registry 생성
+2. secret 폴더를 채운 뒤, local에서 `docker-build-mysql.bat`, `docker-build-nginx.bat`, `docker-build-server.bat`로 docker images build
+3. `docker-push.bat <registry_name>`로 images push
+4. vultr instance 생성 후, 내부에서 `docker-compose-prod-temp.yml` 실행
 

@@ -1,6 +1,6 @@
 services:
   chat-db:
-    image: chat-db:latest
+    image: "ewr.vultrcr.com/${REGISTRY}/chat-db:latest"
     container_name: chat-db
     ports:
       - "11731:11731"
