@@ -53,6 +53,10 @@ export class DataChannelConnection {
     this.yourChannel = yourChannel;
   }
 
+  isConnected() {
+    return this.getOpenChannel() !== null;
+  }
+
   getOpenChannel() {
     if (this.myChannel.readyState === "open") {
       return this.myChannel;

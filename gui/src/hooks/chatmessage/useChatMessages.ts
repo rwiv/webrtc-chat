@@ -7,21 +7,19 @@ export function useChatMessages(
 ) {
 
   const {
-    // loading: pageLoading,
-    chatMessages, setChatMessages, page,
+    chatMessages, setChatMessages,
+    page, loading,
     scrollRef, observerRef,
     setOffset, setScrollType
   } = useChatMessagesScroll(chatRoomId);
 
   // const {connect, disconnect, send} = useChatMessagesStomp(chatRoomId, setChatMessages, setOffset, setScrollType);
   const {
-    loading: rtcLoading,
     connect, disconnect, send,
   } = useChatMessagesRTC(chatRoomId, myInfo, chatUsers, setChatMessages, setOffset, setScrollType);
 
   return {
-    chatMessages, page, observerRef, scrollRef,
+    chatMessages, page, observerRef, scrollRef, loading,
     connect, disconnect, send,
-    loading: rtcLoading,
   };
 }

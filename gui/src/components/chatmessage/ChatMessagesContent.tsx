@@ -17,20 +17,6 @@ const inputFrameStyle = css`
   width: 100%;
 `;
 
-const messageInputStyle = css`
-  border: 2px solid #e2e2e2 !important;
-  font-family: 'Noto Sans KR';
-  font-size: 25px !important;
-  flex-grow: 1 !important;
-  height: 70px !important;
-`;
-
-const sendButtonStyle = css`
-  width: 30% !important;
-  height: 70px !important;
-  background-color: #222831 !important;
-`;
-
 interface ChatMessagesContentProps {
   chatRoomId: number;
   myInfo: Account;
@@ -40,7 +26,6 @@ interface ChatMessagesContentProps {
 export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessagesContentProps) {
 
   const {refreshFlag} = useChatMessagesRefreshStore();
-  const [chatMessageInput, setChatMessageInput] = useState("");
 
   const {
     chatMessages,
@@ -54,10 +39,39 @@ export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessa
     connect();
   }, [refreshFlag]);
 
+  return (
+    <>
+      <ChatMessageList
+        chatMessages={chatMessages}
+        scrollRef={scrollRef}
+        observerRef={observerRef}
+      />
+      <ChatMessageInput send={send} />
+    </>
+  )
+}
+
+interface ChatMessageInputProps {
+  send: (message: string) => Promise<void>;
+}
+
+const messageInputStyle = css`
+  border: 2px solid #e2e2e2;
+  font-size: 1.1rem;
+  height: 3rem;
+`;
+
+const sendButtonStyle = css`
+  width: 30%;
+  height: 3rem;
+  background-color: #222831;
+`;
+
+function ChatMessageInput({ send }: ChatMessageInputProps) {
+
+  const [chatMessageInput, setChatMessageInput] = useState("");
+
   async function onSend() {
-    if (!chatRoomId) {
-      throw Error("chatRoomId is null");
-    }
     await send(chatMessageInput);
     setChatMessageInput("");
   }
@@ -69,29 +83,21 @@ export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessa
   };
 
   return (
-    <>
-      <ChatMessageList
-        chatMessages={chatMessages}
-        scrollRef={scrollRef}
-        observerRef={observerRef}
-      />
-      <div css={inputFrameStyle}>
-        <div className="flex w-full items-center space-x-2">
-          <Input
-            type="message" id="inputField" css={messageInputStyle}
-            onChange={e => setChatMessageInput(e.target.value)}
-            value={chatMessageInput}
-            onKeyDown={handleKeyDown}
-          />
-          <Button
-            type="submit" id="inputButton" css={sendButtonStyle}
-            onClick={() => onSend()}
-          >
-            send
-          </Button>
-        </div>
+    <div css={inputFrameStyle}>
+      <div className="flex w-full items-center space-x-2">
+        <Input
+          type="message" id="inputField" css={messageInputStyle}
+          onChange={e => setChatMessageInput(e.target.value)}
+          value={chatMessageInput}
+          onKeyDown={handleKeyDown}
+        />
+        <Button
+          type="submit" id="inputButton" css={sendButtonStyle}
+          onClick={() => onSend()}
+        >
+          send
+        </Button>
       </div>
-      {/*{loading && (<div>loading...</div>)}*/}
-    </>
+    </div>
   )
 }

@@ -1,5 +1,5 @@
 import {Account, ChatMessage, ChatUser} from "@/graphql/types.ts";
-import React, {useState} from "react";
+import React from "react";
 import {IMessage} from "@stomp/stompjs";
 import { CandidateMessage, DescriptionMessage, requestAnswer, requestCandidate, requestOffer } from "@/client/signaling.ts";
 import {createStompClient} from "@/lib/web/stomp.ts";
@@ -20,15 +20,6 @@ export function useChatMessagesRTC(
   const {dccMap, addDcc, restore} = useDccsStore();
 
   const {setNewStompClient} = useChatMessageStompStore();
-
-  const [loading, setLoading] = useState(true);
-
-  const isLoading = () => {
-    for (const dcc of dccMap.values()) {
-      if (dcc.getOpenChannel() !== null) return false;
-    }
-    return true;
-  }
 
   const onMessage = (ev: MessageEvent) => {
     const chatMessage = JSON.parse(ev.data) as ChatMessage;
@@ -129,14 +120,6 @@ export function useChatMessagesRTC(
   }
 
   const connect = async () => {
-    // check loading
-    const interval = setInterval(() => {
-      if (!isLoading()) {
-        setLoading(false);
-        clearInterval(interval);
-      }
-    }, 1);
-
     // create stomp client
     const stomp = createStompClient();
     stomp.onConnect  = async () => {
@@ -173,5 +156,5 @@ export function useChatMessagesRTC(
     }
   }
 
-  return {connect, disconnect, send, loading};
+  return {connect, disconnect, send};
 }
