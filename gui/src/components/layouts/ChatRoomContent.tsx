@@ -3,7 +3,7 @@ import {ChatMessagesContent} from "@/components/chatmessage/ChatMessagesContent.
 import {css} from "@emotion/react";
 import {ChatRoomContentHeader} from "@/components/layouts/ChatRoomContentHeader.tsx";
 import {mq} from "@/lib/style/mediaQueries.ts";
-import {useMyInfo} from "@/hooks/useMyInfo.ts";
+import {useMyInfo} from "@/hooks/common/useMyInfo.ts";
 import {useChatRoomAndUsers} from "@/client/chatUser.ts";
 
 const mainContentStyle = css`

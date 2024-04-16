@@ -3,16 +3,16 @@ import {LeftSidebar} from "@/components/layouts/LeftSidebar.tsx";
 import {ChatRoomContent} from "@/components/layouts/ChatRoomContent.tsx";
 import {containerStyle, flexStyle} from "@/styles/globalStyles.ts";
 import {useEffect} from "react";
-import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
-import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
+import {useSidebarStateStore} from "@/hooks/common/useSidebarStateStore.ts";
 
 const left = mq.m_all(2,2,3,3,3,3);
 const right = mq.m_all(10,10,9, 9,9,9);
 
 export function IndexPage() {
 
-  const {setCurChatRoom} = useCurChatRoom();
-  const {setSidebarState} = useSidebarState();
+  const {setCurChatRoom} = useCurChatRoomStore();
+  const {setSidebarState} = useSidebarStateStore();
 
   useEffect(() => {
     setCurChatRoom(null);

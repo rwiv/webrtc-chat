@@ -7,7 +7,7 @@ interface GlobalState {
   setSidebarState: (sidebarState: SidebarState) => void;
 }
 
-export const useSidebarState = create<GlobalState>((set) => ({
+export const useSidebarStateStore = create<GlobalState>((set) => ({
   sidebarState: "CHATROOM",
   setSidebarState: (sidebarState) => set(() => ({ sidebarState})),
 }));

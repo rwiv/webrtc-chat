@@ -4,11 +4,11 @@ import {Friend} from "@/graphql/types.ts";
 import {css} from "@emotion/react";
 import {useCreateChatRoomByFriend, useMyFriends} from "@/client/friend.ts";
 import {useNavigate} from "react-router";
-import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
+import {useSidebarStateStore} from "@/hooks/common/useSidebarStateStore.ts";
 import React, {useState} from "react";
-import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
 import {FriendAddButton} from "@/components/account/FriendAddButton.tsx";
-import {useMyInfo} from "@/hooks/useMyInfo.ts";
+import {useMyInfo} from "@/hooks/common/useMyInfo.ts";
 import { MyInfo } from "./MyInfo";
 
 export function FriendSidebar() {
@@ -91,8 +91,8 @@ function FriendItem({ friend, idx, clickedIdx, setClickedIdx }: FriendItemProps)
 
   const navigate = useNavigate();
 
-  const {setCurChatRoom} = useCurChatRoom();
-  const {setSidebarState} = useSidebarState();
+  const {setCurChatRoom} = useCurChatRoomStore();
+  const {setSidebarState} = useSidebarStateStore();
   const {createChatRoomByFriend} = useCreateChatRoomByFriend();
 
   const onClick = () => {

@@ -1,10 +1,10 @@
 import {useMyChatUsers} from "@/client/chatUser.ts";
 import {css} from "@emotion/react";
 import {Account, ChatRoom} from "@/graphql/types.ts";
-import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
 import {useNavigate} from "react-router";
 import {ParticipatedChatRoomContextMenu} from "@/components/chatroom/ParticipatedChatRoomContextMenu.tsx";
-import {useMyInfo} from "@/hooks/useMyInfo.ts";
+import {useMyInfo} from "@/hooks/common/useMyInfo.ts";
 import { MyInfo } from "../account/MyInfo";
 
 export function ParticipatedChatRoomSidebar() {
@@ -77,7 +77,7 @@ interface ParticipatedChatRoomItemProps {
 function ParticipatedChatRoomItem({ chatRoom, myInfo }: ParticipatedChatRoomItemProps) {
 
   const navigate = useNavigate();
-  const {curChatRoom, setCurChatRoom} = useCurChatRoom();
+  const {curChatRoom, setCurChatRoom} = useCurChatRoomStore();
 
   const onClick = () => {
     setCurChatRoom(chatRoom);

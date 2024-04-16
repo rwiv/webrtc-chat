@@ -3,8 +3,8 @@ import {ChatRoomCreateButton} from "@/components/chatroom/ChatRoomCreateButton.t
 import {ChatRoomSidebarList} from "@/components/chatroom/ChatRoomSidebarList.tsx";
 import {MyInfo} from "@/components/account/MyInfo.tsx";
 import {css} from "@emotion/react";
-import {useMyInfo} from "@/hooks/useMyInfo.ts";
-import {useChatRooms} from "@/hooks/useChatRooms.ts";
+import {useMyInfo} from "@/hooks/common/useMyInfo.ts";
+import {useChatRooms} from "@/hooks/chatroom/useChatRooms.ts";
 import {rightAlignStyle} from "@/styles/globalStyles.ts";
 
 const frameStyle = css`

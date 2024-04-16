@@ -7,7 +7,7 @@ import {
 import {LogOut, Settings, User} from "lucide-react";
 import {logout} from "@/client/account.ts";
 import {useNavigate} from "react-router";
-import {useMyInfo} from "@/hooks/useMyInfo.ts";
+import {useMyInfo} from "@/hooks/common/useMyInfo.ts";
 import {css} from "@emotion/react";
 import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";

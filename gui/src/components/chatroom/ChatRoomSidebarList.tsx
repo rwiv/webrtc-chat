@@ -3,9 +3,9 @@ import {chatRoomAndUsersQL, useCreateChatUser} from "@/client/chatUser.ts";
 import {useApolloClient} from "@apollo/client";
 import {css} from "@emotion/react";
 import {useNavigate} from "react-router";
-import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
 import {HStack} from "@/lib/style/layouts.tsx";
-import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
+import {useSidebarStateStore} from "@/hooks/common/useSidebarStateStore.ts";
 import React, {useRef, useState} from "react";
 import {PasswordInputDialog} from "@/components/chatroom/PasswordInputDialog.tsx";
 import {getPrettyDateString} from "@/lib/common/date.ts";
@@ -51,8 +51,8 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
   const navigate = useNavigate();
 
   const {createChatUser} = useCreateChatUser();
-  const {setCurChatRoom} = useCurChatRoom();
-  const {setSidebarState} = useSidebarState();
+  const {setCurChatRoom} = useCurChatRoomStore();
+  const {setSidebarState} = useSidebarStateStore();
 
   const openRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);

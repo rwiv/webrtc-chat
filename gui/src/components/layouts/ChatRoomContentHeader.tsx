@@ -1,5 +1,5 @@
 import {css} from "@emotion/react";
-import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
 import {HStack} from "@/lib/style/layouts.tsx";
 
 const headerStyle = css`
@@ -17,7 +17,7 @@ const nameStyle = css`
 
 export function ChatRoomContentHeader() {
 
-  const {curChatRoom} = useCurChatRoom();
+  const {curChatRoom} = useCurChatRoomStore();
 
   return (
     <div css={headerStyle}>

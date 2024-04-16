@@ -13,8 +13,8 @@ import {Button} from "@/components/ui/button.tsx";
 import {ChatRoom} from "@/graphql/types.ts";
 import {useNavigate} from "react-router";
 import {useCreateChatUser} from "@/client/chatUser.ts";
-import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
-import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
+import {useSidebarStateStore} from "@/hooks/common/useSidebarStateStore.ts";
 import {ApolloError} from "@apollo/client";
 import {HStack} from "@/lib/style/layouts.tsx";
 
@@ -29,8 +29,8 @@ export function PasswordInputDialog({openRef, closeRef, chatRoom}: PasswordInput
   const navigate = useNavigate();
 
   const {createChatUser} = useCreateChatUser();
-  const {setCurChatRoom} = useCurChatRoom();
-  const {setSidebarState} = useSidebarState();
+  const {setCurChatRoom} = useCurChatRoomStore();
+  const {setSidebarState} = useSidebarStateStore();
 
   const [passwordInput, setPasswordInput] = useState("");
   const [isFailed, setIsFailed] = useState(false);

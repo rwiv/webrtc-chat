@@ -6,7 +6,7 @@ interface GlobalState {
   setCurChatRoom: (chatRoom: ChatRoom | null) => void;
 }
 
-export const useCurChatRoom = create<GlobalState>((set) => ({
+export const useCurChatRoomStore = create<GlobalState>((set) => ({
   curChatRoom: null,
   setCurChatRoom: (chatRoom) => set(() => ({ curChatRoom: chatRoom })),
 }));

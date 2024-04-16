@@ -3,7 +3,7 @@ import {cn} from "@/lib/utils.ts";
 import {ContextMenuItem, ContextMenuShortcut} from "@/components/ui/context-menu.tsx";
 import {LogOut, Trash2} from "lucide-react";
 import React from "react";
-import {useCurChatRoom} from "@/hooks/global/useCurChatRoom.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
 import {myChatUsersQL, useDeleteChatUserMe} from "@/client/chatUser.ts";
 import {useDeleteChatRoom} from "@/client/chatRoom.ts";
 import {useNavigate} from "react-router";
@@ -19,7 +19,7 @@ export function ParticipatedChatRoomContextMenu({ chatRoom, myInfo, children }: 
 
   const navigate = useNavigate();
 
-  const {setCurChatRoom} = useCurChatRoom();
+  const {setCurChatRoom} = useCurChatRoomStore();
   const {deleteChatUserMe} = useDeleteChatUserMe();
   const {deleteChatRoom} = useDeleteChatRoom();
 

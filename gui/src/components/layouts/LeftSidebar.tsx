@@ -7,7 +7,7 @@ import { MdOutlineSearch } from "react-icons/md";
 import {mq} from "@/lib/style/mediaQueries.ts";
 import {FriendSidebar} from "@/components/account/FriendSidebar.tsx";
 import {ParticipatedChatRoomSidebar} from "@/components/chatroom/ParticipatedChatRoomSidebar.tsx";
-import {useSidebarState} from "@/hooks/global/useSidebarState.ts";
+import {useSidebarStateStore} from "@/hooks/common/useSidebarStateStore.ts";
 
 const navSidebarStyle = css`
     display: flex;
@@ -30,7 +30,7 @@ const iconColor = "#ffffff";
 
 export function LeftSidebar() {
 
-  const {sidebarState, setSidebarState} = useSidebarState();
+  const {sidebarState, setSidebarState} = useSidebarStateStore();
 
   return (
     <>
