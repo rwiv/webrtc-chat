@@ -2,7 +2,7 @@ import {gql, useMutation} from "@apollo/client";
 import {Mutation} from "@/graphql/types.ts";
 import {chatRoomColumns} from "@/client/chatRoom.ts";
 import {accountColumns} from "@/client/account.ts";
-import {getQueryName, useQuery} from "@/lib/web/apollo.ts";
+import {useQuery} from "@/lib/web/apollo.ts";
 
 export const chatUserColumns = gql`
     fragment chatUserColumns on ChatUser {
@@ -17,25 +17,27 @@ export const chatUserColumns = gql`
     }
 `;
 
-export const chatRoomAndUsersQL = gql`
-    query ChatRoomAndUsers($id: Long!) {
-        chatRoom(id: $id) {
-            ...chatRoomColumns
-            chatUsers {
-                ...chatUserColumns
-                account {
-                    ...accountColumns
+export function chatRoomAndUsersByIdQL(id: number) {
+    return gql`
+        query ChatRoomAndUsersById {
+            chatRoom(id: ${id}) {
+                ...chatRoomColumns
+                chatUsers {
+                    ...chatUserColumns
+                    account {
+                        ...accountColumns
+                    }
                 }
             }
         }
-    }
-    ${accountColumns}
-    ${chatRoomColumns}
-    ${chatUserColumns}
-`;
+        ${accountColumns}
+        ${chatRoomColumns}
+        ${chatUserColumns}
+    `;
+}
 
 export function useChatRoomAndUsers(chatRoomId: number) {
-  return useQuery(chatRoomAndUsersQL, { id: chatRoomId });
+    return useQuery(chatRoomAndUsersByIdQL(chatRoomId));
 }
 
 export const myChatUsersQL = gql`
@@ -69,9 +71,7 @@ const createChatUserQL = gql`
 `;
 
 export function useCreateChatUser() {
-  const [createChatUser, {loading, error}] = useMutation<Mutation>(createChatUserQL, {
-    refetchQueries: [ getQueryName(chatRoomAndUsersQL) ],
-  });
+  const [createChatUser, {loading, error}] = useMutation<Mutation>(createChatUserQL);
   return {createChatUser, loading, error};
 }
 
@@ -86,9 +86,7 @@ const createChatUserFromParticipantQL = gql`
 `;
 
 export function useCreateChatUserFromParticipant() {
-    const [createChatUserFromParticipant, {loading, error}] = useMutation<Mutation>(createChatUserFromParticipantQL, {
-        refetchQueries: [ getQueryName(chatRoomAndUsersQL) ],
-    });
+    const [createChatUserFromParticipant, {loading, error}] = useMutation<Mutation>(createChatUserFromParticipantQL);
     return {createChatUserFromParticipant, loading, error};
 }
 
@@ -102,8 +100,6 @@ const deleteChatUserMeQL = gql`
 `;
 
 export function useDeleteChatUserMe() {
-    const [deleteChatUserMe, {loading, error}] = useMutation<Mutation>(deleteChatUserMeQL, {
-        refetchQueries: [ getQueryName(chatRoomAndUsersQL) ],
-    });
+    const [deleteChatUserMe, {loading, error}] = useMutation<Mutation>(deleteChatUserMeQL);
     return {deleteChatUserMe, loading, error};
 }

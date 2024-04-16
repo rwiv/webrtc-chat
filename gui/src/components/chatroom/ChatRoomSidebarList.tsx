@@ -1,5 +1,5 @@
 import {Account, ChatRoom, Query} from "@/graphql/types.ts";
-import {chatRoomAndUsersQL, useCreateChatUser} from "@/client/chatUser.ts";
+import {chatRoomAndUsersByIdQL, useCreateChatUser} from "@/client/chatUser.ts";
 import {useApolloClient} from "@apollo/client";
 import {css} from "@emotion/react";
 import {useNavigate} from "react-router";
@@ -60,8 +60,7 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
 
   const onClickLink = async (chatRoom: ChatRoom) => {
     const data = await client.query<Query>({
-      query: chatRoomAndUsersQL,
-      variables: { id: chatRoom.id },
+      query: chatRoomAndUsersByIdQL(chatRoom.id),
       // network-only로 설정하지 않으면 이전 chatRoom을 exit해도
       // 이전 cache가 적용되어 exit하지 않은 것으로 처리되어 에러 발생
       fetchPolicy: "network-only",

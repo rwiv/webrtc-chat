@@ -15,7 +15,6 @@ import {Input} from "@/components/ui/input.tsx";
 import {useApolloClient} from "@apollo/client";
 import {Account, Query} from "@/graphql/types.ts";
 import {getAccountByUsername} from "@/client/account.ts";
-import {getQueryName} from "@/lib/web/apollo.ts";
 import {AccountCandidate} from "@/components/account/AccountCandidate.tsx";
 
 interface FriendAddButtonProps {
@@ -42,7 +41,7 @@ export function FriendAddButton({ myInfo }: FriendAddButtonProps) {
     };
     const res = await addFriend({ variables });
     console.log(res.data?.addFriend);
-    await client.refetchQueries({ include: [getQueryName(myFriendsQL)] });
+    await client.refetchQueries({ include: [myFriendsQL] });
 
     closeRef.current?.click();
   }

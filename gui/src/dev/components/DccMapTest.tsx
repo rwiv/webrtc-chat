@@ -1,4 +1,4 @@
-import {useDccsStore} from "@/hooks/chatmessage/useDccsStore.ts";
+import {useDccMapStore} from "@/hooks/chatmessage/useDccMapStore.ts";
 import {useEffect} from "react";
 import {Params} from "react-router";
 
@@ -8,7 +8,7 @@ interface DccMapTestProps {
 
 export function DccMapTest({ params }: DccMapTestProps) {
 
-  const {dccMap, refresh: refreshDccMap} = useDccsStore();
+  const {dccMap, refresh: refreshDccMap} = useDccMapStore();
 
   useEffect(() => {
     setInterval(() => {
@@ -20,7 +20,7 @@ export function DccMapTest({ params }: DccMapTestProps) {
     <div>
       {dccMap.values().map(((dcc, idx) => (
         <div key={idx} className="border-2 w-36">
-          <div>{dcc.target.id}</div>
+          <div>{dcc.targetId}</div>
           <div>my: {dcc.myChannel.readyState}</div>
           <div>your: {dcc.yourChannel?.readyState}</div>
         </div>

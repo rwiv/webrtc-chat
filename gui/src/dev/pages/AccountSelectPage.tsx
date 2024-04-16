@@ -3,7 +3,6 @@ import {useNavigate} from "react-router";
 import {useApolloClient} from "@apollo/client";
 import {Link} from "react-router-dom";
 import {Button} from "@/components/ui/button.tsx";
-import {getQueryName} from "@/lib/web/apollo.ts";
 
 export function AccountSelectPage() {
 
@@ -16,7 +15,7 @@ export function AccountSelectPage() {
       password: "1234",
     };
     await login(req, false);
-    await client.refetchQueries({ include: [getQueryName(myInfoQL)] });
+    await client.refetchQueries({ include: [myInfoQL] });
     navigate("/");
   }
 
@@ -26,7 +25,7 @@ export function AccountSelectPage() {
       password: "1234",
     };
     await login(req, false);
-    await client.refetchQueries({ include: [getQueryName(myInfoQL)] });
+    await client.refetchQueries({ include: [myInfoQL] });
     navigate("/");
   }
 
@@ -36,7 +35,7 @@ export function AccountSelectPage() {
       password: "1234",
     };
     await login(req, false);
-    await client.refetchQueries({ include: [getQueryName(myInfoQL)] });
+    await client.refetchQueries({ include: [myInfoQL] });
     navigate("/");
   }
 

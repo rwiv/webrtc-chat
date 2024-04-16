@@ -25,7 +25,10 @@ export function ParticipatedChatRoomContextMenu({ chatRoom, myInfo, children }: 
 
   const onExit = async () => {
     const variables = { chatRoomId: chatRoom.id };
-    const res = await deleteChatUserMe({ variables })
+    const res = await deleteChatUserMe({
+      variables,
+      refetchQueries: [ myChatUsersQL ],
+    })
     console.log(res);
     navigate("/");
   }

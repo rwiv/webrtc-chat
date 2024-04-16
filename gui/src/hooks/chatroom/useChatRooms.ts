@@ -31,12 +31,10 @@ export function useChatRooms() {
     if (page === 1) {
       return;
     }
-    console.log(page)
     client.query<Query>(getQueryOptions()).then(result => {
-      console.log("fetch");
       const chatRooms = result.data.chatRooms;
       if (chatRooms?.length === 0) {
-        console.log("end");
+        console.log("chatRoom page end");
         setHasNextPage(false);
         setLoading(false);
         return;

@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ChatMessageList} from "@/components/chatmessage/ChatMessageList.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {css} from "@emotion/react";
 import {useChatMessages} from "@/hooks/chatmessage/useChatMessages.ts";
 import {Account, ChatUser} from "@/graphql/types.ts";
-import {useChatMessagesRefreshStore} from "@/hooks/chatmessage/useChatMessagesRefreshStore.ts";
 
 const inputFrameStyle = css`
   height: 20%;
@@ -25,19 +24,11 @@ interface ChatMessagesContentProps {
 
 export function ChatMessagesContent({ chatRoomId, myInfo, chatUsers }: ChatMessagesContentProps) {
 
-  const {refreshFlag} = useChatMessagesRefreshStore();
-
   const {
-    chatMessages,
-    // loading,
-    connect, disconnect, send,
+    chatMessages, send,
     observerRef, scrollRef,
   } = useChatMessages(chatRoomId, myInfo, chatUsers);
 
-  useEffect(() => {
-    disconnect();
-    connect();
-  }, [refreshFlag]);
 
   return (
     <>

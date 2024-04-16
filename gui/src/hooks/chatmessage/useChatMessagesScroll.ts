@@ -66,7 +66,7 @@ export function useChatMessagesScroll(chatRoomId: number) {
     apolloClient.query<Query>(getQueryOptions(page, offset)).then(result => {
       const chatMessages = result.data.chatMessages;
       if (chatMessages?.length === 0) {
-        console.log("end");
+        console.log("chatMessage page end");
         setHasNextPage(false);
         setLoading(false);
         return;

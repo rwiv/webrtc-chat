@@ -2,7 +2,7 @@ import {css} from "@emotion/react";
 import {ChatUser} from "@/graphql/types.ts";
 import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
-import {useDccsStore} from "@/hooks/chatmessage/useDccsStore.ts";
+import {useDccMapStore} from "@/hooks/chatmessage/useDccMapStore.ts";
 import {useEffect} from "react";
 import {HStack} from "@/lib/style/layouts.tsx";
 
@@ -30,7 +30,7 @@ interface ChatUserSidebarListProps {
 
 export function ChatUserSidebarList({ chatUsers }: ChatUserSidebarListProps) {
 
-  const {dccMap, refresh: refreshDccMap} = useDccsStore();
+  const {dccMap, refresh: refreshDccMap} = useDccMapStore();
 
   const isConnected = (chatUser: ChatUser) => {
     const targetId = chatUser.account.id;

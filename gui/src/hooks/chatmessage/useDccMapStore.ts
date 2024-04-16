@@ -1,5 +1,4 @@
 import {create} from 'zustand';
-import {Account} from "@/graphql/types.ts";
 
 export class DccMap {
 
@@ -7,13 +6,18 @@ export class DccMap {
   }
 
   add(dcc: DataChannelConnection) {
-    const targetId = dcc.target.id;
+    const targetId = dcc.targetId;
     const dup = this.get(targetId);
     if (dup !== undefined) {
       console.log("duplicated");
       console.log(dup);
+      dup.close();
     }
     this.current.set(targetId, dcc);
+  }
+
+  isInit() {
+    return this.values().length === 0;
   }
 
   restore() {
@@ -44,7 +48,7 @@ export class DataChannelConnection {
   constructor(
     public readonly connection: RTCPeerConnection,
     public readonly myChannel: RTCDataChannel,
-    public readonly target: Account,
+    public readonly targetId: number,
     public yourChannel: RTCDataChannel | null = null,
   ) {
   }
@@ -84,7 +88,7 @@ interface GlobalState {
   refresh: () => void;
 }
 
-export const useDccsStore = create<GlobalState>((set) => ({
+export const useDccMapStore = create<GlobalState>((set) => ({
   dccMap: new DccMap(),
   addDcc: dcc => set(prev => {
     const dccMap = prev.dccMap;

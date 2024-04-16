@@ -5,8 +5,10 @@ import { CandidateMessage, DescriptionMessage, requestAnswer, requestCandidate, 
 import {createStompClient} from "@/lib/web/stomp.ts";
 import {sendMessage} from "@/client/chatMessage.ts";
 import {ScrollType} from "@/hooks/chatmessage/useChatMessagesScroll.ts";
-import {DataChannelConnection, useDccsStore} from "@/hooks/chatmessage/useDccsStore.ts";
-import {StompClient, useChatMessageStompStore} from "@/hooks/chatmessage/useChatMessageStompStore.ts";
+import {DataChannelConnection, useDccMapStore} from "@/hooks/chatmessage/useDccMapStore.ts";
+import {useChatMessageStompStore} from "@/hooks/chatmessage/useChatMessageStompStore.ts";
+import {useApolloClient} from "@apollo/client";
+import {chatRoomAndUsersByIdQL} from "@/client/chatUser.ts";
 
 export function useChatMessagesRTC(
   chatRoomId: number,
@@ -17,8 +19,8 @@ export function useChatMessagesRTC(
   setScrollType: React.Dispatch<React.SetStateAction<ScrollType>>,
 ) {
 
-  const {dccMap, addDcc, restore} = useDccsStore();
-
+  const apollo = useApolloClient();
+  const {dccMap, addDcc, restore} = useDccMapStore();
   const {setNewStompClient} = useChatMessageStompStore();
 
   const onMessage = (ev: MessageEvent) => {
@@ -28,7 +30,7 @@ export function useChatMessagesRTC(
     setScrollType("BOTTOM");
   }
 
-  const createPeerConnection = async (target: Account) => {
+  const createDcc = (targetId: number) => {
     const pc = new RTCPeerConnection({
       iceServers: [ { urls: "stun:stun.l.google.com:19302" } ],
     });
@@ -38,25 +40,28 @@ export function useChatMessagesRTC(
       await requestCandidate(chatRoomId, {
         candidate: ev.candidate,
         senderId: myInfo.id,
-        receiverId: target.id,
+        receiverId: targetId,
       });
     }
 
-    const myChannel = pc.createDataChannel(target.id.toString());
+    const myChannel = pc.createDataChannel(targetId.toString());
     myChannel.onmessage = onMessage;
 
     pc.ondatachannel = async ev => {
       const yourChannel = ev.channel;
       yourChannel.onmessage = onMessage;
 
-      const dcc = dccMap.get(target.id);
+      const dcc = dccMap.get(targetId);
       if (dcc !== undefined) {
         dcc.setYourChannel(yourChannel);
       }
     }
-    const dcc = new DataChannelConnection(pc, myChannel, target);
+    const dcc = new DataChannelConnection(pc, myChannel, targetId);
     addDcc(dcc);
+    return dcc;
+  }
 
+  const reqOffer = async (pc: RTCPeerConnection, target: Account) => {
     const offer = await pc.createOffer();
     await pc.setLocalDescription(new RTCSessionDescription(offer));
 
@@ -73,9 +78,10 @@ export function useChatMessagesRTC(
       return;
     }
 
-    const con = dccMap.get(senderId)?.connection;
+    let con = dccMap.get(senderId)?.connection;
     if (con === undefined) {
-      return;
+      con = createDcc(senderId).connection;
+      await apollo.refetchQueries({ include: [ chatRoomAndUsersByIdQL(chatRoomId) ] });
     }
 
     await con.setRemoteDescription(new RTCSessionDescription(offer));
@@ -99,6 +105,7 @@ export function useChatMessagesRTC(
 
     const con = dccMap.get(senderId)?.connection;
     if (con === undefined) {
+      console.log("not found dcc in answer");
       return;
     }
     await con.setRemoteDescription(new RTCSessionDescription(answer));
@@ -113,34 +120,36 @@ export function useChatMessagesRTC(
 
     const con = dccMap.get(senderId)?.connection;
     if (con === undefined) {
+      console.log("not found dcc in candidate");
       return;
     }
     await con.addIceCandidate(new RTCIceCandidate(candidate));
     console.log(`candidate: ${msg.body}`);
   }
 
-  const connect = async () => {
-    // create stomp client
+  const connect = () => {
+    console.log("start connect")
     const stomp = createStompClient();
     stomp.onConnect  = async () => {
       const offerSub = stomp.subscribe(`/sub/signal/offer/${chatRoomId}`, subOffer);
       const answerSub = stomp.subscribe(`/sub/signal/answer/${chatRoomId}`, subAnswer);
       const candidateSub = stomp.subscribe(`/sub/signal/candidate/${chatRoomId}`, subCandidate);
-      setNewStompClient(new StompClient(stomp, [offerSub, answerSub, candidateSub]));
+      setNewStompClient(stomp, [offerSub, answerSub, candidateSub]);
 
       // set rtc connections
       const targets = chatUsers.map(it => it.account).filter(it => it.id !== myInfo.id)
       for (const target of targets) {
-        await createPeerConnection(target);
+        const dcc = createDcc(target.id);
+        await reqOffer(dcc.connection, target);
       }
     }
-
     stomp.activate();
   }
 
   const disconnect = () => {
+    console.log("start disconnect")
     restore();
-    setNewStompClient(undefined);
+    setNewStompClient(undefined, []);
   }
 
   const send = async (message: string) => {
