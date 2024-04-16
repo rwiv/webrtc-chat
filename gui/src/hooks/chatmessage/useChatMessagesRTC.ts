@@ -1,10 +1,12 @@
 import {Account, ChatMessage, ChatUser} from "@/graphql/types.ts";
-import React, {useRef, useState} from "react";
-import {Client, IMessage, StompSubscription} from "@stomp/stompjs";
+import React, {useState} from "react";
+import {IMessage} from "@stomp/stompjs";
 import { CandidateMessage, DescriptionMessage, requestAnswer, requestCandidate, requestOffer } from "@/client/signaling.ts";
 import {createStompClient} from "@/lib/web/stomp.ts";
 import {sendMessage} from "@/client/chatMessage.ts";
 import {ScrollType} from "@/hooks/chatmessage/useChatMessagesScroll.ts";
+import {DataChannelConnection, useDccsStore} from "@/hooks/chatmessage/useDccsStore.ts";
+import {StompClient, useChatMessageStompStore} from "@/hooks/chatmessage/useChatMessageStompStore.ts";
 
 export function useChatMessagesRTC(
   chatRoomId: number,
@@ -15,13 +17,14 @@ export function useChatMessagesRTC(
   setScrollType: React.Dispatch<React.SetStateAction<ScrollType>>,
 ) {
 
-  const dccs = useRef<Map<number, DataChannelConnection>>(new Map());
-  const [stompClient, setStompClient] = useState<Client>();
-  const [stompSubs, setStompSubs] = useState<StompSubscription[]>([]);
+  const {dccMap, addDcc, restore} = useDccsStore();
+
+  const {setNewStompClient} = useChatMessageStompStore();
+
   const [loading, setLoading] = useState(true);
 
   const isLoading = () => {
-    for (const dcc of dccs.current.values()) {
+    for (const dcc of dccMap.values()) {
       if (dcc.getOpenChannel() !== null) return false;
     }
     return true;
@@ -55,13 +58,13 @@ export function useChatMessagesRTC(
       const yourChannel = ev.channel;
       yourChannel.onmessage = onMessage;
 
-      const dcc = dccs.current.get(target.id);
+      const dcc = dccMap.get(target.id);
       if (dcc !== undefined) {
-        dcc.yourChannel = yourChannel;
+        dcc.setYourChannel(yourChannel);
       }
     }
     const dcc = new DataChannelConnection(pc, myChannel, target);
-    dccs.current.set(target.id, dcc);
+    addDcc(dcc);
 
     const offer = await pc.createOffer();
     await pc.setLocalDescription(new RTCSessionDescription(offer));
@@ -79,7 +82,7 @@ export function useChatMessagesRTC(
       return;
     }
 
-    const con = dccs.current.get(senderId)?.connection;
+    const con = dccMap.get(senderId)?.connection;
     if (con === undefined) {
       return;
     }
@@ -103,7 +106,7 @@ export function useChatMessagesRTC(
       return;
     }
 
-    const con = dccs.current.get(senderId)?.connection;
+    const con = dccMap.get(senderId)?.connection;
     if (con === undefined) {
       return;
     }
@@ -117,7 +120,7 @@ export function useChatMessagesRTC(
       return;
     }
 
-    const con = dccs.current.get(senderId)?.connection;
+    const con = dccMap.get(senderId)?.connection;
     if (con === undefined) {
       return;
     }
@@ -140,7 +143,7 @@ export function useChatMessagesRTC(
       const offerSub = stomp.subscribe(`/sub/signal/offer/${chatRoomId}`, subOffer);
       const answerSub = stomp.subscribe(`/sub/signal/answer/${chatRoomId}`, subAnswer);
       const candidateSub = stomp.subscribe(`/sub/signal/candidate/${chatRoomId}`, subCandidate);
-      setStompSubs(prev => [...prev, offerSub, answerSub, candidateSub]);
+      setNewStompClient(new StompClient(stomp, [offerSub, answerSub, candidateSub]));
 
       // set rtc connections
       const targets = chatUsers.map(it => it.account).filter(it => it.id !== myInfo.id)
@@ -149,24 +152,12 @@ export function useChatMessagesRTC(
       }
     }
 
-    setStompClient(stomp);
     stomp.activate();
   }
 
-  const disconnect = async () => {
-    for (const dcc of dccs.current.values()) {
-      console.log(`diconnect ${dcc.target.id}`);
-      dcc.close();
-    }
-
-    stompSubs.forEach(it => {
-      it.unsubscribe();
-    });
-    await stompClient?.deactivate();
-
-    dccs.current = new Map();
-    setStompSubs([]);
-    setStompClient(undefined);
+  const disconnect = () => {
+    restore();
+    setNewStompClient(undefined);
   }
 
   const send = async (message: string) => {
@@ -177,36 +168,10 @@ export function useChatMessagesRTC(
     setOffset(prev => prev + 1);
     setScrollType("BOTTOM");
 
-    for (const dcc of dccs.current.values()) {
+    for (const dcc of dccMap.values()) {
       dcc.getOpenChannel()?.send(JSON.stringify(chatMessage));
     }
   }
 
   return {connect, disconnect, send, loading};
-}
-
-class DataChannelConnection {
-  constructor(
-    public readonly connection: RTCPeerConnection,
-    public readonly myChannel: RTCDataChannel,
-    public readonly target: Account,
-    public yourChannel: RTCDataChannel | null = null,
-  ) {
-  }
-
-  getOpenChannel() {
-    if (this.myChannel.readyState === "open") {
-      return this.myChannel;
-    } else if (this.yourChannel?.readyState === "open") {
-      return this.yourChannel;
-    } else {
-      return null;
-    }
-  }
-
-  close() {
-    this.connection.close();
-    this.myChannel.close();
-    this.yourChannel?.close();
-  }
 }

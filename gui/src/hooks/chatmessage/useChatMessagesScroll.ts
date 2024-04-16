@@ -1,24 +1,29 @@
 import {useApolloClient} from "@apollo/client";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {ChatMessage, Query} from "@/graphql/types.ts";
 import {chatMessagesQL, defaultChatMessageSize} from "@/client/chatMessage.ts";
 import {reverse} from "@/lib/common/array.ts";
 import type {QueryOptions} from "@apollo/client/core/watchQueryOptions";
 import {useIntersect} from "@/hooks/common/useIntersect.ts";
+import {useChatMessagesRefreshStore} from "@/hooks/chatmessage/useChatMessagesRefreshStore.ts";
 
 export type ScrollType = "BOTTOM" | "TOP";
 
-export function useChatMessagesScroll(
-  chatRoomId: number,
-  page: number,
-  setPage: React.Dispatch<React.SetStateAction<number>>,
-  chatMessages: ChatMessage[],
-  setChatMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
-) {
+const initPage = 1;
+const initOffset = 0;
+
+export function useChatMessagesScroll(chatRoomId: number) {
 
   const apolloClient = useApolloClient();
+
+  const {refreshFlag} = useChatMessagesRefreshStore();
+
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
+
+  const [page, setPage] = useState(initPage);
+  const [offset, setOffset] = useState(initOffset);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const [offset, setOffset] = useState(0);
+
   const [loading, setLoading] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -33,7 +38,7 @@ export function useChatMessagesScroll(
     }
   }, { threshold: 0 });
 
-  const getQueryOptions = useCallback((): QueryOptions => {
+  const getQueryOptions = useCallback((page: number, offset: number): QueryOptions => {
     return {
       query: chatMessagesQL,
       variables: { chatRoomId, page, size: defaultChatMessageSize, offset},
@@ -42,12 +47,14 @@ export function useChatMessagesScroll(
   }, [chatRoomId, offset, page]);
 
   useEffect(() => {
+    setPage(initPage);
+    setOffset(initOffset);
     // init request
-    apolloClient.query<Query>(getQueryOptions()).then(result => {
+    apolloClient.query<Query>(getQueryOptions(initPage, initOffset)).then(result => {
       const messages = result?.data?.chatMessages;
       setChatMessages(reverse(messages) ?? []);
     });
-  }, []);
+  }, [refreshFlag]);
 
   useEffect(() => {
     if (page === 1) {
@@ -56,7 +63,7 @@ export function useChatMessagesScroll(
 
     setScrollHeight(scrollRef.current?.scrollHeight ?? 0);
 
-    apolloClient.query<Query>(getQueryOptions()).then(result => {
+    apolloClient.query<Query>(getQueryOptions(page, offset)).then(result => {
       const chatMessages = result.data.chatMessages;
       if (chatMessages?.length === 0) {
         console.log("end");
@@ -86,5 +93,5 @@ export function useChatMessagesScroll(
     setScrollType("BOTTOM");
   }, [chatMessages]);
 
-  return {loading, scrollRef, observerRef, setOffset, setScrollType};
+  return {chatMessages, setChatMessages, page, loading, scrollRef, observerRef, setOffset, setScrollType};
 }
