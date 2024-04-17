@@ -2,7 +2,7 @@ import {Account, ChatUser} from "@/graphql/types.ts";
 import {useChatMessagesScroll} from "@/hooks/chatmessage/useChatMessagesScroll.ts";
 import {useChatMessagesRTC} from "@/hooks/chatmessage/useChatMessagesRTC.ts";
 import {useChatMessagesRefreshStore} from "@/hooks/chatmessage/useChatMessagesRefreshStore.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDccMapStore} from "@/hooks/chatmessage/useDccMapStore.ts";
 import {useChatMessageStompStore} from "@/hooks/chatmessage/useChatMessageStompStore.ts";
 
@@ -15,6 +15,7 @@ export function useChatMessages(
   const {stompClient} = useChatMessageStompStore();
 
   const [curInterval, setCurInterval] = useState<NodeJS.Timeout>();
+  const connecting = useRef(false);
 
   const {
     chatMessages, setChatMessages,
@@ -34,9 +35,12 @@ export function useChatMessages(
   }, []);
 
   useEffect(() => {
+    if (connecting.current)
+      return
     if (curInterval !== undefined)
       clearInterval(curInterval)
 
+    connecting.current = true;
     disconnect();
 
     const itv = setInterval(() => {
@@ -44,6 +48,7 @@ export function useChatMessages(
         clearInterval(itv);
         setCurInterval(undefined);
         connect();
+        connecting.current = false;
       }
     }, 100);
 

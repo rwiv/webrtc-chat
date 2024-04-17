@@ -20,7 +20,7 @@ export function useChatMessagesRTC(
 ) {
 
   const apollo = useApolloClient();
-  const {dccMap, addDcc, restore} = useDccMapStore();
+  const {dccMap, addDcc, restore, prevCandidateMap, addPrevCandidate} = useDccMapStore();
   const {setNewStompClient} = useChatMessageStompStore();
 
   const onMessage = (ev: MessageEvent) => {
@@ -30,7 +30,7 @@ export function useChatMessagesRTC(
     setScrollType("BOTTOM");
   }
 
-  const createDcc = (targetId: number) => {
+  const createDcc = (targetId: number, readOnly: boolean) => {
     const pc = new RTCPeerConnection({
       iceServers: [ { urls: "stun:stun.l.google.com:19302" } ],
     });
@@ -44,8 +44,11 @@ export function useChatMessagesRTC(
       });
     }
 
-    const myChannel = pc.createDataChannel(targetId.toString());
-    myChannel.onmessage = onMessage;
+    let myChannel: RTCDataChannel | undefined;
+    if (!readOnly) {
+      myChannel = pc.createDataChannel(targetId.toString());
+      myChannel.onmessage = onMessage;
+    }
 
     pc.ondatachannel = async ev => {
       const yourChannel = ev.channel;
@@ -56,7 +59,7 @@ export function useChatMessagesRTC(
         dcc.setYourChannel(yourChannel);
       }
     }
-    const dcc = new DataChannelConnection(pc, myChannel, targetId);
+    const dcc = new DataChannelConnection(pc, targetId, myChannel);
     addDcc(dcc);
     return dcc;
   }
@@ -78,15 +81,17 @@ export function useChatMessagesRTC(
       return;
     }
 
-    let con = dccMap.get(senderId)?.connection;
-    if (con === undefined) {
-      con = createDcc(senderId).connection;
+    let dcc = dccMap.get(senderId);
+    if (dcc === undefined) {
+      dcc = createDcc(senderId, true);
       await apollo.refetchQueries({ include: [ chatRoomAndUsersByIdQL(chatRoomId) ] });
     }
+    const con = dcc!.connection;
 
     await con.setRemoteDescription(new RTCSessionDescription(offer));
     const answer = await con.createAnswer();
     await con.setLocalDescription(new RTCSessionDescription(answer));
+    await dcc.emitRemoteDesc(prevCandidateMap);
 
     await requestAnswer(chatRoomId, {
       description: answer,
@@ -103,12 +108,14 @@ export function useChatMessagesRTC(
       return;
     }
 
-    const con = dccMap.get(senderId)?.connection;
+    const dcc = dccMap.get(senderId);
+    const con = dcc?.connection;
     if (con === undefined) {
       console.log("not found dcc in answer");
       return;
     }
     await con.setRemoteDescription(new RTCSessionDescription(answer));
+    await dcc?.emitRemoteDesc(prevCandidateMap);
     console.log(`answer: ${msg.body}`);
   }
 
@@ -118,12 +125,18 @@ export function useChatMessagesRTC(
       return;
     }
 
-    const con = dccMap.get(senderId)?.connection;
+    const dcc = dccMap.get(senderId);
+    const con = dcc?.connection;
     if (con === undefined) {
       console.log("not found dcc in candidate");
       return;
     }
-    await con.addIceCandidate(new RTCIceCandidate(candidate));
+
+    if (con.remoteDescription === null) {
+      addPrevCandidate(senderId, new RTCIceCandidate(candidate));
+    } else {
+      await con.addIceCandidate(new RTCIceCandidate(candidate));
+    }
     console.log(`candidate: ${msg.body}`);
   }
 
@@ -139,7 +152,7 @@ export function useChatMessagesRTC(
       // set rtc connections
       const targets = chatUsers.map(it => it.account).filter(it => it.id !== myInfo.id)
       for (const target of targets) {
-        const dcc = createDcc(target.id);
+        const dcc = createDcc(target.id, false);
         await reqOffer(dcc.connection, target);
       }
     }

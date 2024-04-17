@@ -5,6 +5,7 @@ import {ChatRoomContent} from "@/components/layouts/ChatRoomContent.tsx";
 import {LeftSidebar} from "@/components/layouts/LeftSidebar.tsx";
 import {containerStyle, flexStyle} from "@/styles/globalStyles.ts";
 import {useChatMessagesRefreshStore} from "@/hooks/chatmessage/useChatMessagesRefreshStore.ts";
+import {useCurChatRoomStore} from "@/hooks/chatroom/useCurChatRoomStore.ts";
 
 const left = mq.m_all(0, 0, 3, 3, 3, 3);
 const right = mq.m_all(12, 12, 9, 9, 9, 9);
@@ -15,6 +16,7 @@ export function ChatRoomPage() {
   const chatRoomId = getChatRoomId();
 
   const {refresh} = useChatMessagesRefreshStore();
+  const {setCurChatRoomId} = useCurChatRoomStore();
 
   function getChatRoomId() {
     const chatRoomId = params["chatRoomId"];
@@ -29,6 +31,7 @@ export function ChatRoomPage() {
   }
 
   useEffect(() => {
+    setCurChatRoomId(chatRoomId)
     refresh();
   }, [params]);
 

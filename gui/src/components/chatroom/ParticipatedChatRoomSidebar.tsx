@@ -77,15 +77,15 @@ interface ParticipatedChatRoomItemProps {
 function ParticipatedChatRoomItem({ chatRoom, myInfo }: ParticipatedChatRoomItemProps) {
 
   const navigate = useNavigate();
-  const {curChatRoom, setCurChatRoom} = useCurChatRoomStore();
+  const {curChatRoomId, setCurChatRoomId} = useCurChatRoomStore();
 
   const onClick = () => {
-    setCurChatRoom(chatRoom);
+    setCurChatRoomId(chatRoom.id)
     navigate(`/chat-rooms/${chatRoom.id}`);
   }
 
   const getCurChatRoomStyle = () => {
-    if (curChatRoom?.id === chatRoom.id) {
+    if (curChatRoomId === chatRoom.id) {
       return curChatRoomStyle;
     }
     return {};

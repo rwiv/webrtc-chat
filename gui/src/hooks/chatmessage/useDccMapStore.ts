@@ -47,10 +47,18 @@ export class DccMap {
 export class DataChannelConnection {
   constructor(
     public readonly connection: RTCPeerConnection,
-    public readonly myChannel: RTCDataChannel,
     public readonly targetId: number,
+    public readonly myChannel: RTCDataChannel | null = null,
     public yourChannel: RTCDataChannel | null = null,
   ) {
+  }
+
+  async emitRemoteDesc(prevCandidateMap: Map<number, RTCIceCandidate[]>) {
+    const prevCandidates = prevCandidateMap.get(this.targetId) ?? [];
+    for (const candidate of prevCandidates) {
+      await this.connection.addIceCandidate(new RTCIceCandidate(candidate));
+    }
+    prevCandidateMap.delete(this.targetId);
   }
 
   setYourChannel(yourChannel: RTCDataChannel) {
@@ -62,7 +70,7 @@ export class DataChannelConnection {
   }
 
   getOpenChannel() {
-    if (this.myChannel.readyState === "open") {
+    if (this.myChannel?.readyState === "open") {
       return this.myChannel;
     } else if (this.yourChannel?.readyState === "open") {
       return this.yourChannel;
@@ -71,11 +79,8 @@ export class DataChannelConnection {
     }
   }
 
-  setListener() {
-  }
-
   close() {
-    this.myChannel.close();
+    this.myChannel?.close();
     this.yourChannel?.close();
     this.connection.close();
   }
@@ -86,9 +91,22 @@ interface GlobalState {
   addDcc: (dcc: DataChannelConnection) => void;
   restore: () => void;
   refresh: () => void;
+  prevCandidateMap: Map<number, RTCIceCandidate[]>,
+  addPrevCandidate: (targetId: number, candidate: RTCIceCandidate) => void;
 }
 
 export const useDccMapStore = create<GlobalState>((set) => ({
+  prevCandidateMap: new Map(),
+  addPrevCandidate: (targetId, candidate) => set(prev => {
+    const preCandidates = prev.prevCandidateMap.get(targetId);
+    if (preCandidates === undefined) {
+      const candidates = [candidate];
+      prev.prevCandidateMap.set(targetId, candidates);
+    } else {
+      preCandidates.push(candidate);
+    }
+    return { ...prev };
+  }),
   dccMap: new DccMap(),
   addDcc: dcc => set(prev => {
     const dccMap = prev.dccMap;

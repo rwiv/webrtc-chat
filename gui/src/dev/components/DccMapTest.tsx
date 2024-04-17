@@ -21,8 +21,8 @@ export function DccMapTest({ params }: DccMapTestProps) {
       {dccMap.values().map(((dcc, idx) => (
         <div key={idx} className="border-2 w-36">
           <div>{dcc.targetId}</div>
-          <div>my: {dcc.myChannel.readyState}</div>
-          <div>your: {dcc.yourChannel?.readyState}</div>
+          <div>my: {dcc.myChannel?.readyState ?? "null"}</div>
+          <div>your: {dcc.yourChannel?.readyState ?? "null"}</div>
         </div>
       )))}
     </div>
