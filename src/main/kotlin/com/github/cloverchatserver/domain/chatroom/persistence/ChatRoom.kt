@@ -22,7 +22,7 @@ class ChatRoom(
     val password: String?,
 
     @Column(nullable = false)
-    val title: String,
+    var title: String,
 
     @Column(nullable = false, updatable = false)
     val createdAt: LocalDateTime,

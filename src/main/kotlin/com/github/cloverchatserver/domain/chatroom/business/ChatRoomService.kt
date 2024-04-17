@@ -65,8 +65,9 @@ class ChatRoomService(
             }
         } ?: throw NotFoundException("not found friend")
 
-        val title = "${me.nickname}, ${friend.to.nickname}"
-        val chatRoom = create(ChatRoomCreation(me.id, null, title, ChatRoomType.PRIVATE))
+        val chatRoom = create(ChatRoomCreation(me.id, null, "", ChatRoomType.PRIVATE))
+        chatRoom.title = "private_${chatRoom.id}"
+        chatRoomRepository.save(chatRoom)
 
         chatUserService.create(ChatUserCreation(chatRoom.id!!, chatRoom.password, friend.to.id!!))
 

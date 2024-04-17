@@ -5,7 +5,7 @@ import {Center} from "@/lib/style/layouts.tsx";
 import {MdAddCircle} from "react-icons/md";
 import {useMyFriends} from "@/client/friend.ts";
 import {AccountCandidate} from "@/components/account/AccountCandidate.tsx";
-import {useCreateChatUserFromParticipant} from "@/client/chatUser.ts";
+import {chatRoomAndUsersByIdQL, useCreateChatUserFromParticipant} from "@/client/chatUser.ts";
 
 interface InviteChatUserButtonProps {
   chatUsers: ChatUser[];
@@ -20,11 +20,15 @@ export function InviteChatUserButton({ chatUsers }: InviteChatUserButtonProps) {
 
   const onSubmit = async (target: Account) => {
     if (chatUsers.length === 0) return;
+    const chatRoomId = chatUsers[0].chatRoom?.id;
 
-    await createChatUserFromParticipant({ variables: {
-        chatRoomId: chatUsers[0].chatRoom?.id,
+    await createChatUserFromParticipant({
+      variables: {
+        chatRoomId,
         accountId: target.id,
-    }});
+      },
+      refetchQueries: [ chatRoomAndUsersByIdQL(chatRoomId)] ,
+    });
     closeRef.current?.click();
   }
 
