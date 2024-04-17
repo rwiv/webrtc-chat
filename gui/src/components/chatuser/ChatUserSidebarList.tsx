@@ -3,7 +3,6 @@ import {ChatUser} from "@/graphql/types.ts";
 import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
 import {useDccMapStore} from "@/hooks/chatmessage/useDccMapStore.ts";
-import {useEffect} from "react";
 import {HStack} from "@/lib/style/layouts.tsx";
 
 const mainStyle = css`
@@ -30,22 +29,12 @@ interface ChatUserSidebarListProps {
 
 export function ChatUserSidebarList({ chatUsers }: ChatUserSidebarListProps) {
 
-  const {dccMap, refresh: refreshDccMap} = useDccMapStore();
+  const {dccMap} = useDccMapStore();
 
   const isConnected = (chatUser: ChatUser) => {
     const targetId = chatUser.account.id;
     return dccMap.get(targetId)?.isConnected() ?? false;
   }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refreshDccMap();
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    }
-  }, []);
 
   return (
     <div css={mainStyle}>

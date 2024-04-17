@@ -20,7 +20,7 @@ export function useChatMessagesRTC(
 ) {
 
   const apollo = useApolloClient();
-  const {dccMap, addDcc, restore, prevCandidateMap, addPrevCandidate} = useDccMapStore();
+  const {dccMap, addDcc, restore, refresh, prevCandidateMap, addPrevCandidate} = useDccMapStore();
   const {setNewStompClient} = useChatMessageStompStore();
 
   const onMessage = (ev: MessageEvent) => {
@@ -48,11 +48,15 @@ export function useChatMessagesRTC(
     if (!readOnly) {
       myChannel = pc.createDataChannel(targetId.toString());
       myChannel.onmessage = onMessage;
+      myChannel.onopen = refresh;
+      myChannel.onclose = refresh;
     }
 
     pc.ondatachannel = async ev => {
       const yourChannel = ev.channel;
       yourChannel.onmessage = onMessage;
+      yourChannel.onopen = refresh;
+      yourChannel.onclose =refresh;
 
       const dcc = dccMap.get(targetId);
       if (dcc !== undefined) {

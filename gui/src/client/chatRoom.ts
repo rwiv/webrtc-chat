@@ -2,7 +2,7 @@ import {gql, useMutation} from "@apollo/client";
 import {Mutation} from "@/graphql/types.ts";
 import {accountColumns} from "@/client/account.ts";
 
-export const defaultChatRoomSize: number = 5;
+export const defaultChatRoomSize: number = 10;
 
 export const chatRoomColumns = gql`
     fragment chatRoomColumns on ChatRoom {

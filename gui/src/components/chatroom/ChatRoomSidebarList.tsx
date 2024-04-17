@@ -117,7 +117,9 @@ export function ChatRoomSidebarList({ myInfo, chatRooms, observerRef }: ChatRoom
             </HStack>
           </div>
         ))}
-        <div ref={observerRef} css={css({height: "1rem"})}/>
+        {chatRooms.length > 0 && (
+          <div ref={observerRef} css={css({height: "1rem"})}/>
+        )}
       </div>
   )
 }
