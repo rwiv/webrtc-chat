@@ -4,6 +4,7 @@ import {ChatUser} from "@/graphql/types.ts";
 import {HStack} from "@/lib/style/layouts.tsx";
 import {InviteChatUserButton} from "@/components/chatuser/InviteChatUserButton.tsx";
 import {rightAlignStyle} from "@/styles/globalStyles.ts";
+import {useMyInfo} from "@/hooks/common/useMyInfo.ts";
 
 const headerStyle = css`
   border-bottom: 2px solid #e2e2e2;
@@ -25,6 +26,8 @@ interface ChatUserSidebarProps {
 
 export function ChatUserSidebar({ chatUsers }: ChatUserSidebarProps) {
 
+  const {myInfo} = useMyInfo();
+
   return (
     <div>
       <div css={headerStyle}>
@@ -35,7 +38,9 @@ export function ChatUserSidebar({ chatUsers }: ChatUserSidebarProps) {
           </div>
         </HStack>
       </div>
-      <ChatUserSidebarList chatUsers={chatUsers} />
+      {myInfo && (
+        <ChatUserSidebarList chatUsers={chatUsers} myInfo={myInfo} />
+      )}
     </div>
   )
 }

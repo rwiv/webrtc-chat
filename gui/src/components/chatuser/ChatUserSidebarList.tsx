@@ -1,5 +1,5 @@
 import {css} from "@emotion/react";
-import {ChatUser} from "@/graphql/types.ts";
+import {Account, ChatUser} from "@/graphql/types.ts";
 import {consts} from "@/configures/consts.ts";
 import {iconStyle} from "@/styles/globalStyles.ts";
 import {useDccMapStore} from "@/hooks/chatmessage/useDccMapStore.ts";
@@ -25,9 +25,10 @@ const mainStyle = css`
 
 interface ChatUserSidebarListProps {
   chatUsers: ChatUser[];
+  myInfo: Account;
 }
 
-export function ChatUserSidebarList({ chatUsers }: ChatUserSidebarListProps) {
+export function ChatUserSidebarList({ chatUsers, myInfo }: ChatUserSidebarListProps) {
 
   const {dccMap} = useDccMapStore();
 
@@ -36,9 +37,13 @@ export function ChatUserSidebarList({ chatUsers }: ChatUserSidebarListProps) {
     return dccMap.get(targetId)?.isConnected() ?? false;
   }
 
+  const filteredChatUsers = () => {
+    return chatUsers.filter(it => it.account.id !== myInfo.id);
+  }
+
   return (
     <div css={mainStyle}>
-      {chatUsers?.map(chatUser => (
+      {filteredChatUsers()?.map(chatUser => (
         <ChatUserItem
           key={chatUser.id}
           chatUser={chatUser}
