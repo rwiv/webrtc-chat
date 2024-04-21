@@ -5,4 +5,4 @@ vultr_os_id=1743
 my_public_ip=""
 registry_url=""
 registry_username=""
-registry_password=""
+registry_api_key=""

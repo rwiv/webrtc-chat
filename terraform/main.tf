@@ -30,7 +30,7 @@ module "instance" {
   vultr_os_id = var.vultr_os_id
   ssh_key_ids = [vultr_ssh_key.chat_ssh_key.id]
   firewall_group_id = module.firewall.group_id
-  registry_url = var.registry_api_key
+  registry_url = var.registry_url
   registry_username = var.registry_username
   registry_api_key = var.registry_api_key
 }

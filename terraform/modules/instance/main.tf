@@ -5,9 +5,9 @@ resource "vultr_instance" "my_instance" {
   ssh_key_ids = var.ssh_key_ids
   firewall_group_id = var.firewall_group_id
 
-#   provisioner "local-exec" {
-#     command = "echo ${self.main_ip} > ip.txt"
-#   }
+  provisioner "local-exec" {
+    command = "echo ${self.main_ip} > ip.txt"
+  }
 
   connection {
     type        = "ssh"
@@ -17,19 +17,25 @@ resource "vultr_instance" "my_instance" {
   }
 
   provisioner "file" {
-    source      = "./scripts/script.sh"
-    destination = "/root/script.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /root/script.sh",
-      "/root/script.sh ${var.registry_url} ${var.registry_username} ${var.registry_api_key}",
-    ]
+    source      = "./scripts/init.sh"
+    destination = "/root/init.sh"
   }
 
   provisioner "file" {
     source      = "../docker/docker-compose-prod-temp.yml"
     destination = "/root/docker-compose-prod-temp.yml"
+  }
+
+  provisioner "file" {
+    source      = "../secret/.env"
+    destination = "/root/.env"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /root/init.sh",
+      "/root/init.sh ${var.registry_url} ${var.registry_username} ${var.registry_api_key}",
+#       "docker compose -f /root/docker-compose-prod-temp.yml --env-file /root/.env up"
+    ]
   }
 }
