@@ -17,6 +17,7 @@ java -jar ./build/libs/clover-chat-server-0.0.1-SNAPSHOT.jar
 
 1. secret 폴더 채우기
 2. VCR 생성
+    - VCR의 location은 `New York (NJ)`으로 설정해야 함
 3. local 환경에서 아래 scripts를 통해 docker images build
    - `docker-build-mysql.bat`
    - `docker-build-nginx.bat`
