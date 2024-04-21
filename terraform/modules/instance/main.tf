@@ -35,7 +35,7 @@ resource "vultr_instance" "my_instance" {
     inline = [
       "chmod +x /root/init.sh",
       "/root/init.sh ${var.registry_url} ${var.registry_username} ${var.registry_api_key}",
-#       "docker compose -f /root/docker-compose-prod-temp.yml --env-file /root/.env up"
+      "docker compose -f /root/docker-compose-prod-temp.yml --env-file /root/.env up -d"
     ]
   }
 }
