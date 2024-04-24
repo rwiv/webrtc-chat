@@ -6,8 +6,8 @@ resource "vultr_firewall_rule" "ssh_firewall_rule" {
   firewall_group_id = vultr_firewall_group.chat_firewall_group.id
   protocol = "tcp"
   ip_type = "v4"
-  subnet = var.my_public_ip
-  subnet_size = 32
+  subnet = "0.0.0.0"
+  subnet_size = 0
   port = "22"
 }
 

@@ -20,7 +20,6 @@ resource "vultr_ssh_key" "chat_ssh_key" {
 
 module "firewall" {
   source = "./modules/firewall"
-  my_public_ip = var.my_public_ip
 }
 
 module "instance" {

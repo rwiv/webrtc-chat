@@ -14,10 +14,6 @@ variable "vultr_os_id" {
   type = number
 }
 
-variable "my_public_ip" {
-  type = string
-}
-
 variable "registry_url" {
   type = string
 }
