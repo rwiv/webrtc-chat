@@ -37,6 +37,7 @@ export function useChatMessagesRTC(
     pc.onicecandidate = async ev => {
       if (ev.candidate === undefined || ev.candidate === null) return;
 
+      console.log(`send candidate: ${ev.candidate.candidate}`);
       await requestCandidate(chatRoomId, {
         candidate: ev.candidate,
         senderId: myInfo.id,
@@ -141,7 +142,7 @@ export function useChatMessagesRTC(
     } else {
       await con.addIceCandidate(new RTCIceCandidate(candidate));
     }
-    console.log(`candidate: ${msg.body}`);
+    console.log(`received candidate: ${candidate.candidate}`);
   }
 
   const connect = () => {
